@@ -1,0 +1,35 @@
+const AccountingSystem = {
+  master_user: {
+    tablename: "master_user",
+    prefix: "mu_",
+    insertColumns: [
+      "employee_id",
+      "fullname",
+      "position",
+      "username",
+      "password",
+      "access",
+      "status",
+    ],
+    selectColumns: [
+      "mu_id",
+      "mu_employee_id",
+      "mu_fullname",
+      "mu_position",
+      "mu_username",
+      "mu_password",
+      "mu_access",
+      "mu_status",
+    ],
+    selectOptionsColumn: {
+      id: "mu_id",
+      employee_id: "mu_employee_id",
+      fullname: "mu_fullname",
+      position: "mu_position",
+      username: "mu_username",
+      password: "mu_password",
+      access: "mu_access",
+      status: "mu_status",
+    },
+  },
+};
