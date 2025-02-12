@@ -19,6 +19,10 @@ module.exports = {
       mp_vendor_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'master_vendor',
+          key: 'mv_id',
+        },
       },
       mp_upc: {
         type: Sequelize.STRING(300),
@@ -41,7 +45,7 @@ module.exports = {
         allowNull: false,
       },
       mp_status: {
-        type: Sequelize.ENUM('ACTIVE', 'INACTIVE'),
+        type: Sequelize.ENUM('active', 'inactive'),
         allowNull: false,
       },
     });
@@ -54,5 +58,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('master_product');
   }
 };
