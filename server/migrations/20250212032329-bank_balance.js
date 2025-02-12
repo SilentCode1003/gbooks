@@ -19,6 +19,10 @@ module.exports = {
       bb_bank_account_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'master_bank_account',
+          key: 'mba_id',
+        },
       },
       bb_transaction_date: {
         type: Sequelize.STRING(20),
@@ -47,5 +51,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('bank_balance');
   }
 };

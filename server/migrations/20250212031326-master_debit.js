@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
       },
       md_status: {
-        type: Sequelize.ENUM('ACTIVE', 'INACTIVE'),
+        type: Sequelize.ENUM('active', 'inactive'),
         allowNull: false,
       },
     });
@@ -34,5 +34,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('master_debit');
   }
 };

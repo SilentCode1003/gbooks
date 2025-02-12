@@ -23,6 +23,10 @@ module.exports = {
       poh_vendor_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'master_vendor',
+          key: 'mv_id',
+        },
       },
       poh_order_date: {
         type: Sequelize.STRING(20),
@@ -50,5 +54,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('purchase_order_header');
   }
 };
