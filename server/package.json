@@ -6,7 +6,8 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "sequelize:init": "sequelize init",
-    "migrations:status": "node ./repository/migrator/sequelize.js"
+    "migrations:status": "node ./repository/migrator/sequelize.js",
+    "migrations:up": "node ./repository/migrator/sequelize.js up"
   },
   "dependencies": {
     "axios": "^1.7.9",
