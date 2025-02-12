@@ -3,11 +3,13 @@ const { createConnection } = require("mysql");
 const { EncrypterString, DecrypterString } = require("./crytography");
 require("dotenv").config();
 
+
 const connection = createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: DecrypterString(process.env.DB_PASSWORD),
   database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
 });
 
 exports.CheckConnection = () => {

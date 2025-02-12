@@ -1,61 +1,58 @@
-"use strict";
+'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     /**
      * Add altering commands here.
      *
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-
-    await queryInterface.createTable("master_user", {
-      mu_id: {
+    await queryInterface.createTable('master_product', {
+      mp_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      mu_employee_id: {
-        type: Sequelize.STRING(9),
+      mp_vendor_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
-      mu_fullname: {
+      mp_upc: {
         type: Sequelize.STRING(300),
         allowNull: false,
       },
-      mu_position: {
-        type: Sequelize.STRING(120),
+      mp_code: {
+        type: Sequelize.STRING(6),
         allowNull: false,
       },
-      mu_username: {
-        type: Sequelize.STRING(60),
+      mp_description: {
+        type: Sequelize.STRING(300),
         allowNull: false,
       },
-      mu_password: {
-        type: Sequelize.TEXT,
+      mp_category: {
+        type: Sequelize.STRING(300),
         allowNull: false,
       },
-      mu_access: {
-        type: Sequelize.ENUM("admin", "user", "developer"),
+      mp_subcategory: {
+        type: Sequelize.STRING(300),
         allowNull: false,
       },
-      mu_status: {
-        type: Sequelize.ENUM("active", "inactive"),
+      mp_status: {
+        type: Sequelize.ENUM('ACTIVE', 'INACTIVE'),
         allowNull: false,
       },
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     /**
      * Add reverting commands here.
      *
      * Example:
      * await queryInterface.dropTable('users');
      */
-
-    await queryInterface.dropTable("master_user");
-  },
+  }
 };
