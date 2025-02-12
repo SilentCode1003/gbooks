@@ -1,61 +1,62 @@
-"use strict";
+'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     /**
      * Add altering commands here.
      *
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-
-    await queryInterface.createTable("master_user", {
-      mu_id: {
+    await queryInterface.createTable('master_branch', {
+      mb_id: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
         allowNull: false,
       },
-      mu_employee_id: {
-        type: Sequelize.STRING(9),
+      mb_code: {
+        type: Sequelize.STRING(5),
         allowNull: false,
       },
-      mu_fullname: {
+      mb_description: {
         type: Sequelize.STRING(300),
         allowNull: false,
       },
-      mu_position: {
-        type: Sequelize.STRING(120),
+      mb_email: {
+        type: Sequelize.STRING(300),
         allowNull: false,
       },
-      mu_username: {
-        type: Sequelize.STRING(60),
+      mb_phone: {
+        type: Sequelize.STRING(13),
         allowNull: false,
       },
-      mu_password: {
-        type: Sequelize.TEXT,
+      mb_mobile: {
+        type: Sequelize.STRING(13),
         allowNull: false,
       },
-      mu_access: {
-        type: Sequelize.ENUM("admin", "user", "developer"),
+      mb_address: {
+        type: Sequelize.STRING(300),
         allowNull: false,
       },
-      mu_status: {
-        type: Sequelize.ENUM("active", "inactive"),
+      mb_manager: {
+        type: Sequelize.STRING(300),
+        allowNull: false,
+      },
+      mb_status: {
+        type: Sequelize.ENUM('ACTIVE', 'INACTIVE'),
         allowNull: false,
       },
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     /**
      * Add reverting commands here.
      *
      * Example:
      * await queryInterface.dropTable('users');
      */
-
-    await queryInterface.dropTable("master_user");
-  },
+  }
 };
