@@ -11,6 +11,7 @@ const {
 const { Accounting } = require("../repository/model/accoutningsystem");
 const { Select, Insert } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
+const { EncrypterString } = require("../repository/helper/crytography");
 var router = express.Router();
 
 /* GET users listing. */
@@ -51,7 +52,7 @@ router.post("/createuser", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [employee_id, fullname, position, username, password, access, status],
+        [employee_id, fullname, position, username, EncrypterString(password), access, status],
       ];
 
       console.log(data);
