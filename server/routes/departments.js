@@ -22,12 +22,12 @@ router.get("/", function (req, res, next) {
 
 module.exports = router;
 
-router.get("/getusers", (req, res) => {
+router.get("/getdepartments", (req, res) => {
   try {
     async function ProcessData() {
       let select_sql = SelectAllStatement(
-        Accounting.master_user.tablename,
-        Accounting.master_user.selectColumns
+        Accounting.master_department.tablename,
+        Accounting.master_department.selectColumns
       );
 
       let result = await Select(select_sql);
@@ -42,9 +42,9 @@ router.get("/getusers", (req, res) => {
   }
 });
 
-router.post("/createuser", (req, res) => {
+router.post("/createdepartment", (req, res) => {
   try {
-    const { employee_id, fullname, position, username, password, access } =
+    const { code, description } =
       req.body;
     let status = STATUS.ACTIVE;
 
@@ -53,16 +53,16 @@ router.post("/createuser", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [employee_id, fullname, position, username, EncrypterString(password), access, status],
+        [code, description, status ],
       ];
 
       console.log(data);
 
 
       let insert_sql = InsertStatement(
-        Accounting.master_user.tablename,
-        Accounting.master_user.prefix,
-        Accounting.master_user.insertColumns
+        Accounting.master_department.tablename,
+        Accounting.master_department.prefix,
+        Accounting.master_department.insertColumns
       );
 
       Insert(insert_sql, data);
@@ -77,37 +77,29 @@ router.post("/createuser", (req, res) => {
   }
 });
 
-router.put("/updateuser", (req, res) => {
+router.put("/updatedepartment", (req, res) => {
   try {
-    const { id, employee_id, fullname, position, username, password, access, status } = req.body;
+    const { id, code, description, status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        employee_id,
-        fullname,
-        position,
-        username,
-        EncrypterString(password),
-        access,
+        code,
+        description,
         status,
         id];
 
       console.log(data);
 
       let update_sql = UpdateStatement(
-        Accounting.master_user.tablename,
-        [Accounting.master_user.selectOptionsColumn.employee_id,
-        Accounting.master_user.selectOptionsColumn.fullname,
-        Accounting.master_user.selectOptionsColumn.position,
-        Accounting.master_user.selectOptionsColumn.username,
-        Accounting.master_user.selectOptionsColumn.password,
-        Accounting.master_user.selectOptionsColumn.access,
-        Accounting.master_user.selectOptionsColumn.status,
+        Accounting.master_department.tablename,
+        [Accounting.master_department.selectOptionsColumn.code,
+        Accounting.master_department.selectOptionsColumn.description,
+        Accounting.master_department.selectOptionsColumn.status,
         ],
 
-        [Accounting.master_user.selectOptionsColumn.id],
+        [Accounting.master_department.selectOptionsColumn.id],
       );
 
       await Update(update_sql, data);
@@ -120,24 +112,3 @@ router.put("/updateuser", (req, res) => {
     res.status(500).json(JsonResposeError(error));
   }
 });
-/*
-router.delete("/deleteuser", (req, res) => {
-  try {
-    const { id } = req.body;
-
-    async function DeleteData() {
-      let data = [id];
-
-      let delete_sql = DeleteData
-
-      await Update(delete_sql, data);
-      res.status(200).json(JsonResponseSuccess());
-    }
-
-    DeleteData();
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(JsonResposeError(error));
-  }
-}
-*/

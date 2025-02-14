@@ -16,8 +16,8 @@ module.exports = {
         primaryKey: true,
         allowNull: false,
       },
-      md_TYPE: {
-        type: Sequelize.INTEGER,
+      md_type: {
+        type: Sequelize.STRING(300),
         allowNull: false,
       },
       md_status: {

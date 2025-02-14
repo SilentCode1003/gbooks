@@ -9,6 +9,12 @@ const swaggerUi = require("swagger-ui-express");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var vendorsRouter = require("./routes/vendors");
+var customersRouter = require("./routes/customers");
+var creditsRouter = require("./routes/credits");
+var debitsRouter = require("./routes/debits");
+var departmentsRouter = require("./routes/departments");
+var bank_accountsRouter = require("./routes/bank_accounts");
 
 const { SetMongo } = require("./repository/middleware/mongodb");
 
@@ -32,6 +38,12 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/vendors", vendorsRouter);
+app.use("/customers", customersRouter);
+app.use("/credits", creditsRouter);
+app.use("/debits", debitsRouter);
+app.use("/departments", departmentsRouter);
+app.use("/bank_accounts", bank_accountsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

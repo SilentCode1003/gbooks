@@ -22,12 +22,12 @@ router.get("/", function (req, res, next) {
 
 module.exports = router;
 
-router.get("/getusers", (req, res) => {
+router.get("/getvendors", (req, res) => {
   try {
     async function ProcessData() {
       let select_sql = SelectAllStatement(
-        Accounting.master_user.tablename,
-        Accounting.master_user.selectColumns
+        Accounting.master_vendor.tablename,
+        Accounting.master_vendor.selectColumns
       );
 
       let result = await Select(select_sql);
@@ -42,9 +42,9 @@ router.get("/getusers", (req, res) => {
   }
 });
 
-router.post("/createuser", (req, res) => {
+router.post("/createvendor", (req, res) => {
   try {
-    const { employee_id, fullname, position, username, password, access } =
+    const { business_name, business_type, contact_person, email, phone, mobile, business_address, tin } =
       req.body;
     let status = STATUS.ACTIVE;
 
@@ -53,16 +53,16 @@ router.post("/createuser", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [employee_id, fullname, position, username, EncrypterString(password), access, status],
+        [business_name, business_type, contact_person, email, phone, mobile, business_address, tin, status ],
       ];
 
       console.log(data);
 
 
       let insert_sql = InsertStatement(
-        Accounting.master_user.tablename,
-        Accounting.master_user.prefix,
-        Accounting.master_user.insertColumns
+        Accounting.master_vendor.tablename,
+        Accounting.master_vendor.prefix,
+        Accounting.master_vendor.insertColumns
       );
 
       Insert(insert_sql, data);
@@ -77,37 +77,41 @@ router.post("/createuser", (req, res) => {
   }
 });
 
-router.put("/updateuser", (req, res) => {
+router.put("/updatevendor", (req, res) => {
   try {
-    const { id, employee_id, fullname, position, username, password, access, status } = req.body;
+    const { id, business_name, business_type, contact_person, email, phone, mobile, business_address, tin, status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        employee_id,
-        fullname,
-        position,
-        username,
-        EncrypterString(password),
-        access,
+        business_name,
+        business_type,
+        contact_person,
+        email,
+        phone,
+        mobile,
+        business_address,
+        tin,
         status,
         id];
 
       console.log(data);
 
       let update_sql = UpdateStatement(
-        Accounting.master_user.tablename,
-        [Accounting.master_user.selectOptionsColumn.employee_id,
-        Accounting.master_user.selectOptionsColumn.fullname,
-        Accounting.master_user.selectOptionsColumn.position,
-        Accounting.master_user.selectOptionsColumn.username,
-        Accounting.master_user.selectOptionsColumn.password,
-        Accounting.master_user.selectOptionsColumn.access,
-        Accounting.master_user.selectOptionsColumn.status,
+        Accounting.master_vendor.tablename,
+        [Accounting.master_vendor.selectOptionsColumn.business_name,
+        Accounting.master_vendor.selectOptionsColumn.business_type,
+        Accounting.master_vendor.selectOptionsColumn.contact_person,
+        Accounting.master_vendor.selectOptionsColumn.email,
+        Accounting.master_vendor.selectOptionsColumn.phone,
+        Accounting.master_vendor.selectOptionsColumn.mobile,
+        Accounting.master_vendor.selectOptionsColumn.business_address,
+        Accounting.master_vendor.selectOptionsColumn.tin,
+        Accounting.master_vendor.selectOptionsColumn.status,
         ],
 
-        [Accounting.master_user.selectOptionsColumn.id],
+        [Accounting.master_vendor.selectOptionsColumn.id],
       );
 
       await Update(update_sql, data);
@@ -120,24 +124,3 @@ router.put("/updateuser", (req, res) => {
     res.status(500).json(JsonResposeError(error));
   }
 });
-/*
-router.delete("/deleteuser", (req, res) => {
-  try {
-    const { id } = req.body;
-
-    async function DeleteData() {
-      let data = [id];
-
-      let delete_sql = DeleteData
-
-      await Update(delete_sql, data);
-      res.status(200).json(JsonResponseSuccess());
-    }
-
-    DeleteData();
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(JsonResposeError(error));
-  }
-}
-*/
