@@ -15,6 +15,16 @@ var creditsRouter = require("./routes/credits");
 var debitsRouter = require("./routes/debits");
 var departmentsRouter = require("./routes/departments");
 var bank_accountsRouter = require("./routes/bank_accounts");
+var bank_balancesRouter = require("./routes/bank_balances");
+var paymentsRouter = require("./routes/payments");
+var payment_typesRouter = require("./routes/payment_types");
+var productsRouter = require("./routes/products");
+var product_inventoryRouter = require("./routes/product_inventory");
+var inventory_historyRouter = require("./routes/inventory_history");
+var branchRouter = require("./routes/branch");
+var product_pricesRouter = require("./routes/product_prices");
+var price_historyRouter = require("./routes/price_history");
+
 
 const { SetMongo } = require("./repository/middleware/mongodb");
 
@@ -44,6 +54,17 @@ app.use("/credits", creditsRouter);
 app.use("/debits", debitsRouter);
 app.use("/departments", departmentsRouter);
 app.use("/bank_accounts", bank_accountsRouter);
+app.use("/bank_balances", bank_balancesRouter);
+app.use("/payments", paymentsRouter);
+app.use("/payment_types", payment_typesRouter);
+
+app.use("/products", productsRouter);
+app.use("/product_inventory", product_inventoryRouter);
+app.use("/inventory_history", inventory_historyRouter);
+app.use("/branch", branchRouter);
+app.use("/product_prices", product_pricesRouter);
+app.use("/price_history", price_historyRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

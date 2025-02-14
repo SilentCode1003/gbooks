@@ -40,7 +40,7 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
-      ph_status: {
+      ph_date: {
         type: Sequelize.ENUM('active', 'inactive'),
         allowNull: false,
       },
