@@ -605,11 +605,11 @@ exports.SelectAllStatement = (tablename, columns) => {
   return statement;
 };
 
-exports.SelectWhereStatement = (tablename, columns, condition, values) => {
+exports.SelectWhereStatement = (tablename, columns, condition = [], values = []) => {
   let cols = "";
 
   for (let i = 0; i < condition.length; i++) {
-    cols += `${condition[i]} = ${values[i]} AND `;
+    cols += `${condition[i]} = '${values[i]}' AND `;
   }
 
   cols = cols.slice(0, -5);
