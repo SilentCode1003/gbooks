@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('customers', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getcustomers", (req, res) => {
 
 router.post("/createcustomer", (req, res) => {
   try {
-    const { business_name, business_type, customer_name, email, phone, mobile, address, tin } =
+    const { mc_business_name, mc_business_type, mc_customer_name, mc_email, mc_phone, mc_mobile, mc_address, mc_tin } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let mc_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [business_name, business_type, customer_name, email, phone, mobile, address, tin, status ],
+        [mc_business_name, mc_business_type, mc_customer_name, mc_email, mc_phone, mc_mobile, mc_address, mc_tin, mc_status ],
       ];
 
       console.log(data);
@@ -79,22 +79,22 @@ router.post("/createcustomer", (req, res) => {
 
 router.put("/updatecustomer", (req, res) => {
   try {
-    const { id, business_name, business_type, customer_name, email, phone, mobile, address, tin, status, } = req.body;
+    const { mc_id, mc_business_name, mc_business_type, mc_customer_name, mc_email, mc_phone, mc_mobile, mc_address, mc_tin, mc_status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        business_name,
-        business_type,
-        customer_name,
-        email,
-        phone,
-        mobile,
-        address,
-        tin,
-        status,
-        id];
+        mc_business_name,
+        mc_business_type,
+        mc_customer_name,
+        mc_email,
+        mc_phone,
+        mc_mobile,
+        mc_address,
+        mc_tin,
+        mc_status,
+        mc_id];
 
       console.log(data);
 

@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET products listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('products', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getproducts", (req, res) => {
 
 router.post("/createproduct", (req, res) => {
   try {
-    const { vendor_id, upc, code, description, category, subcategory } =
+    const { mp_vendor_id, mp_upc, mp_code, mp_description, mp_category, mp_subcategory } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let mp_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [vendor_id, upc, code, description,category, subcategory, status],
+        [mp_vendor_id, mp_upc, mp_code, mp_description,mp_category, mp_subcategory, mp_status],
       ];
 
       console.log(data);
@@ -79,20 +79,20 @@ router.post("/createproduct", (req, res) => {
 
 router.put("/updateproduct", (req, res) => {
   try {
-    const { id, vendor_id, upc, code, description, category, subcategory, status } = req.body;
+    const { mp_id, mp_vendor_id, mp_upc, mp_code, mp_description, mp_category, mp_subcategory, mp_status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        vendor_id,
-        upc,
-        code,
-        description,
-        category,
-        subcategory,
-        status,
-        id];
+        mp_vendor_id,
+        mp_upc,
+        mp_code,
+        mp_description,
+        mp_category,
+        mp_subcategory,
+        mp_status,
+        mp_id];
 
       console.log(data);
 

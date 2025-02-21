@@ -41,7 +41,7 @@ module.exports = {
         allowNull: false,
       },
       ph_date: {
-        type: Sequelize.ENUM('active', 'inactive'),
+        type: Sequelize.STRING(20),
         allowNull: false,
       },
     });

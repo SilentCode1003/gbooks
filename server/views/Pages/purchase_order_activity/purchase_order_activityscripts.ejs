@@ -1,0 +1,110 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/purchase_order_activity/getpurchase_order_activity",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#purchase_order_activity_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.poa_id,
+                            element.poa_purchase_order_id,
+                            `<span class="badge rounded-pill text-white ${element.poa_type === 'REQUEST' ? 'bg-warning' : element.poa_type === 'APPROVED' ? 'bg-success' : 'bg-danger'}">${element.poa_type}</span>`,
+                            element.poa_remarks,
+                            element.poa_user,
+                            element.poa_date,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-poa_id="${element.poa_id}" data-poa_purchase_order_id="${element.poa_purchase_order_id}" data-poa_type="${element.poa_type}" data-poa_remarks="${element.poa_remarks}" data-poa_user="${element.poa_user}" data-poa_date="${element.poa_date}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_purchase_order_activity').on('click', function () {
+            $('#addPurchaseOrderActivityModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addPurchaseOrderActivityModal').modal('hide');
+            var addedItemData = {
+                poa_purchase_order_id: $('#add_purchase_order_id').val(),
+                poa_type: $('#add_type').val(),
+                poa_remarks: $('#add_remarks').val(),
+                poa_user: $('#add_user').val(),
+                poa_date: $('#add_date').val()
+            };
+
+            console.log('Added Item Data:', addedItemData);
+
+            $.ajax({
+                url: `/purchase_order_activity/createpurchase_order_activity/`,
+                type: 'POST',
+                data: addedItemData,
+                success: function (response) {
+                    console.log('Item data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting item data:', err);
+                }
+            });
+
+            $('#addPurchaseOrderActivityModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editPurchaseOrderActivityModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedItemData = {
+                poa_id: $('#edit_id').val(),
+                poa_purchase_order_id: $('#edit_purchase_order_id').val(),
+                poa_type: $('#edit_type').val(),
+                poa_remarks: $('#edit_remarks').val(),
+                poa_user: $('#edit_user').val(),
+                poa_date: $('#edit_date').val()
+            };
+
+            console.log('Edited Item Data:', editedItemData);
+
+            $.ajax({
+                url: `/purchase_order_activity/updatepurchase_order_activity/`,
+                type: 'PUT',
+                data: editedItemData,
+                success: function (response) {
+                    console.log('Item data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating item data:', err);
+                }
+            });
+
+            $('#editPurchaseOrderActivityModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var itemData = $(this).data();
+            $('#editPurchaseOrderActivityModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_id').val(itemData.poa_id);
+                $('#edit_purchase_order_id').val(itemData.poa_purchase_order_id);
+                $('#edit_type').val(itemData.poa_type);
+                $('#edit_remarks').val(itemData.poa_remarks);
+                $('#edit_user').val(itemData.poa_user);
+                $('#edit_date').val(itemData.poa_date);
+            });
+        });
+    });
+</script>

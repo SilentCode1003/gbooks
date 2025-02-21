@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET inventory listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('inventory_history', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,7 +44,7 @@ router.get("/getinventory_history", (req, res) => {
 
 router.post("/createinventory_history", (req, res) => {
   try {
-    const { inventory_id, date, transaction_type, quantity, unit  } =
+    const { ih_inventory_id, ih_date, ih_transaction_type, ih_quantity, ih_unit  } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +52,7 @@ router.post("/createinventory_history", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [inventory_id, date, transaction_type, quantity, unit],
+        [ih_inventory_id, ih_date, ih_transaction_type, ih_quantity, ih_unit],
       ];
 
       console.log(data);
@@ -78,18 +78,18 @@ router.post("/createinventory_history", (req, res) => {
 
 router.put("/updateinventory_history", (req, res) => {
   try {
-    const { id, inventory_id, date, transaction_type, quantity, unit } = req.body;
+    const { ih_id, ih_inventory_id, ih_date, ih_transaction_type, ih_quantity, ih_unit } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        inventory_id,
-        date,
-        transaction_type,
-        quantity,
-        unit,
-        id];
+        ih_inventory_id,
+        ih_date,
+        ih_transaction_type,
+        ih_quantity,
+        ih_unit,
+        ih_id];
 
       console.log(data);
 

@@ -25,6 +25,76 @@ const swaggerOptions = {
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 module.exports = swaggerDocs;
 
+//#region Check Credentials API Documentation
+/**
+ * @swagger
+ * /check-credentials:
+ *   post:
+ *     summary: Check user credentials
+ *     description: Authenticate a user by username and password, and return a JWT token upon successful login.
+ *     tags:
+ *       - Authentication
+ *     produces:
+ *       - application/json
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               mu_username:
+ *                 type: string
+ *               mu_password:
+ *                 type: string
+ *                 format: password
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 token:
+ *                   type: string
+ *       400:
+ *         description: Missing username or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       401:
+ *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Database error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 error:
+ *                   type: string
+ */
+
+//#endregion
+
 //#region User API Documentation
 
 /**
@@ -56,13 +126,30 @@ module.exports = swaggerDocs;
  *   User:
  *     type: object
  *     properties:
- *       id:
+ *       mu_id:
  *         type: integer
  *         format: int64
- *       username:
+ *       mu_employee_id:
+ *         type: varchar(9)
+ *         format: string
+ *       mu_fullname:
+ *         type: varchar(300)
+ *         format: string
+ *       mu_position:
+ *         type: varchar(120)
+ *         format: string
+ *       mu_username:
+ *         type: varchar(60)
+ *         format: string
+ *       mu_password:
+ *         type: longtext
+ *         format: string
+ *       mu_access:
  *         type: string
- *       password:
+ *         enum: ['admin', 'user', 'developer']
+ *       mu_status:
  *         type: string
+ *         enum: ['active', 'inactive']
  *   Error:
  *     type: object
  *     properties:
@@ -80,30 +167,30 @@ module.exports = swaggerDocs;
  *     User:
  *       type: object
  *       properties:
- *         id:
+ *         mu_id:
  *           type: integer
  *           format: int64
- *         employee_id:
+ *         mu_employee_id:
  *           type: varchar(9)
  *           format: string
- *         fullname:
+ *         mu_fullname:
  *           type: varchar(300)
  *           format: string
- *         position:
+ *         mu_position:
  *           type: varchar(120)
  *           format: string
- *         username:
+ *         mu_username:
  *           type: varchar(60)
  *           format: string
- *         password:
+ *         mu_password:
  *           type: longtext
  *           format: string
- *         access:
- *           type: ENUM('admin','developer','user')
- *           format: string
- *         status:
- *           type: ENUM('active','inactive')
- *           format: string
+ *         mu_access:
+ *           type: string
+ *           enum: ['admin', 'user', 'developer']
+ *         mu_status:
+ *           type: string
+ *           enum: ['active', 'inactive']
  *
  */
 
@@ -137,28 +224,31 @@ module.exports = swaggerDocs;
  *               $ref: '#/definitions/Error'
  *     requestBody:
  *       content:
- *         application/json:
+ *         application/x-www-form-urlencoded:
  *           schema:
  *             type: object
  *             properties:
- *               employee_id:
+ *               mu_employee_id:
  *                 type: varchar(9)
  *                 format: string
- *               fullname:
+ *               mu_fullname:
  *                 type: varchar(300)
  *                 format: string
- *               position:
+ *               mu_position:
  *                 type: varchar(120)
  *                 format: string
- *               username:
+ *               mu_username:
  *                 type: varchar(60)
  *                 format: string
- *               password:
+ *               mu_password:
  *                 type: longtext
  *                 format: string
- *               access:
- *                 type: ENUM('admin','developer','user')
- *                 format: string
+ *               mu_access:
+ *                 type: string
+ *                 enum: ['admin', 'user', 'developer']
+ *               mu_status:
+ *                 type: string
+ *                 enum: ['active', 'inactive']
  */
  
 /**
@@ -194,28 +284,28 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               mu_id:
  *                 type: integer
  *                 format: int64
- *               employee_id:
+ *               mu_employee_id:
  *                 type: varchar(9)
  *                 format: string
- *               fullname:
+ *               mu_fullname:
  *                 type: varchar(300)
  *                 format: string
- *               position:
+ *               mu_position:
  *                 type: varchar(120)
  *                 format: string
- *               username:
+ *               mu_username:
  *                 type: varchar(60)
  *                 format: string
- *               password:
+ *               mu_password:
  *                 type: longtext
  *                 format: string
- *               access:
+ *               mu_access:
  *                 type: string
- *                 enum: ['admin', 'developer', 'user']
- *               status:
+ *                 enum: ['admin', 'user', 'developer']
+ *               mu_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -251,34 +341,34 @@ module.exports = swaggerDocs;
  *   Vendor:
  *     type: object
  *     properties:
- *         id:
+ *         mv_id:
  *           type: integer
  *           format: int64
- *         business_name:
+ *         mv_business_name:
  *           type: varchar(300)
  *           format: string
- *         business_type:
+ *         mv_business_type:
  *           type: varchar(300)
  *           format: string
- *         contact_person:
+ *         mv_contact_person:
  *           type: varchar(300)
  *           format: string
- *         email:
+ *         mv_email:
  *           type: varchar(300)
  *           format: string
- *         phone:
+ *         mv_phone:
  *           type: varchar(13)
  *           format: string
- *         mobile:
+ *         mv_mobile:
  *           type: varchar(13)
  *           format: string
- *         business_address:
+ *         mv_business_address:
  *           type: varchar(300)
  *           format: string
- *         tin:
+ *         mv_tin:
  *           type: varchar(20)
  *           format: string
- *         status:
+ *         mv_status:
  *           type: ENUM('active','inactive')
  *           format: string
  *   Error:
@@ -298,34 +388,34 @@ module.exports = swaggerDocs;
  *     Vendor:
  *       type: object
  *       properties:
- *         id:
+ *         mv_id:
  *           type: integer
  *           format: int64
- *         business_name:
+ *         mv_business_name:
  *           type: varchar(300)
  *           format: string
- *         business_type:
+ *         mv_business_type:
  *           type: varchar(300)
  *           format: string
- *         contact_person:
+ *         mv_contact_person:
  *           type: varchar(300)
  *           format: string
- *         email:
+ *         mv_email:
  *           type: varchar(300)
  *           format: string
- *         phone:
+ *         mv_phone:
  *           type: varchar(13)
  *           format: string
- *         mobile:
+ *         mv_mobile:
  *           type: varchar(13)
  *           format: string
- *         business_address:
+ *         mv_business_address:
  *           type: varchar(300)
  *           format: string
- *         tin:
+ *         mv_tin:
  *           type: varchar(20)
  *           format: string
- *         status:
+ *         mv_status:
  *           type: ENUM('active','inactive')
  *           format: string
  *
@@ -364,31 +454,31 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               business_name:
+ *               mv_business_name:
  *                 type: varchar(300)
  *                 format: string
- *               business_type:
+ *               mv_business_type:
  *                 type: varchar(300)
  *                 format: string
- *               contact_person:
+ *               mv_contact_person:
  *                 type: varchar(300)
  *                 format: string
- *               email:
+ *               mv_email:
  *                 type: varchar(300)
  *                 format: string
- *               phone:
+ *               mv_phone:
  *                 type: varchar(13)
  *                 format: string
- *               mobile:
+ *               mv_mobile:
  *                 type: varchar(13)
  *                 format: string
- *               business_address:
+ *               mv_business_address:
  *                 type: varchar(300)
  *                 format: string
- *               tin:
+ *               mv_tin:
  *                 type: varchar(20)
  *                 format: string
- *               status:
+ *               mv_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -426,34 +516,34 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               mv_id:
  *                 type: integer
  *                 format: int64
- *               business_name:
+ *               mv_business_name:
  *                 type: varchar(300)
  *                 format: string
- *               business_type:
+ *               mv_business_type:
  *                 type: varchar(300)
  *                 format: string
- *               contact_person:
+ *               mv_contact_person:
  *                 type: varchar(300)
  *                 format: string
- *               email:
+ *               mv_email:
  *                 type: varchar(300)
  *                 format: string
- *               phone:
+ *               mv_phone:
  *                 type: varchar(13)
  *                 format: string
- *               mobile:
+ *               mv_mobile:
  *                 type: varchar(13)
  *                 format: string
- *               business_address:
+ *               mv_business_address:
  *                 type: varchar(300)
  *                 format: string
- *               tin:
+ *               mv_tin:
  *                 type: varchar(20)
  *                 format: string
- *               status:
+ *               mv_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -489,34 +579,34 @@ module.exports = swaggerDocs;
  *   Customer:
  *     type: object
  *     properties:
- *         id:
+ *         mc_id:
  *           type: integer
  *           format: int64
- *         business_name:
+ *         mc_business_name:
  *           type: varchar(300)
  *           format: string
- *         business_type:
+ *         mc_business_type:
  *           type: varchar(300)
  *           format: string
- *         customer_name:
+ *         mc_customer_name:
  *           type: varchar(300)
  *           format: string
- *         email:
+ *         mc_email:
  *           type: varchar(300)
  *           format: string
- *         phone:
+ *         mc_phone:
  *           type: varchar(13)
  *           format: string
- *         mobile:
+ *         mc_mobile:
  *           type: varchar(13)
  *           format: string
- *         address:
+ *         mc_address:
  *           type: varchar(300)
  *           format: string
- *         tin:
+ *         mc_tin:
  *           type: varchar(20)
  *           format: string
- *         status:
+ *         mc_status:
  *           type: ENUM('active','inactive')
  *           format: string
  *   Error:
@@ -536,34 +626,34 @@ module.exports = swaggerDocs;
  *     Customer:
  *       type: object
  *       properties:
- *         id:
+ *         mc_id:
  *           type: integer
  *           format: int64
- *         business_name:
+ *         mc_business_name:
  *           type: varchar(300)
  *           format: string
- *         business_type:
+ *         mc_business_type:
  *           type: varchar(300)
  *           format: string
- *         customer_name:
+ *         mc_customer_name:
  *           type: varchar(300)
  *           format: string
- *         email:
+ *         mc_email:
  *           type: varchar(300)
  *           format: string
- *         phone:
+ *         mc_phone:
  *           type: varchar(13)
  *           format: string
- *         mobile:
+ *         mc_mobile:
  *           type: varchar(13)
  *           format: string
- *         address:
+ *         mc_address:
  *           type: varchar(300)
  *           format: string
- *         tin:
+ *         mc_tin:
  *           type: varchar(20)
  *           format: string
- *         status:
+ *         mc_status:
  *           type: ENUM('active','inactive')
  *           format: string
  *
@@ -602,31 +692,31 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               business_name:
+ *               mc_business_name:
  *                 type: varchar(300)
  *                 format: string
- *               business_type:
+ *               mc_business_type:
  *                 type: varchar(300)
  *                 format: string
- *               customer_name:
+ *               mc_customer_name:
  *                 type: varchar(300)
  *                 format: string
- *               email:
+ *               mc_email:
  *                 type: varchar(300)
  *                 format: string
- *               phone:
+ *               mc_phone:
  *                 type: varchar(13)
  *                 format: string
- *               mobile:
+ *               mc_mobile:
  *                 type: varchar(13)
  *                 format: string
- *               address:
+ *               mc_address:
  *                 type: varchar(300)
  *                 format: string
- *               tin:
+ *               mc_tin:
  *                 type: varchar(20)
  *                 format: string
- *               status:
+ *               mc_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -664,34 +754,34 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               mc_id:
  *                 type: integer
  *                 format: int64
- *               business_name:
+ *               mc_business_name:
  *                 type: varchar(300)
  *                 format: string
- *               business_type:
+ *               mc_business_type:
  *                 type: varchar(300)
  *                 format: string
- *               customer_name:
+ *               mc_customer_name:
  *                 type: varchar(300)
  *                 format: string
- *               email:
+ *               mc_email:
  *                 type: varchar(300)
  *                 format: string
- *               phone:
+ *               mc_phone:
  *                 type: varchar(13)
  *                 format: string
- *               mobile:
+ *               mc_mobile:
  *                 type: varchar(13)
  *                 format: string
- *               address:
+ *               mc_address:
  *                 type: varchar(300)
  *                 format: string
- *               tin:
+ *               mc_tin:
  *                 type: varchar(20)
  *                 format: string
- *               status:
+ *               mc_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -727,13 +817,13 @@ module.exports = swaggerDocs;
  *   Credit:
  *     type: object
  *     properties:
- *         id:
+ *         mc_id:
  *           type: integer
  *           format: int64
- *         type:
+ *         mc_type:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         mc_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *   Error:
@@ -753,13 +843,13 @@ module.exports = swaggerDocs;
  *     Credit:
  *       type: object
  *       properties:
- *         id:
+ *         mc_id:
  *           type: integer
  *           format: int64
- *         type:
+ *         mc_type:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         mc_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *
@@ -798,10 +888,10 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               type:
+ *               mc_type:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mc_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -839,13 +929,13 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               mc_id:
  *                 type: integer
  *                 format: int64
- *               type:
+ *               mc_type:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mc_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -882,13 +972,13 @@ module.exports = swaggerDocs;
  *   Debit:
  *     type: object
  *     properties:
- *         id:
+ *         md_id:
  *           type: integer
  *           format: int64
- *         type:
+ *         md_type:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         md_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *   Error:
@@ -908,13 +998,13 @@ module.exports = swaggerDocs;
  *     Debit:
  *       type: object
  *       properties:
- *         id:
+ *         md_id:
  *           type: integer
  *           format: int64
- *         type:
+ *         md_type:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         md_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *
@@ -953,10 +1043,10 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               type:
+ *               md_type:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               md_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -994,13 +1084,13 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               md_id:
  *                 type: integer
  *                 format: int64
- *               type:
+ *               md_type:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               md_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -1037,16 +1127,16 @@ module.exports = swaggerDocs;
  *   Department:
  *     type: object
  *     properties:
- *         id:
+ *         md_id:
  *           type: integer
  *           format: int64
- *         code:
+ *         md_code:
  *           type: varchar(6)
  *           format: string
- *         description:
+ *         md_description:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         md_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *   Error:
@@ -1066,16 +1156,16 @@ module.exports = swaggerDocs;
  *     Department:
  *       type: object
  *       properties:
- *         id:
+ *         md_id:
  *           type: integer
  *           format: int64
- *         code:
+ *         md_code:
  *           type: varchar(6)
  *           format: string
- *         description:
+ *         md_description:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         md_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *
@@ -1114,13 +1204,13 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               code:
+ *               md_code:
  *                 type: varchar(6)
  *                 format: string
- *               description:
+ *               md_description:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               md_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -1158,16 +1248,16 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               md_id:
  *                 type: integer
  *                 format: int64
- *               code:
- *                 type: varchar(60)
+ *               md_code:
+ *                 type: varchar(6)
  *                 format: string
- *               description:
+ *               md_description:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               md_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -1204,51 +1294,57 @@ module.exports = swaggerDocs;
  *   Bank_account:
  *     type: object
  *     properties:
- *         id:
+ *         mba_id:
  *           type: integer
  *           format: int64
- *         code:
+ *         mba_code:
  *           type: varchar(6)
  *           format: string
- *         description:
+ *         mba_account_name:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         mba_account_number:
+ *           type: varchar(300)
+ *           format: string
+ *         mba_bank_type:
+ *           type: varchar(300)
+ *           format: string
+ *         mba_status:
  *           type: string
  *           enum: ['active', 'inactive']
- *   Error:
- *     type: object
- *     properties:
- *       code:
- *         type: integer
- *         format: int32
- *       message:
- *         type: string
- *       fields:
- *         type: string
  * 
  * components:
  *   schemas:
  *     Bank_account:
  *       type: object
  *       properties:
- *         id:
+ *         mba_id:
  *           type: integer
  *           format: int64
- *         code:
+ *         mba_code:
  *           type: varchar(6)
- *         account_name:
+ *         mba_account_name:
  *           type: varchar(300)
  *           format: string
- *         account_number:
+ *         mba_account_number:
  *           type: varchar(300)
  *           format: string
- *         bank_type:
+ *         mba_bank_type:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         mba_status:
  *           type: string
  *           enum: ['active', 'inactive']
+ *     Error:
+ *       type: object
+ *       properties:
+ *         code:
+ *           type: integer
+ *           format: int32
+ *         message:
+ *           type: string
+ *         fields:
+ *           type: string
  */
 
 /**
@@ -1283,19 +1379,19 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               code:
+ *               mba_code:
  *                 type: varchar(6)
  *                 format: string
- *               account_name:
+ *               mba_account_name:
  *                 type: varchar(300)
  *                 format: string
- *               account_number:
+ *               mba_account_number:
  *                 type: varchar(300)
  *                 format: string
- *               bank_type:
+ *               mba_bank_type:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mba_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -1332,22 +1428,22 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               mba_id:
  *                 type: integer
  *                 format: int64
- *               code:
+ *               mba_code:
  *                 type: varchar(6)
  *                 format: string
- *               account_name:
+ *               mba_account_name:
  *                 type: varchar(300)
  *                 format: string
- *               account_number:
+ *               mba_account_number:
  *                 type: varchar(300)
  *                 format: string
- *               bank_type:
+ *               mba_bank_type:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mba_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -1383,22 +1479,22 @@ module.exports = swaggerDocs;
  *   Bank_balance:
  *     type: object
  *     properties:
- *       id:
+ *       bb_id:
  *         type: integer
  *         format: int64
- *       bank_account_id:
+ *       bb_bank_account_id:
  *         type: integer
  *         format: int64
- *       transaction_date:
+ *       bb_transaction_date:
  *         type: varchar(20)
  *         format: string
- *       update_date:
+ *       bb_update_date:
  *         type: varchar(20)
  *         format: string
- *       previous_amount:
+ *       bb_previous_amount:
  *         type: decimal(10,2)
  *         format: double
- *       current_amount:
+ *       bb_current_amount:
  *         type: decimal(10,2)
  *         format: double
  *   Error:
@@ -1418,22 +1514,22 @@ module.exports = swaggerDocs;
  *     Bank_balance:
  *       type: object
  *       properties:
- *         id:
+ *         bb_id:
  *           type: integer
  *           format: int64
- *         bank_account_id:
+ *         bb_bank_account_id:
  *           type: integer
  *           format: int64
- *         transaction_date:
+ *         bb_transaction_date:
  *           type: varchar(20)
  *           format: string
- *         update_date:
+ *         bb_update_date:
  *           type: varchar(20)
  *           format: string
- *         previous_amount:
+ *         bb_previous_amount:
  *           type: decimal(10,2)
  *           format: double
- *         current_amount:
+ *         bb_current_amount:
  *           type: decimal(10,2)
  *           format: double
  *
@@ -1472,19 +1568,19 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               bank_account_id:
+ *               bb_bank_account_id:
  *                 type: integer
  *                 format: int64
- *               transaction_date:
+ *               bb_transaction_date:
  *                 type: varchar(20)
  *                 format: string
- *               update_date:
+ *               bb_update_date:
  *                 type: varchar(20)
  *                 format: string
- *               previous_amount:
+ *               bb_previous_amount:
  *                 type: decimal(10,2)
  *                 format: double
- *               current_amount:
+ *               bb_current_amount:
  *                 type: decimal(10,2)
  *                 format: double
  */
@@ -1522,22 +1618,22 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               bb_id:
  *                 type: integer
  *                 format: int64
- *               bank_account_id:
+ *               bb_bank_account_id:
  *                 type: integer
  *                 format: int64
- *               transaction_date:
+ *               bb_transaction_date:
  *                 type: varchar(20)
  *                 format: string
- *               update_date:
+ *               bb_update_date:
  *                 type: varchar(20)
  *                 format: string
- *               previous_amount:
+ *               bb_previous_amount:
  *                 type: decimal(10,2)
  *                 format: double
- *               current_amount:
+ *               bb_current_amount:
  *                 type: decimal(10,2)
  *                 format: double
  *
@@ -1574,16 +1670,16 @@ module.exports = swaggerDocs;
  *   Payment:
  *     type: object
  *     properties:
- *       id:
+ *       mp_id:
  *         type: integer
  *         format: int64
- *       code:
+ *       mp_code:
  *         type: varchar(6)
  *         format: string
- *       description:
+ *       mp_description:
  *         type: varchar(300)
  *         format: string
- *       status:
+ *       mp_status:
  *         type: string
  *         enum: ['active', 'inactive']
  *   Error:
@@ -1603,16 +1699,16 @@ module.exports = swaggerDocs;
  *     Payment:
  *       type: object
  *       properties:
- *         id:
+ *         mp_id:
  *           type: integer
  *           format: int64
- *         code:
+ *         mp_code:
  *           type: varchar(6)
  *           format: string
- *         description:
+ *         mp_description:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         mp_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *
@@ -1651,13 +1747,13 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               code:
+ *               mp_code:
  *                 type: varchar(6)
  *                 format: string
- *               description:
+ *               mp_description:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mp_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -1695,16 +1791,16 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               mp_id:
  *                 type: integer
  *                 format: int64
- *               code:
+ *               mp_code:
  *                 type: varchar(6)
  *                 format: string
- *               description:
+ *               mp_description:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mp_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -1740,16 +1836,16 @@ module.exports = swaggerDocs;
  *   Payment_type:
  *     type: object
  *     properties:
- *       id:
+ *       pt_id:
  *         type: integer
  *         format: int64
- *       payment_id:
+ *       pt_payment_id:
  *         type: integer
  *         format: int64
- *       name:
+ *       pt_name:
  *         type: varchar(300)
  *         format: string
- *       status:
+ *       pt_status:
  *         type: string
  *         enum: ['active', 'inactive']
  *   Error:
@@ -1769,16 +1865,16 @@ module.exports = swaggerDocs;
  *     Payment_type:
  *       type: object
  *       properties:
- *         id:
+ *         pt_id:
  *           type: integer
  *           format: int64
- *         payment_id:
+ *         pt_payment_id:
  *           type: integer
  *           format: int64
- *         name:
+ *         pt_name:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         pt_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *
@@ -1817,13 +1913,13 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               payment_id:
+ *               pt_payment_id:
  *                 type: integer
  *                 format: int64
- *               name:
+ *               pt_name:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               pt_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -1861,16 +1957,16 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               pt_id:
  *                 type: integer
  *                 format: int64
- *               payment_id:
+ *               pt_payment_id:
  *                 type: integer
  *                 format: int64
- *               name:
+ *               pt_name:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               pt_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -1906,28 +2002,28 @@ module.exports = swaggerDocs;
  *   Product:
  *     type: object
  *     properties:
- *       id:
+ *       mp_id:
  *         type: integer
  *         format: int64
- *       vendor_id:
+ *       mp_vendor_id:
  *         type: integer
  *         format: int64
- *       upc:
+ *       mp_upc:
  *         type: varchar(300)
  *         format: string
- *       code:
+ *       mp_code:
  *         type: varchar(6)
  *         format: string
- *       description:
+ *       mp_description:
  *         type: varchar(300)
  *         format: string
- *       category:
+ *       mp_category:
  *         type: varchar(300)
  *         format: string
- *       subcategory:
+ *       mp_subcategory:
  *         type: varchar(300)
  *         format: string
- *       status:
+ *       mp_status:
  *         type: string
  *         enum: ['active', 'inactive']
  *   Error:
@@ -1947,28 +2043,28 @@ module.exports = swaggerDocs;
  *     Product:
  *       type: object
  *       properties:
- *         id:
+ *         mp_id:
  *           type: integer
  *           format: int64
- *         vendor_id:
+ *         mp_vendor_id:
  *           type: integer
  *           format: int64
- *         upc:
+ *         mp_upc:
  *           type: varchar(300)
  *           format: string
- *         code:
+ *         mp_code:
  *           type: varchar(6)
  *           format: string
- *         description:
+ *         mp_description:
  *           type: varchar(300)
  *           format: string
- *         category:
+ *         mp_category:
  *           type: varchar(300)
  *           format: string
- *         subcategory:
+ *         mp_subcategory:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         mp_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *
@@ -2007,25 +2103,25 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               vendor_id:
+ *               mp_vendor_id:
  *                 type: integer
  *                 format: int64
- *               upc:
+ *               mp_upc:
  *                 type: varchar(300)
  *                 format: string
- *               code:
+ *               mp_code:
  *                 type: varchar(6)
  *                 format: string
- *               description:
+ *               mp_description:
  *                 type: varchar(300)
  *                 format: string
- *               category:
+ *               mp_category:
  *                 type: varchar(300)
  *                 format: string
- *               subcategory:
+ *               mp_subcategory:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mp_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -2063,28 +2159,28 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               mp_id:
  *                 type: integer
  *                 format: int64
- *               vendor_id:
+ *               mp_vendor_id:
  *                 type: integer
  *                 format: int64
- *               upc:
+ *               mp_upc:
  *                 type: varchar(300)
  *                 format: string
- *               code:
+ *               mp_code:
  *                 type: varchar(6)
  *                 format: string
- *               description:
+ *               mp_description:
  *                 type: varchar(300)
  *                 format: string
- *               category:
+ *               mp_category:
  *                 type: varchar(300)
  *                 format: string
- *               subcategory:
+ *               mp_subcategory:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mp_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -2120,22 +2216,22 @@ module.exports = swaggerDocs;
  *   Product_inventory:
  *     type: object
  *     properties:
- *       id:
+ *       pi_id:
  *         type: integer
  *         format: int64
- *       product_id:
+ *       pi_product_id:
  *         type: integer
  *         format: int64
- *       branch_id:
+ *       pi_branch_id:
  *         type: integer
  *         format: int64
- *       quantity:
+ *       pi_quantity:
  *         type: decimal(10,2)
  *         format: double
- *       unit:
+ *       pi_unit:
  *         type: varchar(20)
  *         format: string
- *       status:
+ *       pi_status:
  *         type: string
  *         enum: ['active', 'inactive']
  *   Error:
@@ -2155,22 +2251,22 @@ module.exports = swaggerDocs;
  *     Product_inventory:
  *       type: object
  *       properties:
- *         id:
+ *         pi_id:
  *           type: integer
  *           format: int64
- *         product_id:
+ *         pi_product_id:
  *           type: integer
  *           format: int64
- *         branch_id:
+ *         pi_branch_id:
  *           type: integer
  *           format: int64
- *         quantity:
+ *         pi_quantity:
  *           type: decimal(10,2)
  *           format: double
- *         unit:
+ *         pi_unit:
  *           type: varchar(20)
  *           format: string
- *         status:
+ *         pi_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *
@@ -2209,19 +2305,19 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               product_id:
+ *               pi_product_id:
  *                 type: integer
  *                 format: int64
- *               branch_id:
+ *               pi_branch_id:
  *                 type: integer
  *                 format: int64
- *               quantity:
+ *               pi_quantity:
  *                 type: decimal(10,2)
  *                 format: double
- *               unit:
+ *               pi_unit:
  *                 type: varchar(20)
  *                 format: string
- *               status:
+ *               pi_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -2259,22 +2355,22 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               pi_id:
  *                 type: integer
  *                 format: int64
- *               product_id:
+ *               pi_product_id:
  *                 type: integer
  *                 format: int64
- *               branch_id:
+ *               pi_branch_id:
  *                 type: integer
  *                 format: int64
- *               quantity:
+ *               pi_quantity:
  *                 type: decimal(10,2)
  *                 format: double
- *               unit:
+ *               pi_unit:
  *                 type: varchar(20)
  *                 format: string
- *               status:
+ *               pi_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -2310,22 +2406,22 @@ module.exports = swaggerDocs;
  *   Inventory_history:
  *     type: object
  *     properties:
- *       id:
+ *       ih_id:
  *         type: integer
  *         format: int64
- *       inventory_id:
+ *       ih_inventory_id:
  *         type: integer
  *         format: int64
- *       date:
+ *       ih_date:
  *         type: varchar(20)
  *         format: string
- *       transaction_type:
+ *       ih_transaction_type:
  *         type: string
  *         enum: ['replenish', 'sold', 'transfer', 'damage', 'return']
- *       quantity:
+ *       ih_quantity:
  *         type: decimal(10,2)
  *         format: double
- *       unit:
+ *       ih_unit:
  *         type: varchar(20)
  *         format: string
  *   Error:
@@ -2345,22 +2441,22 @@ module.exports = swaggerDocs;
  *     Inventory_history:
  *       type: object
  *       properties:
- *         id:
+ *         ih_id:
  *           type: integer
  *           format: int64
- *         inventory_id:
+ *         ih_inventory_id:
  *           type: integer
  *           format: int64
- *         date:
+ *         ih_date:
  *           type: varchar(20)
  *           format: string
- *         transaction_type:
+ *         ih_transaction_type:
  *           type: string
  *           enum: ['replenish', 'sold', 'transfer', 'damage', 'return']
- *         quantity:
+ *         ih_quantity:
  *           type: decimal(10,2)
  *           format: double
- *         unit:
+ *         ih_unit:
  *           type: varchar(20)
  *           format: string
  *
@@ -2399,19 +2495,19 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               inventory_id:
+ *               ih_inventory_id:
  *                 type: integer
  *                 format: int64
- *               date:
+ *               ih_date:
  *                 type: varchar(20)
  *                 format: string
- *               transaction_type:
+ *               ih_transaction_type:
  *                 type: string
  *                 enum: ['replenish', 'sold', 'transfer', 'damage', 'return']
- *               quantity:
+ *               ih_quantity:
  *                 type: decimal(10,2)
  *                 format: double
- *               unit:
+ *               ih_unit:
  *                 type: varchar(20)
  *                 format: string
  */
@@ -2449,22 +2545,22 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               ih_id:
  *                 type: integer
  *                 format: int64
- *               inventory_id:
+ *               ih_inventory_id:
  *                 type: integer
  *                 format: int64
- *               date:
+ *               ih_date:
  *                 type: varchar(20)
  *                 format: string
- *               transaction_type:
+ *               ih_transaction_type:
  *                 type: string
  *                 enum: ['replenish', 'sold', 'transfer', 'damage', 'return']
- *               quantity:
+ *               ih_quantity:
  *                 type: decimal(10,2)
  *                 format: double
- *               unit:
+ *               ih_unit:
  *                 type: varchar(20)
  *                 format: string
  */
@@ -2500,31 +2596,31 @@ module.exports = swaggerDocs;
  *   Branch:
  *     type: object
  *     properties:
- *       id:
+ *       mb_id:
  *         type: integer
  *         format: int64
- *       code:
+ *       mb_code:
  *         type: varchar(5)
  *         format: string
- *       description:
+ *       mb_description:
  *         type: varchar(300)
  *         format: string
- *       email:
+ *       mb_email:
  *         type: varchar(300)
  *         format: string
- *       phone:
+ *       mb_phone:
  *         type: varchar(13)
  *         format: string
- *       mobile:
+ *       mb_mobile:
  *         type: varchar(13)
  *         format: string
- *       address:
+ *       mb_address:
  *         type: varchar(300)
  *         format: string
- *       manager:
+ *       mb_manager:
  *         type: varchar(300)
  *         format: string
- *       status:
+ *       mb_status:
  *         type: string
  *         enum: ['active', 'inactive']
  *   Error:
@@ -2544,31 +2640,31 @@ module.exports = swaggerDocs;
  *     Branch:
  *       type: object
  *       properties:
- *         id:
+ *         mb_id:
  *           type: integer
  *           format: int64
- *         code:
+ *         mb_code:
  *           type: varchar(6)
  *           format: string
- *         description:
+ *         mb_description:
  *           type: varchar(300)
  *           format: string
- *         email:
+ *         mb_email:
  *           type: varchar(300)
  *           format: string
- *         phone:
+ *         mb_phone:
  *           type: varchar(13)
  *           format: string
- *         mobile:
+ *         mb_mobile:
  *           type: varchar(13)
  *           format: string
- *         address:
+ *         mb_address:
  *           type: varchar(300)
  *           format: string
- *         manager:
+ *         mb_manager:
  *           type: varchar(300)
  *           format: string
- *         status:
+ *         mb_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *
@@ -2607,28 +2703,28 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               code:
+ *               mb_code:
  *                 type: varchar(5)
  *                 format: string
- *               description:
+ *               mb_description:
  *                 type: varchar(300)
  *                 format: string
- *               email:
+ *               mb_email:
  *                 type: varchar(300)
  *                 format: string
- *               phone:
+ *               mb_phone:
  *                 type: varchar(13)
  *                 format: string
- *               mobile:
+ *               mb_mobile:
  *                 type: varchar(13)
  *                 format: string
- *               address:
+ *               mb_address:
  *                 type: varchar(300)
  *                 format: string
- *               manager:
+ *               mb_manager:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mb_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -2666,31 +2762,31 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               mb_id:
  *                 type: integer
  *                 format: int64
- *               code:
+ *               mb_code:
  *                 type: varchar(5)
  *                 format: string
- *               description:
+ *               mb_description:
  *                 type: varchar(300)
  *                 format: string
- *               email:
+ *               mb_email:
  *                 type: varchar(300)
  *                 format: string
- *               phone:
+ *               mb_phone:
  *                 type: varchar(13)
  *                 format: string
- *               mobile:
+ *               mb_mobile:
  *                 type: varchar(13)
  *                 format: string
- *               address:
+ *               mb_address:
  *                 type: varchar(300)
  *                 format: string
- *               manager:
+ *               mb_manager:
  *                 type: varchar(300)
  *                 format: string
- *               status:
+ *               mb_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -2726,25 +2822,25 @@ module.exports = swaggerDocs;
  *   Product_price:
  *     type: object
  *     properties:
- *       id:
+ *       pp_id:
  *         type: integer
  *         format: int64
- *       product_id:
+ *       pp_product_id:
  *         type: integer
  *         format: int64
- *       cost:
+ *       pp_cost:
  *         type: decimal(10,2)
  *         format: double
- *       markup_rate:
+ *       pp_markup_rate:
  *         type: decimal(10,2)
  *         format: double
- *       vat_ex:
+ *       pp_vat_ex:
  *         type: decimal(10,2)
  *         format: double
- *       vat_inc:
+ *       pp_vat_inc:
  *         type: decimal(10,2)
  *         format: double
- *       status:
+ *       pp_status:
  *         type: string
  *         enum: ['active', 'inactive']
  *   Error:
@@ -2764,25 +2860,25 @@ module.exports = swaggerDocs;
  *     Product_price:
  *       type: object
  *       properties:
- *         id:
+ *         pp_id:
  *           type: integer
  *           format: int64
- *         product_id:
+ *         pp_product_id:
  *           type: integer
  *           format: int64
- *         cost:
+ *         pp_cost:
  *           type: decimal(10,2)
  *           format: double
- *         markup_rate:
+ *         pp_markup_rate:
  *           type: decimal(10,2)
  *           format: double
- *         vat_ex:
+ *         pp_vat_ex:
  *           type: decimal(10,2)
  *           format: double
- *         vat_inc:
+ *         pp_vat_inc:
  *           type: decimal(10,2)
  *           format: double
- *         status:
+ *         pp_status:
  *           type: string
  *           enum: ['active', 'inactive']
  *
@@ -2821,22 +2917,22 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               product_id:
+ *               pp_product_id:
  *                 type: integer
  *                 format: int64
- *               cost:
+ *               pp_cost:
  *                 type: decimal(10,2)
  *                 format: double
- *               markup_rate:
+ *               pp_markup_rate:
  *                 type: decimal(10,2)
  *                 format: double
- *               vat_ex:
+ *               pp_vat_ex:
  *                 type: decimal(10,2)
  *                 format: double
- *               vat_inc:
+ *               pp_vat_inc:
  *                 type: decimal(10,2)
  *                 format: double
- *               status:
+ *               pp_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -2874,25 +2970,25 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               pp_id:
  *                 type: integer
  *                 format: int64
- *               product_id:
+ *               pp_product_id:
  *                 type: integer
  *                 format: int64
- *               cost:
+ *               pp_cost:
  *                 type: decimal(10,2)
  *                 format: double
- *               markup_rate:
+ *               pp_markup_rate:
  *                 type: decimal(10,2)
  *                 format: double
- *               vat_ex:
+ *               pp_vat_ex:
  *                 type: decimal(10,2)
  *                 format: double
- *               vat_inc:
+ *               pp_vat_inc:
  *                 type: decimal(10,2)
  *                 format: double
- *               status:
+ *               pp_status:
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
@@ -2928,25 +3024,25 @@ module.exports = swaggerDocs;
  *   Price_history:
  *     type: object
  *     properties:
- *       id:
+ *       ph_id:
  *         type: integer
  *         format: int64
- *       product_id:
+ *       ph_product_id:
  *         type: integer
  *         format: int64
- *       cost:
+ *       ph_cost:
  *         type: decimal(10,2)
  *         format: double
- *       markup_rate:
+ *       ph_markup_rate:
  *         type: decimal(10,2)
  *         format: double
- *       vat_ex:
+ *       ph_vat_ex:
  *         type: decimal(10,2)
  *         format: double
- *       vat_inc:
+ *       ph_vat_inc:
  *         type: decimal(10,2)
  *         format: double
- *       date:
+ *       ph_date:
  *         type: varchar(20)
  *         format: string
  *   Error:
@@ -2966,25 +3062,25 @@ module.exports = swaggerDocs;
  *     Price_history:
  *       type: object
  *       properties:
- *         id:
+ *         ph_id:
  *           type: integer
  *           format: int64
- *         product_id:
+ *         ph_product_id:
  *           type: integer
  *           format: int64
- *         cost:
+ *         ph_cost:
  *           type: decimal(10,2)
  *           format: double
- *         markup_rate:
+ *         ph_markup_rate:
  *           type: decimal(10,2)
  *           format: double
- *         vat_ex:
+ *         ph_vat_ex:
  *           type: decimal(10,2)
  *           format: double
- *         vat_inc:
+ *         ph_vat_inc:
  *           type: decimal(10,2)
  *           format: double
- *         date:
+ *         ph_date:
  *           type: varchar(20)
  *           format: string
  *
@@ -3023,22 +3119,22 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               product_id:
+ *               ph_product_id:
  *                 type: integer
  *                 format: int64
- *               cost:
+ *               ph_cost:
  *                 type: decimal(10,2)
  *                 format: double
- *               markup_rate:
+ *               ph_markup_rate:
  *                 type: decimal(10,2)
  *                 format: double
- *               vat_ex:
+ *               ph_vat_ex:
  *                 type: decimal(10,2)
  *                 format: double
- *               vat_inc:
+ *               ph_vat_inc:
  *                 type: decimal(10,2)
  *                 format: double
- *               date:
+ *               ph_date:
  *                 type: varchar(20)
  *                 format: string
  */
@@ -3076,25 +3172,1652 @@ module.exports = swaggerDocs;
  *           schema:
  *             type: object
  *             properties:
- *               id:
+ *               ph_id:
  *                 type: integer
  *                 format: int64
- *               product_id:
+ *               ph_product_id:
  *                 type: integer
  *                 format: int64
- *               cost:
+ *               ph_cost:
  *                 type: decimal(10,2)
  *                 format: double
- *               markup_rate:
+ *               ph_markup_rate:
  *                 type: decimal(10,2)
  *                 format: double
- *               vat_ex:
+ *               ph_vat_ex:
  *                 type: decimal(10,2)
  *                 format: double
- *               vat_inc:
+ *               ph_vat_inc:
  *                 type: decimal(10,2)
  *                 format: double
- *               date:
+ *               ph_date:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+//#endregion
+
+//#region Transaction API Documentation
+/**
+ * @swagger
+ * /transactions/gettransactions:
+ *   get:
+ *     summary: Get all transactions
+ *     description: Get all transactions
+ *     tags:
+ *       - Transactions
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved transactions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/Transaction'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ * definitions:
+ *   Transaction:
+ *     type: object
+ *     properties:
+ *       t_id:
+ *         type: integer
+ *         format: int64
+ *       t_bank_account_id:
+ *         type: integer
+ *         format: int64
+ *       t_reference_id:
+ *         type: varchar(120)
+ *         format: string
+ *       t_type:
+ *         type: integer
+ *         format: int64
+ *       t_sub_type:
+ *         type: integer
+ *         format: int64
+ *       t_description:
+ *         type: varchar(300)
+ *         format: string
+ *       t_payment_type:
+ *         type: integer
+ *         format: int64
+ *       t_payment_sub_type:
+ *         type: integer
+ *         format: int64
+ *       t_amount:
+ *         type: decimal(10,2)
+ *         format: double
+ *       t_transaction_date:
+ *         type: varchar(20)
+ *         format: string
+ *       t_transact_by:
+ *         type: integer
+ *         format: int64
+ *       t_process_by:
+ *         type: integer
+ *         format: int64
+ *       t_process_date:
+ *         type: varchar(20)
+ *         format: string
+ *       t_status:
+ *         type: string
+ *         enum: ['not paid', 'partially paid', 'paid']
+ *   Error:
+ *     type: object
+ *     properties:
+ *       code:
+ *         type: integer
+ *         format: int32
+ *       message:
+ *         type: string
+ *       fields:
+ *         type: string
+ *
+ *
+ * components:
+ *   schemas:
+ *     Transaction:
+ *       type: object
+ *       properties:
+ *         t_id:
+ *           type: integer
+ *           format: int64
+ *         t_bank_account_id:
+ *           type: integer
+ *           format: int64
+ *         t_reference_id:
+ *           type: varchar(120)
+ *           format: string
+ *         t_type:
+ *           type: integer
+ *           format: int64
+ *         t_sub_type:
+ *           type: integer
+ *           format: int64
+ *         t_description:
+ *           type: varchar(300)
+ *           format: string
+ *         t_payment_type:
+ *           type: integer
+ *           format: int64
+ *         t_payment_sub_type:
+ *           type: integer
+ *           format: int64
+ *         t_amount:
+ *           type: decimal(10,2)
+ *           format: double
+ *         t_transaction_date:
+ *           type: varchar(20)
+ *           format: string
+ *         t_transact_by:
+ *           type: integer
+ *           format: int64
+ *         t_process_by:
+ *           type: integer
+ *           format: int64
+ *         t_process_date:
+ *           type: varchar(20)
+ *           format: string
+ *         t_status:
+ *           type: string
+ *           enum: ['not paid', 'partially paid', 'paid']
+ */
+
+/**
+ * @swagger
+ * /transactions/createtransaction:
+ *   post:
+ *     summary: Create a new transaction
+ *     description: Create a new transaction
+ *     tags:
+ *       - Transactions
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully created transaction
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               t_bank_account_id:
+ *                 type: integer
+ *                 format: int64
+ *               t_reference_id:
+ *                 type: varchar(120)
+ *                 format: string
+ *               t_type:
+ *                 type: integer
+ *                 format: int64
+ *               t_sub_type:
+ *                 type: integer
+ *                 format: int64
+ *               t_description:
+ *                 type: varchar(300)
+ *                 format: string
+ *               t_payment_type:
+ *                 type: integer
+ *                 format: int64
+ *               t_payment_sub_type:
+ *                 type: integer
+ *                 format: int64
+ *               t_amount:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               t_transaction_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               t_transact_by:
+ *                 type: integer
+ *                 format: int64
+ *               t_process_by:
+ *                 type: integer
+ *                 format: int64
+ *               t_process_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               t_status:
+ *                 type: string
+ *                 enum: ['not paid', 'partially paid', 'paid']
+ */
+
+/**
+ * @swagger
+ * /transactions/updatetransaction:
+ *   put:
+ *     summary: Update an existing transaction
+ *     description: Update transaction based on ID
+ *     tags:
+ *       - Transactions
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully updated transaction
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               t_id:
+ *                 type: integer
+ *                 format: int64
+ *               t_bank_account_id:
+ *                 type: integer
+ *                 format: int64
+ *               t_reference_id:
+ *                 type: varchar(120)
+ *                 format: string
+ *               t_type:
+ *                 type: integer
+ *                 format: int64
+ *               t_sub_type:
+ *                 type: integer
+ *                 format: int64
+ *               t_description:
+ *                 type: varchar(300)
+ *                 format: string
+ *               t_payment_type:
+ *                 type: integer
+ *                 format: int64
+ *               t_payment_sub_type:
+ *                 type: integer
+ *                 format: int64
+ *               t_amount:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               t_transaction_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               t_transact_by:
+ *                 type: integer
+ *                 format: int64
+ *               t_process_by:
+ *                 type: integer
+ *                 format: int64
+ *               t_process_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               t_status:
+ *                 type: string
+ *                 enum: ['not paid', 'partially paid', 'paid']
+ */
+//#endregion
+
+//#region Transaction History API Documentation
+/**
+ * @swagger
+ * /transaction_history/gettransaction_history:
+ *   get:
+ *     summary: Get all transaction history records
+ *     description: Get all transaction history records
+ *     tags:
+ *       - Transaction History
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved transaction history records
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/Transaction_history'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ * definitions:
+ *   Transaction_history:
+ *     type: object
+ *     properties:
+ *       th_id:
+ *         type: integer
+ *         format: int64
+ *       th_transaction_id:
+ *         type: integer
+ *         format: int64
+ *       th_status:
+ *         type: string
+ *         enum: ['not paid', 'partially paid', 'paid']
+ *       th_process_by:
+ *         type: integer
+ *         format: int64
+ *       th_process_date:
+ *         type: varchar(20)
+ *         format: string
+ *   Error:
+ *     type: object
+ *     properties:
+ *       code:
+ *         type: integer
+ *         format: int32
+ *       message:
+ *         type: string
+ *       fields:
+ *         type: string
+ *
+ *
+ * components:
+ *   schemas:
+ *     Transaction_history:
+ *       type: object
+ *       properties:
+ *         th_id:
+ *           type: integer
+ *           format: int64
+ *         th_transaction_id:
+ *           type: integer
+ *           format: int64
+ *         th_status:
+ *           type: string
+ *           enum: ['not paid', 'partially paid', 'paid']
+ *         th_process_by:
+ *           type: integer
+ *           format: int64
+ *         th_process_date:
+ *           type: varchar(20)
+ *           format: string
+ *
+ */
+
+/**
+ * @swagger
+ * /transaction_history/createtransaction_history:
+ *   post:
+ *     summary: Create a new transaction history record
+ *     description: Create a new transaction history record
+ *     tags:
+ *       - Transaction History
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully created transaction history record
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               th_transaction_id:
+ *                 type: integer
+ *                 format: int64
+ *               th_status:
+ *                 type: string
+ *                 enum: ['not paid', 'partially paid', 'paid']
+ *               th_process_by:
+ *                 type: integer
+ *                 format: int64
+ *               th_process_date:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+
+/**
+ * @swagger
+ * /transaction_history/updatetransaction_history:
+ *   put:
+ *     summary: Update an existing transaction history record
+ *     description: Update transaction history record based on ID
+ *     tags:
+ *       - Transaction History
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully updated transaction history record
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               th_id:
+ *                 type: integer
+ *                 format: int64
+ *               th_transaction_id:
+ *                 type: integer
+ *                 format: int64
+ *               th_status:
+ *                 type: string
+ *                 enum: ['not paid', 'partially paid', 'paid']
+ *               th_process_by:
+ *                 type: integer
+ *                 format: int64
+ *               th_process_date:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+//#endregion
+
+//#region Purchase Order Headers API Documentation
+/**
+ * @swagger
+ * /purchase_order_headers/getpurchase_order_headers:
+ *   get:
+ *     summary: Get all purchase order headers
+ *     description: Get all purchase order headers
+ *     tags:
+ *       - Purchase Order Headers
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved purchase order headers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/Purchase_order_header'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ * definitions:
+ *   Purchase_order_header:
+ *     type: object
+ *     properties:
+ *       poh_id:
+ *         type: integer
+ *         format: int64
+ *       poh_sequence:
+ *         type: varchar(20)
+ *         format: string
+ *       poh_vendor_id:
+ *         type: integer
+ *         format: int64
+ *       poh_order_date:
+ *         type: varchar(20)
+ *         format: string
+ *       poh_delivery_date:
+ *         type: varchar(20)
+ *         format: string
+ *       poh_total_cost:
+ *         type: decimal(10,2)
+ *         format: double
+ *       poh_status:
+ *         type: string
+ *         enum: ['pending', 'completed', 'cancelled']
+ *   Error:
+ *     type: object
+ *     properties:
+ *       code:
+ *         type: integer
+ *         format: int32
+ *       message:
+ *         type: string
+ *       fields:
+ *         type: string
+ *
+ *
+ * components:
+ *   schemas:
+ *     Purchase_order_header:
+ *       type: object
+ *       properties:
+ *         poh_id:
+ *           type: integer
+ *           format: int64
+ *         poh_sequence:
+ *           type: varchar(20)
+ *           format: string
+ *         poh_vendor_id:
+ *           type: integer
+ *           format: int64
+ *         poh_order_date:
+ *           type: varchar(20)
+ *           format: string
+ *         poh_delivery_date:
+ *           type: varchar(20)
+ *           format: string
+ *         poh_total_cost:
+ *           type: decimal(10,2)
+ *           format: double
+ *         poh_status:
+ *           type: string
+ *           enum: ['pending', 'completed', 'cancelled']
+ *
+ */
+
+/**
+ * @swagger
+ * /purchase_order_headers/createpurchase_order_header:
+ *   post:
+ *     summary: Create a new purchase order header
+ *     description: Create a new purchase order header
+ *     tags:
+ *       - Purchase Order Headers
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully created purchase order header
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               poh_sequence:
+ *                 type: varchar(20)
+ *                 format: string
+ *               poh_vendor_id:
+ *                 type: integer
+ *                 format: int64
+ *               poh_order_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               poh_delivery_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               poh_total_cost:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               poh_status:
+ *                 type: string
+ *                 enum: ['pending', 'completed', 'cancelled']
+ */
+
+/**
+ * @swagger
+ * /purchase_order_headers/updatepurchase_order_header:
+ *   put:
+ *     summary: Update an existing purchase order header
+ *     description: Update purchase order header based on ID
+ *     tags:
+ *       - Purchase Order Headers
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully updated purchase order header
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               poh_id:
+ *                 type: integer
+ *                 format: int64
+ *               poh_sequence:
+ *                 type: varchar(20)
+ *                 format: string
+ *               poh_vendor_id:
+ *                 type: integer
+ *                 format: int64
+ *               poh_order_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               poh_delivery_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               poh_total_cost:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               poh_status:
+ *                 type: string
+ *                 enum: ['pending', 'completed', 'cancelled']
+ */
+//#endregion
+
+//#region Purchase Order Items API Documentation
+/**
+ * @swagger
+ * /purchase_order_items/getpurchase_order_items:
+ *   get:
+ *     summary: Get all purchase order items
+ *     description: Get all purchase order items
+ *     tags:
+ *       - Purchase Order Items
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved purchase order items
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/Purchase_order_item'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ * definitions:
+ *   Purchase_order_item:
+ *     type: object
+ *     properties:
+ *       poi_id:
+ *         type: integer
+ *         format: int64
+ *       poi_purchase_order_id:
+ *         type: integer
+ *         format: int64
+ *       poi_product_id:
+ *         type: integer
+ *         format: int64
+ *       poi_product_cost:
+ *         type: decimal(10,2)
+ *         format: double
+ *       poi_quantity:
+ *         type: decimal(10,2)
+ *         format: double
+ *       poi_unit:
+ *         type: varchar(20)
+ *         format: string
+ *   Error:
+ *     type: object
+ *     properties:
+ *       code:
+ *         type: integer
+ *         format: int32
+ *       message:
+ *         type: string
+ *       fields:
+ *         type: string
+ *
+ *
+ * components:
+ *   schemas:
+ *     Purchase_order_item:
+ *       type: object
+ *       properties:
+ *         poi_id:
+ *           type: integer
+ *           format: int64
+ *         poi_purchase_order_id:
+ *           type: integer
+ *           format: int64
+ *         poi_product_id:
+ *           type: integer
+ *           format: int64
+ *         poi_product_cost:
+ *           type: decimal(10,2)
+ *           format: double
+ *         poi_quantity:
+ *           type: decimal(10,2)
+ *           format: double
+ *         poi_unit:
+ *           type: varchar(20)
+ *           format: string
+ *
+ */
+
+/**
+ * @swagger
+ * /purchase_order_items/createpurchase_order_item:
+ *   post:
+ *     summary: Create a new purchase order item
+ *     description: Create a new purchase order item
+ *     tags:
+ *       - Purchase Order Items
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully created purchase order item
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               poi_purchase_order_id:
+ *                 type: integer
+ *                 format: int64
+ *               poi_product_id:
+ *                 type: integer
+ *                 format: int64
+ *               poi_product_cost:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               poi_quantity:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               poi_unit:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+
+/**
+ * @swagger
+ * /purchase_order_items/updatepurchase_order_item:
+ *   put:
+ *     summary: Update an existing purchase order item
+ *     description: Update purchase order item based on ID
+ *     tags:
+ *       - Purchase Order Items
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully updated purchase order item
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               poi_id:
+ *                 type: integer
+ *                 format: int64
+ *               poi_purchase_order_id:
+ *                 type: integer
+ *                 format: int64
+ *               poi_product_id:
+ *                 type: integer
+ *                 format: int64
+ *               poi_product_cost:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               poi_quantity:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               poi_unit:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+//#endregion
+
+//#region Purchase Order Activity API Documentation
+/**
+ * @swagger
+ * /purchase_order_activity/getpurchase_order_activity:
+ *   get:
+ *     summary: Get all purchase order activities
+ *     description: Get all purchase order activities
+ *     tags:
+ *       - Purchase Order Activity
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved purchase order activities
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/Purchase_order_activity'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ * definitions:
+ *   Purchase_order_activity:
+ *     type: object
+ *     properties:
+ *       poa_id:
+ *         type: integer
+ *         format: int64
+ *       poa_purchase_order_id:
+ *         type: integer
+ *         format: int64
+ *       poa_type:
+ *         type: string
+ *         enum: ['approved', 'request', 'reject', 'cancel']
+ *       poa_remarks:
+ *         type: longtext
+ *         format: string
+ *       poa_user:
+ *         type: integer
+ *         format: int64
+ *       poa_date:
+ *         type: varchar(20)
+ *         format: string
+ *   Error:
+ *     type: object
+ *     properties:
+ *       code:
+ *         type: integer
+ *         format: int32
+ *       message:
+ *         type: string
+ *       fields:
+ *         type: string
+ *
+ *
+ * components:
+ *   schemas:
+ *     Purchase_order_activity:
+ *       type: object
+ *       properties:
+ *         poa_id:
+ *           type: integer
+ *           format: int64
+ *         poa_purchase_order_id:
+ *           type: integer
+ *           format: int64
+ *         poa_type:
+ *           type: string
+ *           enum: ['approved', 'request', 'reject', 'cancel']
+ *         poa_remarks:
+ *           type: longtext
+ *           format: string
+ *         poa_user:
+ *           type: integer
+ *           format: int64
+ *         poa_date:
+ *           type: varchar(20)
+ *           format: string
+ *
+ */
+
+/**
+ * @swagger
+ * /purchase_order_activity/createpurchase_order_activity:
+ *   post:
+ *     summary: Create a new purchase order activity
+ *     description: Create a new purchase order activity
+ *     tags:
+ *       - Purchase Order Activity
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully created purchase order activity
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               poa_purchase_order_id:
+ *                 type: integer
+ *                 format: int64
+ *               poa_type:
+ *                 type: string
+ *                 enum: ['approved', 'request', 'reject', 'cancel']
+ *               poa_remarks:
+ *                 type: longtext
+ *                 format: string
+ *               poa_user:
+ *                 type: integer
+ *                 format: int64
+ *               poa_date:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+
+/**
+ * @swagger
+ * /purchase_order_activity/updatepurchase_order_activity:
+ *   put:
+ *     summary: Update an existing purchase order activity
+ *     description: Update purchase order activity based on ID
+ *     tags:
+ *       - Purchase Order Activity
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully updated purchase order activity
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               poa_id:
+ *                 type: integer
+ *                 format: int64
+ *               poa_purchase_order_id:
+ *                 type: integer
+ *                 format: int64
+ *               poa_type:
+ *                 type: string
+ *                 enum: ['approved', 'request', 'reject', 'cancel']
+ *               poa_remarks:
+ *                 type: longtext
+ *                 format: string
+ *               poa_user:
+ *                 type: integer
+ *                 format: int64
+ *               poa_date:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+//#endregion
+
+//#region Sales Order Headers API Documentation
+/**
+ * @swagger
+ * /sales_order_headers/getsales_order_headers:
+ *   get:
+ *     summary: Get all sales order headers
+ *     description: Get all sales order headers
+ *     tags:
+ *       - Sales Order Headers
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved sales order headers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/Sales_order_header'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ * definitions:
+ *   Sales_order_header:
+ *     type: object
+ *     properties:
+ *       soh_id:
+ *         type: integer
+ *         format: int64
+ *       soh_sequence:
+ *         type: varchar(20)
+ *         format: string
+ *       soh_customer_id:
+ *         type: integer
+ *         format: int64
+ *       soh_order_date:
+ *         type: varchar(20)
+ *         format: string
+ *       soh_delivery_date:
+ *         type: varchar(20)
+ *         format: string
+ *       soh_total_cost:
+ *         type: decimal(10,2)
+ *         format: double
+ *       soh_status:
+ *         type: string
+ *         enum: ['pending', 'completed', 'cancelled']
+ *   Error:
+ *     type: object
+ *     properties:
+ *       code:
+ *         type: integer
+ *         format: int32
+ *       message:
+ *         type: string
+ *       fields:
+ *         type: string
+ *
+ *
+ * components:
+ *   schemas:
+ *     Sales_order_header:
+ *       type: object
+ *       properties:
+ *         soh_id:
+ *           type: integer
+ *           format: int64
+ *         soh_sequence:
+ *           type: varchar(20)
+ *           format: string
+ *         soh_customer_id:
+ *           type: integer
+ *           format: int64
+ *         soh_order_date:
+ *           type: varchar(20)
+ *           format: string
+ *         soh_delivery_date:
+ *           type: varchar(20)
+ *           format: string
+ *         soh_total_cost:
+ *           type: decimal(10,2)
+ *           format: double
+ *         soh_status:
+ *           type: string
+ *           enum: ['pending', 'completed', 'cancelled']
+ *
+ */
+
+/**
+ * @swagger
+ * /sales_order_headers/createsales_order_header:
+ *   post:
+ *     summary: Create a new sales order header
+ *     description: Create a new sales order header
+ *     tags:
+ *       - Sales Order Headers
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully created sales order header
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               soh_sequence:
+ *                 type: varchar(20)
+ *                 format: string
+ *               soh_customer_id:
+ *                 type: integer
+ *                 format: int64
+ *               soh_order_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               soh_delivery_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               soh_total_cost:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               soh_status:
+ *                 type: string
+ *                 enum: ['pending', 'completed', 'cancelled']
+ */
+
+/**
+ * @swagger
+ * /sales_order_headers/updatesales_order_header:
+ *   put:
+ *     summary: Update an existing sales order header
+ *     description: Update sales order header based on ID
+ *     tags:
+ *       - Sales Order Headers
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully updated sales order header
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               soh_id:
+ *                 type: integer
+ *                 format: int64
+ *               soh_sequence:
+ *                 type: varchar(20)
+ *                 format: string
+ *               soh_customer_id:
+ *                 type: integer
+ *                 format: int64
+ *               soh_order_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               soh_delivery_date:
+ *                 type: varchar(20)
+ *                 format: string
+ *               soh_total_cost:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               soh_status:
+ *                 type: string
+ *                 enum: ['pending', 'completed', 'cancelled']
+ */
+//#endregion
+
+//#region Sales Order Items API Documentation
+/**
+ * @swagger
+ * /sales_order_items/getsales_order_items:
+ *   get:
+ *     summary: Get all sales order items
+ *     description: Get all sales order items
+ *     tags:
+ *       - Sales Order Items
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved sales order items
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/Sales_order_item'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ * definitions:
+ *   Sales_order_item:
+ *     type: object
+ *     properties:
+ *       soi_id:
+ *         type: integer
+ *         format: int64
+ *       soi_sales_order_id:
+ *         type: integer
+ *         format: int64
+ *       soi_product_id:
+ *         type: integer
+ *         format: int64
+ *       soi_product_cost:
+ *         type: decimal(10,2)
+ *         format: double
+ *       soi_quantity:
+ *         type: decimal(10,2)
+ *         format: double
+ *       soi_unit:
+ *         type: varchar(20)
+ *         format: string
+ *   Error:
+ *     type: object
+ *     properties:
+ *       code:
+ *         type: integer
+ *         format: int32
+ *       message:
+ *         type: string
+ *       fields:
+ *         type: string
+ *
+ *
+ * components:
+ *   schemas:
+ *     Sales_order_item:
+ *       type: object
+ *       properties:
+ *         soi_id:
+ *           type: integer
+ *           format: int64
+ *         soi_sales_order_id:
+ *           type: integer
+ *           format: int64
+ *         soi_product_id:
+ *           type: integer
+ *           format: int64
+ *         soi_product_cost:
+ *           type: decimal(10,2)
+ *           format: double
+ *         soi_quantity:
+ *           type: decimal(10,2)
+ *           format: double
+ *         soi_unit:
+ *           type: varchar(20)
+ *           format: string
+ *
+ */
+
+/**
+ * @swagger
+ * /sales_order_items/createsales_order_item:
+ *   post:
+ *     summary: Create a new sales order item
+ *     description: Create a new sales order item
+ *     tags:
+ *       - Sales Order Items
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully created sales order item
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               soi_sales_order_id:
+ *                 type: integer
+ *                 format: int64
+ *               soi_product_id:
+ *                 type: integer
+ *                 format: int64
+ *               soi_product_cost:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               soi_quantity:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               soi_unit:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+
+/**
+ * @swagger
+ * /sales_order_items/updatesales_order_item:
+ *   put:
+ *     summary: Update an existing sales order item
+ *     description: Update sales order item based on ID
+ *     tags:
+ *       - Sales Order Items
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully updated sales order item
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               soi_id:
+ *                 type: integer
+ *                 format: int64
+ *               soi_sales_order_id:
+ *                 type: integer
+ *                 format: int64
+ *               soi_product_id:
+ *                 type: integer
+ *                 format: int64
+ *               soi_product_cost:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               soi_quantity:
+ *                 type: decimal(10,2)
+ *                 format: double
+ *               soi_unit:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+//#endregion
+
+//#region Sales Order Activity API Documentation
+/**
+ * @swagger
+ * /sales_order_activity/getsales_order_activity:
+ *   get:
+ *     summary: Get all sales order activities
+ *     description: Get all sales order activities
+ *     tags:
+ *       - Sales Order Activity
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved sales order activities
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/Sales_order_activity'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ * definitions:
+ *   Sales_order_activity:
+ *     type: object
+ *     properties:
+ *       soa_id:
+ *         type: integer
+ *         format: int64
+ *       soa_sales_order_id:
+ *         type: integer
+ *         format: int64
+ *       soa_type:
+ *         type: string
+ *         enum: ['approved', 'request', 'reject', 'cancel']
+ *       soa_remarks:
+ *         type: longtext
+ *         format: string
+ *       soa_user:
+ *         type: integer
+ *         format: int64
+ *       soa_date:
+ *         type: varchar(20)
+ *         format: string
+ *   Error:
+ *     type: object
+ *     properties:
+ *       code:
+ *         type: integer
+ *         format: int32
+ *       message:
+ *         type: string
+ *       fields:
+ *         type: string
+ *
+ *
+ * components:
+ *   schemas:
+ *     Sales_order_activity:
+ *       type: object
+ *       properties:
+ *         soa_id:
+ *           type: integer
+ *           format: int64
+ *         soa_sales_order_id:
+ *           type: integer
+ *           format: int64
+ *         soa_type:
+ *           type: string
+ *           enum: ['approved', 'request', 'reject', 'cancel']
+ *         soa_remarks:
+ *           type: longtext
+ *           format: string
+ *         soa_user:
+ *           type: integer
+ *           format: int64
+ *         soa_date:
+ *           type: varchar(20)
+ *           format: string
+ *
+ */
+
+/**
+ * @swagger
+ * /sales_order_activity/createsales_order_activity:
+ *   post:
+ *     summary: Create a new sales order activity
+ *     description: Create a new sales order activity
+ *     tags:
+ *       - Sales Order Activity
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully created sales order activity
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               soa_sales_order_id:
+ *                 type: integer
+ *                 format: int64
+ *               soa_type:
+ *                 type: string
+ *                 enum: ['approved', 'request', 'reject', 'cancel']
+ *               soa_remarks:
+ *                 type: longtext
+ *                 format: string
+ *               soa_user:
+ *                 type: integer
+ *                 format: int64
+ *               soa_date:
+ *                 type: varchar(20)
+ *                 format: string
+ */
+
+/**
+ * @swagger
+ * /sales_order_activity/updatesales_order_activity:
+ *   put:
+ *     summary: Update an existing sales order activity
+ *     description: Update sales order activity based on ID
+ *     tags:
+ *       - Sales Order Activity
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully updated sales order activity
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   format: string
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ *     requestBody:
+ *       content:
+ *         application/x-www-form-urlencoded:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               soa_id:
+ *                 type: integer
+ *                 format: int64
+ *               soa_sales_order_id:
+ *                 type: integer
+ *                 format: int64
+ *               soa_type:
+ *                 type: string
+ *                 enum: ['approved', 'request', 'reject', 'cancel']
+ *               soa_remarks:
+ *                 type: longtext
+ *                 format: string
+ *               soa_user:
+ *                 type: integer
+ *                 format: int64
+ *               soa_date:
  *                 type: varchar(20)
  *                 format: string
  */

@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('bank_accounts', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getbank_accounts", (req, res) => {
 
 router.post("/createbank_account", (req, res) => {
   try {
-    const { code, account_name, account_number, bank_type } =
+    const { mba_code, mba_account_name, mba_account_number, mba_bank_type } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let mba_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [code, account_name, account_number, bank_type, status ],
+        [mba_code, mba_account_name, mba_account_number, mba_bank_type, mba_status ],
       ];
 
       console.log(data);
@@ -79,18 +79,18 @@ router.post("/createbank_account", (req, res) => {
 
 router.put("/updatebank_account", (req, res) => {
   try {
-    const { id, code, account_name, account_number, bank_type, status, } = req.body;
+    const { mba_id, mba_code, mba_account_name, mba_account_number, mba_bank_type, mba_status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        code,
-        account_name,
-        account_number,
-        bank_type,
-        status,
-        id];
+        mba_code,
+        mba_account_name,
+        mba_account_number,
+        mba_bank_type,
+        mba_status,
+        mba_id];
 
       console.log(data);
 

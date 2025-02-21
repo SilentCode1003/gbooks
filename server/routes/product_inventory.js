@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET inventory listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('product_inventory', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getproduct_inventory", (req, res) => {
 
 router.post("/createproduct_inventory", (req, res) => {
   try {
-    const { product_id, branch_id, quantity, unit  } =
+    const { pi_product_id, pi_branch_id, pi_quantity, pi_unit  } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let pi_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [product_id, branch_id, quantity, unit, status],
+        [pi_product_id, pi_branch_id, pi_quantity, pi_unit, pi_status],
       ];
 
       console.log(data);
@@ -79,18 +79,18 @@ router.post("/createproduct_inventory", (req, res) => {
 
 router.put("/updateproduct_inventory", (req, res) => {
   try {
-    const { id, product_id, branch_id, quantity, unit, status } = req.body;
+    const { pi_id, pi_product_id, pi_branch_id, pi_quantity, pi_unit, pi_status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        product_id,
-        branch_id,
-        quantity,
-        unit,
-        status,
-        id];
+        pi_product_id,
+        pi_branch_id,
+        pi_quantity,
+        pi_unit,
+        pi_status,
+        pi_id];
 
       console.log(data);
 

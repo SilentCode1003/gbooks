@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('vendors', { title: 'Express', currentRoute: req.originalUrl});
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getvendors", (req, res) => {
 
 router.post("/createvendor", (req, res) => {
   try {
-    const { business_name, business_type, contact_person, email, phone, mobile, business_address, tin } =
+    const { mv_business_name, mv_business_type, mv_contact_person, mv_email, mv_phone, mv_mobile, mv_business_address, mv_tin } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let mv_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [business_name, business_type, contact_person, email, phone, mobile, business_address, tin, status ],
+        [mv_business_name, mv_business_type, mv_contact_person, mv_email, mv_phone, mv_mobile, mv_business_address, mv_tin, mv_status ],
       ];
 
       console.log(data);
@@ -79,22 +79,22 @@ router.post("/createvendor", (req, res) => {
 
 router.put("/updatevendor", (req, res) => {
   try {
-    const { id, business_name, business_type, contact_person, email, phone, mobile, business_address, tin, status, } = req.body;
+    const { mv_id, mv_business_name, mv_business_type, mv_contact_person, mv_email, mv_phone, mv_mobile, mv_business_address, mv_tin, mv_status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        business_name,
-        business_type,
-        contact_person,
-        email,
-        phone,
-        mobile,
-        business_address,
-        tin,
-        status,
-        id];
+        mv_business_name,
+        mv_business_type,
+        mv_contact_person,
+        mv_email,
+        mv_phone,
+        mv_mobile,
+        mv_business_address,
+        mv_tin,
+        mv_status,
+        mv_id];
 
       console.log(data);
 

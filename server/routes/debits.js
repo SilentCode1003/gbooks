@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('debits', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getdebits", (req, res) => {
 
 router.post("/createdebit", (req, res) => {
   try {
-    const { type } =
+    const { md_type } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let md_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [type, status ],
+        [md_type, md_status ],
       ];
 
       console.log(data);
@@ -79,16 +79,16 @@ router.post("/createdebit", (req, res) => {
 
 router.put("/updatedebit", (req, res) => {
   try {
-    const { id, type, status, } = req.body;
+    const { md_id, md_type, md_status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
     
-        type,
-        status,
-        id];
+        md_type,
+        md_status,
+        md_id];
 
       console.log(data);
 

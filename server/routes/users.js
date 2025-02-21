@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('users', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getusers", (req, res) => {
 
 router.post("/createuser", (req, res) => {
   try {
-    const { employee_id, fullname, position, username, password, access } =
+    const { mu_employee_id, mu_fullname, mu_position, mu_username, mu_password, mu_access } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let mu_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [employee_id, fullname, position, username, EncrypterString(password), access, status],
+        [mu_employee_id, mu_fullname, mu_position, mu_username, EncrypterString(mu_password), mu_access, mu_status],
       ];
 
       console.log(data);
@@ -79,20 +79,19 @@ router.post("/createuser", (req, res) => {
 
 router.put("/updateuser", (req, res) => {
   try {
-    const { id, employee_id, fullname, position, username, password, access, status } = req.body;
+    const { mu_id, mu_employee_id, mu_fullname, mu_position, mu_username,  mu_access, mu_status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        employee_id,
-        fullname,
-        position,
-        username,
-        EncrypterString(password),
-        access,
-        status,
-        id];
+        mu_employee_id,
+        mu_fullname,
+        mu_position,
+        mu_username,
+        mu_access,
+        mu_status,
+        mu_id];
 
       console.log(data);
 
@@ -102,7 +101,6 @@ router.put("/updateuser", (req, res) => {
         Accounting.master_user.selectOptionsColumn.fullname,
         Accounting.master_user.selectOptionsColumn.position,
         Accounting.master_user.selectOptionsColumn.username,
-        Accounting.master_user.selectOptionsColumn.password,
         Accounting.master_user.selectOptionsColumn.access,
         Accounting.master_user.selectOptionsColumn.status,
         ],

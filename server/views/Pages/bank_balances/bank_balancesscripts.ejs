@@ -1,0 +1,108 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/bank_balances/getbank_balances",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#bank_balances_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.bb_id,
+                            element.bb_bank_account_id,
+                            element.bb_transaction_date,
+                            element.bb_update_date,
+                            element.bb_previous_amount,
+                            element.bb_current_amount,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-bb_id="${element.bb_id}" data-bb_bank_account_id="${element.bb_bank_account_id}" data-bb_transaction_date="${element.bb_transaction_date}" data-bb_update_date="${element.bb_update_date}" data-bb_previous_amount="${element.bb_previous_amount}" data-bb_current_amount="${element.bb_current_amount}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_bank_balance').on('click', function () {
+            $('#addBankBalanceModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addBankBalanceModal').modal('hide');
+            var addedBankBalanceData = {
+                bb_bank_account_id: $('#add_bank_balance_bank_account_id').val(),
+                bb_transaction_date: $('#add_bank_balance_transaction_date').val(),
+                bb_update_date: $('#add_bank_balance_update_date').val(),
+                bb_previous_amount: $('#add_bank_balance_previous_amount').val(),
+                bb_current_amount: $('#add_bank_balance_current_amount').val()
+            };
+
+            console.log('Added Bank Balance Data:', addedBankBalanceData);
+
+            $.ajax({
+                url: `/bank_balances/createbank_balance/`,
+                type: 'POST',
+                data: addedBankBalanceData,
+                success: function (response) {
+                    console.log('Bank balance data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting bank balance data:', err);
+                }
+            });
+
+            $('#addBankBalanceModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editBankBalanceModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedBankBalanceData = {
+                bb_id: $('#edit_bank_balance_id').val(),
+                bb_bank_account_id: $('#edit_bank_balance_bank_account_id').val(),
+                bb_transaction_date: $('#edit_bank_balance_transaction_date').val(),
+                bb_update_date: $('#edit_bank_balance_update_date').val(),
+                bb_previous_amount: $('#edit_bank_balance_previous_amount').val(),
+                bb_current_amount: $('#edit_bank_balance_current_amount').val()
+            };
+
+            console.log('Edited Bank Balance Data:', editedBankBalanceData);
+
+            $.ajax({
+                url: `/bank_balances/updatebank_balance/`,
+                type: 'PUT',
+                data: editedBankBalanceData,
+                success: function (response) {
+                    console.log('Bank balance data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating bank balance data:', err);
+                }
+            });
+
+            $('#editBankBalanceModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var bankBalanceData = $(this).data();
+            $('#editBankBalanceModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_bank_balance_id').val(bankBalanceData.bb_id);
+                $('#edit_bank_balance_bank_account_id').val(bankBalanceData.bb_bank_account_id);
+                $('#edit_bank_balance_transaction_date').val(bankBalanceData.bb_transaction_date);
+                $('#edit_bank_balance_update_date').val(bankBalanceData.bb_update_date);
+                $('#edit_bank_balance_previous_amount').val(bankBalanceData.bb_previous_amount);
+                $('#edit_bank_balance_current_amount').val(bankBalanceData.bb_current_amount);
+            });
+        });
+    });
+</script>

@@ -6,6 +6,7 @@ var logger = require("morgan");
 
 const swaggerDocs = require("./repository/documentation/swagger");
 const swaggerUi = require("swagger-ui-express");
+const cors = require('cors');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -24,7 +25,18 @@ var inventory_historyRouter = require("./routes/inventory_history");
 var branchRouter = require("./routes/branch");
 var product_pricesRouter = require("./routes/product_prices");
 var price_historyRouter = require("./routes/price_history");
+var transactionsRouter = require("./routes/transactions");
+var transaction_historyRouter = require("./routes/transaction_history");
+var purchase_order_headersRouter = require("./routes/purchase_order_headers");
+var purchase_order_itemsRouter = require("./routes/purchase_order_items");
+var purchase_order_activityRouter = require("./routes/purchase_order_activity");
+var sales_order_headersRouter = require("./routes/sales_order_headers");
+var sales_order_itemsRouter = require("./routes/sales_order_items");
+var sales_order_activityRouter = require("./routes/sales_order_activity");
 
+var loginRouter = require("./routes/login");
+
+const verifyjwt  = require('./repository/middleware/authentication');
 
 const { SetMongo } = require("./repository/middleware/mongodb");
 
@@ -33,9 +45,9 @@ var app = express();
 SetMongo(app);
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "views/Layouts"));
 app.set("view engine", "ejs");
-
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(
@@ -46,6 +58,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+
+app.use("/login", loginRouter);
+//app.use(verifyjwt);
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/vendors", vendorsRouter);
@@ -64,7 +79,14 @@ app.use("/inventory_history", inventory_historyRouter);
 app.use("/branch", branchRouter);
 app.use("/product_prices", product_pricesRouter);
 app.use("/price_history", price_historyRouter);
-
+app.use("/transactions", transactionsRouter);
+app.use("/transaction_history", transaction_historyRouter);
+app.use("/purchase_order_headers", purchase_order_headersRouter);
+app.use("/purchase_order_items", purchase_order_itemsRouter);
+app.use("/purchase_order_activity", purchase_order_activityRouter);
+app.use("/sales_order_headers", sales_order_headersRouter);
+app.use("/sales_order_items", sales_order_itemsRouter);
+app.use("/sales_order_activity", sales_order_activityRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,0 +1,125 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark scrollable-container" style="width: 260px;">
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <svg class="bi me-2" width="40" height="32">
+      <use xlink:href="#bootstrap" />
+    </svg>
+    <span class="fs-4">test</span>
+  </a>
+  <hr>
+  <ul class="nav nav-pills flex-column mb-auto mt-2">
+    <li class="nav-item mx-1">
+      <a href="/" class="nav-link text-white <%= currentRoute === '/' ? 'active' : '' %>" aria-current="page">
+        Home
+      </a>
+    </li>
+    <li class="nav-item mt-2">
+      <a class="nav-link dropdown-toggle text-white "
+        href="#mastersCollapse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="mastersCollapse">
+        Masters
+      </a>
+      <div
+        class="collapse <%= ['/users', '/vendors', '/customers', '/departments', '/credits', '/debits', '/bank_accounts', '/bank_balances', '/payments', '/payment_types'].includes(currentRoute) ? 'show' : '' %>"
+        id="mastersCollapse">
+        <ul class="bg-custom text-white p-2 list-unstyled">
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/users' ? 'active2' : '' %>" href="/users"><i
+                class="fas fa-users"></i> Users</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/vendors' ? 'active2' : '' %>" href="/vendors"><i
+                class="fas fa-user-tie"></i> Vendors</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/customers' ? 'active2' : '' %>" href="/customers"><i
+                class="fas fa-user-friends"></i> Customers</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/departments' ? 'active2' : '' %>"
+              href="/departments"><i class="fas fa-building"></i> Departments</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/credits' ? 'active2' : '' %>" href="/credits"><i
+                class="fas fa-plus-circle"></i> Credits</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/debits' ? 'active2' : '' %>" href="/debits"><i
+                class="fas fa-minus-circle"></i> Debits</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/bank_accounts' ? 'active2' : '' %>"
+              href="/bank_accounts"><i class="fas fa-university"></i> Bank Accounts</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/bank_balances' ? 'active2' : '' %>"
+              href="/bank_balances"><i class="fas fa-wallet"></i> Bank Balances</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/payments' ? 'active2' : '' %>" href="/payments"><i
+                class="fas fa-credit-card"></i> Payments</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/payment_types' ? 'active2' : '' %>"
+              href="/payment_types"><i class="fas fa-money-bill-wave"></i> Payment Types</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item mt-2">
+      <a class="nav-link dropdown-toggle text-white "
+        href="#inventoryCollapse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="inventoryCollapse">
+        Inventory
+      </a>
+      <div
+        class="collapse <%= ['/products', '/product_inventory', '/inventory_history', '/product_prices', '/price_history', '/branch'].includes(currentRoute) ? 'show' : '' %>"
+        id="inventoryCollapse">
+        <ul class="bg-custom text-light p-2 list-unstyled">
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/products' ? 'active2' : '' %>" href="/products"><i
+                class="fas fa-box"></i> Products</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/product_inventory' ? 'active2' : '' %>"
+              href="/product_inventory"><i class="fas fa-warehouse"></i> Product Inventory</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/inventory_history' ? 'active2' : '' %>"
+              href="/inventory_history"><i class="fas fa-history"></i> Inventory History</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/product_prices' ? 'active2' : '' %>"
+              href="/product_prices"><i class="fas fa-tags"></i> Product Prices</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/price_history' ? 'active2' : '' %>"
+              href="/price_history"><i class="fas fa-chart-line"></i> Price History</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/branch' ? 'active2' : '' %>" href="/branch"><i
+                class="fas fa-code-branch"></i> Branch</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item mt-2">
+      <a class="nav-link dropdown-toggle text-white "
+        href="#transactionCollapse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="transactionCollapse">
+        Transactions
+      </a>
+      <div
+        class="collapse <%= ['/transactions', '/transaction_history'].includes(currentRoute) ? 'show' : '' %>"
+        id="transactionCollapse">
+        <ul class="bg-custom text-light p-2 list-unstyled">
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/transactions' ? 'active2' : '' %>" href="/transactions"><i
+                class="fas fa-box"></i> Transactions</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/transaction_history' ? 'active2' : '' %>"
+              href="/transaction_history"><i class="fas fa-history"></i> Transactions History</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item mt-2">
+      <a class="nav-link dropdown-toggle text-white "
+        href="#purchaseOrderCollapse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="purchaseOrderCollapse">
+        Accounts Payable
+      </a>
+      <div
+        class="collapse <%= ['/purchase_order_headers', '/purchase_order_items', '/purchase_order_activity'].includes(currentRoute) ? 'show' : '' %>"
+        id="purchaseOrderCollapse">
+        <ul class="bg-custom text-light p-2 list-unstyled">
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/purchase_order_headers' ? 'active2' : '' %>" href="/purchase_order_headers"><i
+                class="fas fa-file-alt"></i> Purchase Order Headers</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/purchase_order_items' ? 'active2' : '' %>" href="/purchase_order_items"><i
+                class="fas fa-box-open"></i> Purchase Order Items</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/purchase_order_activity' ? 'active2' : '' %>" href="/purchase_order_activity"><i
+                class="fas fa-tasks"></i> Purchase Order Activity</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item mt-2">
+      <a class="nav-link dropdown-toggle text-white "
+        href="#salesOrderCollapse" data-bs-toggle="collapse" aria-expanded="false" aria-controls="salesOrderCollapse">
+        Accounts Receivable
+      </a>
+      <div
+        class="collapse <%= ['/sales_order_headers', '/sales_order_items', '/sales_order_activity'].includes(currentRoute) ? 'show' : '' %>"
+        id="salesOrderCollapse">
+        <ul class="bg-custom text-light p-2 list-unstyled">
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/sales_order_headers' ? 'active2' : '' %>" href="/sales_order_headers"><i
+                class="fas fa-file-alt"></i> Sales Order Headers</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/sales_order_items' ? 'active2' : '' %>" href="/sales_order_items"><i
+                class="fas fa-box-open"></i> Sales Order Items</a></li>
+          <li><a class="dropdown-item p-2 <%= currentRoute === '/sales_order_activity' ? 'active2' : '' %>" href="/sales_order_activity"><i
+                class="fas fa-tasks"></i> Sales Order Activity</a></li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+  <hr>
+</div>

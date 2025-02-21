@@ -1,0 +1,117 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/products/getproducts",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#products_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.mp_id,
+                            element.mp_vendor_id,
+                            element.mp_upc,
+                            element.mp_code,
+                            element.mp_description,
+                            element.mp_category,
+                            element.mp_subcategory,
+                            `<span class="badge rounded-pill text-white ${element.mp_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mp_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mp_id="${element.mp_id}" data-mp_vendor_id="${element.mp_vendor_id}" data-mp_upc="${element.mp_upc}" data-mp_code="${element.mp_code}" data-mp_description="${element.mp_description}" data-mp_category="${element.mp_category}" data-mp_subcategory="${element.mp_subcategory}" data-mp_status="${element.mp_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_credit').on('click', function () {
+            $('#addProductModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addProductModal').modal('hide');
+            var addedProductData = {
+                mp_vendor_id: $('#add_vendor_id').val(),
+                mp_upc: $('#add_upc').val(),
+                mp_code: $('#add_code').val(),
+                mp_description: $('#add_description').val(),
+                mp_category: $('#add_category').val(),
+                mp_subcategory: $('#add_sub_category').val()
+            };
+
+            console.log('Added Product Data:', addedProductData);
+
+            $.ajax({
+                url: `/products/createproduct/`,
+                type: 'POST',
+                data: addedProductData,
+                success: function (response) {
+                    console.log('Product data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting product data:', err);
+                }
+            });
+
+            $('#addProductModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editProductModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedProductData = {
+                mp_id: $('#edit_product_id').val(),
+                mp_vendor_id: $('#edit_vendor_id').val(),
+                mp_upc: $('#edit_upc').val(),
+                mp_code: $('#edit_code').val(),
+                mp_description: $('#edit_description').val(),
+                mp_category: $('#edit_category').val(),
+                mp_subcategory: $('#edit_sub_category').val(),
+                mp_status: $('#edit_status').val()
+            };
+
+            console.log('Edited Product Data:', editedProductData);
+
+            $.ajax({
+                url: `/products/updateproduct/`,
+                type: 'PUT',
+                data: editedProductData,
+                success: function (response) {
+                    console.log('Product data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating product data:', err);
+                }
+            });
+
+            $('#editProductModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var productData = $(this).data();
+            $('#editProductModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_product_id').val(productData.mp_id);
+                $('#edit_vendor_id').val(productData.mp_vendor_id);
+                $('#edit_upc').val(productData.mp_upc);
+                $('#edit_code').val(productData.mp_code);
+                $('#edit_description').val(productData.mp_description);
+                $('#edit_category').val(productData.mp_category);
+                $('#edit_sub_category').val(productData.mp_subcategory);
+                $('#edit_status').val(productData.mp_status);
+            });
+        });
+    });
+</script>

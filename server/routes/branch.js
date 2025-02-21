@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET branch listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('branch', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getbranch", (req, res) => {
 
 router.post("/createbranch", (req, res) => {
   try {
-    const { code, description, email, phone, mobile, address, manager } =
+    const { mb_code, mb_description, mb_email, mb_phone, mb_mobile, mb_address, mb_manager } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let mb_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [code, description, email, phone,mobile, address, manager, status],
+        [mb_code, mb_description, mb_email, mb_phone,mb_mobile, mb_address, mb_manager, mb_status],
       ];
 
       console.log(data);
@@ -79,21 +79,21 @@ router.post("/createbranch", (req, res) => {
 
 router.put("/updatebranch", (req, res) => {
   try {
-    const { id, code, description, email, phone, mobile, address, manager, status } = req.body;
+    const { mb_id, mb_code, mb_description, mb_email, mb_phone, mb_mobile, mb_address, mb_manager, mb_status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        code,
-        description,
-        email,
-        phone,
-        mobile,
-        address,
-        manager,
-        status,
-        id];
+        mb_code,
+        mb_description,
+        mb_email,
+        mb_phone,
+        mb_mobile,
+        mb_address,
+        mb_manager,
+        mb_status,
+        mb_id];
 
       console.log(data);
 

@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('payment_types', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getpayment_types", (req, res) => {
 
 router.post("/createpayment_type", (req, res) => {
   try {
-    const { payment_id, name } =
+    const { pt_payment_id, pt_name } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let pt_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [payment_id, name, status ],
+        [pt_payment_id, pt_name, pt_status ],
       ];
 
       console.log(data);
@@ -79,16 +79,16 @@ router.post("/createpayment_type", (req, res) => {
 
 router.put("/updatepayment_type", (req, res) => {
   try {
-    const { id, payment_id, name, status } = req.body;
+    const { pt_id, pt_payment_id, pt_name, pt_status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        payment_id,
-        name,
-        status,
-        id];
+        pt_payment_id,
+        pt_name,
+        pt_status,
+        pt_id];
 
       console.log(data);
 

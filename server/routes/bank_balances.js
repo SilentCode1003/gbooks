@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('bank_balances', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,7 +44,7 @@ router.get("/getbank_balances", (req, res) => {
 
 router.post("/createbank_balance", (req, res) => {
   try {
-    const { bank_account_id, transaction_date, update_date, previous_amount, current_amount } =
+    const { bb_bank_account_id, bb_transaction_date, bb_update_date, bb_previous_amount, bb_current_amount } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +52,7 @@ router.post("/createbank_balance", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [bank_account_id, transaction_date, update_date, previous_amount, current_amount],
+        [bb_bank_account_id, bb_transaction_date, bb_update_date, bb_previous_amount, bb_current_amount],
       ];
 
       console.log(data);
@@ -78,18 +78,18 @@ router.post("/createbank_balance", (req, res) => {
 
 router.put("/updatebank_balance", (req, res) => {
   try {
-    const { id, bank_account_id, transaction_date, update_date, previous_amount, current_amount } = req.body;
+    const { bb_id, bb_bank_account_id, bb_transaction_date, bb_update_date, bb_previous_amount, bb_current_amount } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        bank_account_id,
-        transaction_date,
-        update_date,
-        previous_amount,
-        current_amount,
-        id];
+        bb_bank_account_id,
+        bb_transaction_date,
+        bb_update_date,
+        bb_previous_amount,
+        bb_current_amount,
+        bb_id];
 
       console.log(data);
 

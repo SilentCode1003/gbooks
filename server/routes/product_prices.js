@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET product_prices listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('product_prices', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getproduct_prices", (req, res) => {
 
 router.post("/createproduct_price", (req, res) => {
   try {
-    const { product_id, cost, markup_rate, vat_ex, vat_inc  } =
+    const { pp_product_id, pp_cost, pp_markup_rate, pp_vat_ex, pp_vat_inc  } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let pp_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [product_id, cost, markup_rate, vat_ex,vat_inc, status],
+        [pp_product_id, pp_cost, pp_markup_rate, pp_vat_ex,pp_vat_inc, pp_status],
       ];
 
       console.log(data);
@@ -79,19 +79,19 @@ router.post("/createproduct_price", (req, res) => {
 
 router.put("/updateproduct_price", (req, res) => {
   try {
-    const { id, product_id, cost, markup_rate, vat_ex, vat_inc, status } = req.body;
+    const { pp_id, pp_product_id, pp_cost, pp_markup_rate, pp_vat_ex, pp_vat_inc, pp_status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        product_id,
-        cost,
-        markup_rate,
-        vat_ex,
-        vat_inc,
-        status,
-        id];
+        pp_product_id,
+        pp_cost,
+        pp_markup_rate,
+        pp_vat_ex,
+        pp_vat_inc,
+        pp_status,
+        pp_id];
 
       console.log(data);
 

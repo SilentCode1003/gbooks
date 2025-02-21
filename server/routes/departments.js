@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('departments', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,16 +44,16 @@ router.get("/getdepartments", (req, res) => {
 
 router.post("/createdepartment", (req, res) => {
   try {
-    const { code, description } =
+    const { md_code, md_description } =
       req.body;
-    let status = STATUS.ACTIVE;
+    let md_status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [code, description, status ],
+        [md_code, md_description, md_status ],
       ];
 
       console.log(data);
@@ -79,16 +79,16 @@ router.post("/createdepartment", (req, res) => {
 
 router.put("/updatedepartment", (req, res) => {
   try {
-    const { id, code, description, status, } = req.body;
+    const { md_id, md_code, md_description, md_status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        code,
-        description,
-        status,
-        id];
+        md_code,
+        md_description,
+        md_status,
+        md_id];
 
       console.log(data);
 

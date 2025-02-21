@@ -17,7 +17,7 @@ var router = express.Router();
 
 /* GET price_history listing. */
 router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+  res.render('price_history', { title: 'Express', currentRoute: req.originalUrl });
 });
 
 module.exports = router;
@@ -44,7 +44,7 @@ router.get("/getprice_history", (req, res) => {
 
 router.post("/createprice_history", (req, res) => {
   try {
-    const { product_id, cost, markup_rate, vat_ex, vat_inc, date  } =
+    const { ph_product_id, ph_cost, ph_markup_rate, ph_vat_ex, ph_vat_inc, ph_date  } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +52,7 @@ router.post("/createprice_history", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [product_id, cost, markup_rate, vat_ex,vat_inc, date],
+        [ph_product_id, ph_cost, ph_markup_rate, ph_vat_ex,ph_vat_inc, ph_date],
       ];
 
       console.log(data);
@@ -78,19 +78,19 @@ router.post("/createprice_history", (req, res) => {
 
 router.put("/updateprice_history", (req, res) => {
   try {
-    const { id, product_id, cost, markup_rate, vat_ex, vat_inc, date } = req.body;
+    const { ph_id, ph_product_id, ph_cost, ph_markup_rate, ph_vat_ex, ph_vat_inc, ph_date } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        product_id,
-        cost,
-        markup_rate,
-        vat_ex,
-        vat_inc,
-        date,
-        id];
+        ph_product_id,
+        ph_cost,
+        ph_markup_rate,
+        ph_vat_ex,
+        ph_vat_inc,
+        ph_date,
+        ph_id];
 
       console.log(data);
 
