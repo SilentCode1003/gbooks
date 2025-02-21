@@ -1,0 +1,99 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/payment_types/getpayment_types",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#payment_types_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.pt_id,
+                            element.pt_payment_id,
+                            element.pt_name,
+                            `<span class="badge rounded-pill text-white ${element.pt_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.pt_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-pt_id="${element.pt_id}" data-pt_payment_id="${element.pt_payment_id}" data-pt_name="${element.pt_name}" data-pt_status="${element.pt_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_payment_type').on('click', function () {
+            $('#addPaymentTypeModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addPaymentTypeModal').modal('hide');
+            var addedPaymentTypeData = {
+                pt_payment_id: $('#add_payment_type_payment_id').val(),
+                pt_name: $('#add_payment_type_name').val()
+            };
+
+            console.log('Added Payment Type Data:', addedPaymentTypeData);
+
+            $.ajax({
+                url: `/payment_types/createpayment_type/`,
+                type: 'POST',
+                data: addedPaymentTypeData,
+                success: function (response) {
+                    console.log('Payment type data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting payment type data:', err);
+                }
+            });
+
+            $('#addPaymentTypeModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editPaymentTypeModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedPaymentTypeData = {
+                pt_id: $('#edit_payment_type_id').val(),
+                pt_payment_id: $('#edit_payment_type_payment_id').val(),
+                pt_name: $('#edit_payment_type_name').val(),
+                pt_status: $('#edit_payment_type_status').val()
+            };
+
+            console.log('Edited Payment Type Data:', editedPaymentTypeData);
+
+            $.ajax({
+                url: `/payment_types/updatepayment_type/`,
+                type: 'PUT',
+                data: editedPaymentTypeData,
+                success: function (response) {
+                    console.log('Payment type data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating payment type data:', err);
+                }
+            });
+
+            $('#editPaymentTypeModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var paymentTypeData = $(this).data();
+            $('#editPaymentTypeModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_payment_type_id').val(paymentTypeData.pt_id);
+                $('#edit_payment_type_payment_id').val(paymentTypeData.pt_payment_id);
+                $('#edit_payment_type_name').val(paymentTypeData.pt_name);
+                $('#edit_payment_type_status').val(paymentTypeData.pt_status);
+            });
+        });
+    });
+</script>

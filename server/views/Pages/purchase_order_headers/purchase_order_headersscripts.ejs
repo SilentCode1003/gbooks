@@ -1,0 +1,114 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/purchase_order_headers/getpurchase_order_headers",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#purchase_order_headers_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.poh_id,
+                            element.poh_sequence,
+                            element.poh_vendor_id,
+                            element.poh_order_date,
+                            element.poh_delivery_date,
+                            element.poh_total_cost,
+                            `<span class="badge rounded-pill text-white ${element.poh_status === 'PENDING' ? 'bg-warning' : element.poh_status === 'COMPLETED' ? 'bg-success' : 'bg-danger'}">${element.poh_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-poh_id="${element.poh_id}" data-poh_sequence="${element.poh_sequence}" data-poh_vendor_id="${element.poh_vendor_id}" data-poh_order_date="${element.poh_order_date}" data-poh_delivery_date="${element.poh_delivery_date}" data-poh_total_cost="${element.poh_total_cost}" data-poh_status="${element.poh_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_purchase_order_header').on('click', function () {
+            $('#addPurchaseOrderHeaderModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addPurchaseOrderHeaderModal').modal('hide');
+            var addedHeaderData = {
+                poh_sequence: $('#add_sequence').val(),
+                poh_vendor_id: $('#add_vendor_id').val(),
+                poh_order_date: $('#add_order_date').val(),
+                poh_delivery_date: $('#add_delivery_date').val(),
+                poh_total_cost: $('#add_total_cost').val(),
+                poh_status: 'pending' // Default status
+            };
+
+            console.log('Added Header Data:', addedHeaderData);
+
+            $.ajax({
+                url: `/purchase_order_headers/createpurchase_order_header/`,
+                type: 'POST',
+                data: addedHeaderData,
+                success: function (response) {
+                    console.log('Header data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting header data:', err);
+                }
+            });
+
+            $('#addPurchaseOrderHeaderModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editPurchaseOrderHeaderModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedHeaderData = {
+                poh_id: $('#edit_id').val(),
+                poh_sequence: $('#edit_sequence').val(),
+                poh_vendor_id: $('#edit_vendor_id').val(),
+                poh_order_date: $('#edit_order_date').val(),
+                poh_delivery_date: $('#edit_delivery_date').val(),
+                poh_total_cost: $('#edit_total_cost').val(),
+                poh_status: $('#edit_status').val()
+            };
+
+            console.log('Edited Header Data:', editedHeaderData);
+
+            $.ajax({
+                url: `/purchase_order_headers/updatepurchase_order_header/`,
+                type: 'PUT',
+                data: editedHeaderData,
+                success: function (response) {
+                    console.log('Header data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating header data:', err);
+                }
+            });
+
+            $('#editPurchaseOrderHeaderModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var headerData = $(this).data();
+            $('#editPurchaseOrderHeaderModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_id').val(headerData.poh_id);
+                $('#edit_sequence').val(headerData.poh_sequence);
+                $('#edit_vendor_id').val(headerData.poh_vendor_id);
+                $('#edit_order_date').val(headerData.poh_order_date);
+                $('#edit_delivery_date').val(headerData.poh_delivery_date);
+                $('#edit_total_cost').val(headerData.poh_total_cost);
+                $('#edit_status').val(headerData.poh_status);
+            });
+        });
+    });
+</script>

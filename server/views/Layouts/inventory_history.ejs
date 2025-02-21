@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("../Components/header.ejs") %>
+
+<body>
+    <main>
+      
+        <%- include("../Components/sidebar.ejs") %>
+      
+      
+        <div class="b-example-divider"></div>
+        <div class="container-fluid overflow-auto" style="margin:0;padding:0;">
+            <div class="container-fluid bg-dark p-2">
+                <h1 class=" text-white">Inventory History</h1>
+            </div>
+
+        
+        <%- include("../Pages/inventory_history/inventory_history.ejs") %>
+        </div>
+      </main>
+
+      <%- include("../Components/footer.ejs") %>
+      <%- include("../Pages/inventory_history/inventory_historyscripts.ejs") %>
+</body>
+</html>

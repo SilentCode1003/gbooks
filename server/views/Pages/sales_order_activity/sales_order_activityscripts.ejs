@@ -1,0 +1,110 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/sales_order_activity/getsales_order_activity",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#sales_order_activity_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.soa_id,
+                            element.soa_sales_order_id,
+                            `<span class="badge rounded-pill text-white ${element.soa_type === 'REQUEST' ? 'bg-warning' : element.soa_type === 'APPROVED' ? 'bg-success' : 'bg-danger'}">${element.soa_type}</span>`,
+                            element.soa_remarks,
+                            element.soa_user,
+                            element.soa_date,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-soa_id="${element.soa_id}" data-soa_sales_order_id="${element.soa_sales_order_id}" data-soa_type="${element.soa_type}" data-soa_remarks="${element.soa_remarks}" data-soa_user="${element.soa_user}" data-soa_date="${element.soa_date}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_sales_order_activity').on('click', function () {
+            $('#addSalesOrderActivityModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addSalesOrderActivityModal').modal('hide');
+            var addedItemData = {
+                soa_sales_order_id: $('#add_sales_order_id').val(),
+                soa_type: $('#add_type').val(),
+                soa_remarks: $('#add_remarks').val(),
+                soa_user: $('#add_user').val(),
+                soa_date: $('#add_date').val()
+            };
+
+            console.log('Added Item Data:', addedItemData);
+
+            $.ajax({
+                url: `/sales_order_activity/createsales_order_activity/`,
+                type: 'POST',
+                data: addedItemData,
+                success: function (response) {
+                    console.log('Item data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting item data:', err);
+                }
+            });
+
+            $('#addSalesOrderActivityModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editSalesOrderActivityModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedItemData = {
+                soa_id: $('#edit_id').val(),
+                soa_sales_order_id: $('#edit_sales_order_id').val(),
+                soa_type: $('#edit_type').val(),
+                soa_remarks: $('#edit_remarks').val(),
+                soa_user: $('#edit_user').val(),
+                soa_date: $('#edit_date').val()
+            };
+
+            console.log('Edited Item Data:', editedItemData);
+
+            $.ajax({
+                url: `/sales_order_activity/updatesales_order_activity/`,
+                type: 'PUT',
+                data: editedItemData,
+                success: function (response) {
+                    console.log('Item data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating item data:', err);
+                }
+            });
+
+            $('#editSalesOrderActivityModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var itemData = $(this).data();
+            $('#editSalesOrderActivityModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_id').val(itemData.soa_id);
+                $('#edit_sales_order_id').val(itemData.soa_sales_order_id);
+                $('#edit_type').val(itemData.soa_type);
+                $('#edit_remarks').val(itemData.soa_remarks);
+                $('#edit_user').val(itemData.soa_user);
+                $('#edit_date').val(itemData.soa_date);
+            });
+        });
+    });
+</script>

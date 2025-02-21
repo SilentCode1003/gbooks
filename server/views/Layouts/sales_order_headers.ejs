@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("../Components/header.ejs") %>
+
+<body>
+    <main>
+      
+        <%- include("../Components/sidebar.ejs") %>
+      
+      
+        <div class="b-example-divider"></div>
+        <div class="container-fluid overflow-auto" style="margin:0;padding:0;">
+            <div class="container-fluid bg-dark p-2">
+                <h1 class=" text-white">Sales Order Header</h1>
+            </div>
+        
+        <%- include("../Pages/sales_order_headers/sales_order_headers.ejs") %>
+        </div>
+      </main>
+
+      <%- include("../Components/footer.ejs") %>
+      <%- include("../Pages/sales_order_headers/sales_order_headersscripts.ejs") %>
+</body>
+</html>

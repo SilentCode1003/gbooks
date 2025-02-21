@@ -19,6 +19,10 @@ module.exports = {
       poa_purchase_order_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'purchase_order_header',
+          key: 'poh_id',
+        },
       },
       poa_type: {
         type: Sequelize.ENUM('APPROVED','REQUEST','REJECT','CANCEL'),
@@ -46,5 +50,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('purchase_order_activity');
   }
 };

@@ -19,13 +19,18 @@ module.exports = {
       pt_payment_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+
+        references: {
+          model: 'master_payment',
+          key: 'mp_id',
+        },
       },
       pt_name: {
         type: Sequelize.STRING(300),
         allowNull: false,
       },
       pt_status: {
-        type: Sequelize.ENUM('ACTIVE', 'INACTIVE'),
+        type: Sequelize.ENUM('active', 'inactive'),
         allowNull: false,
       },
     });
@@ -38,5 +43,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('payment_type');
   }
 };

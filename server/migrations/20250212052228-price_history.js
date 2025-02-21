@@ -19,6 +19,10 @@ module.exports = {
       ph_product_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references : {
+          model: 'master_product',
+          key: 'mp_id',
+        },
       },
       ph_cost: {
         type: Sequelize.DECIMAL(10, 2),
@@ -36,8 +40,8 @@ module.exports = {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false,
       },
-      ph_status: {
-        type: Sequelize.ENUM('ACTIVE', 'INACTIVE'),
+      ph_date: {
+        type: Sequelize.STRING(20),
         allowNull: false,
       },
     });
@@ -50,5 +54,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('price_history');
   }
 };

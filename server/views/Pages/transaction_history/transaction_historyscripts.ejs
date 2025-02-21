@@ -1,0 +1,106 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/transaction_history/gettransaction_history",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#transactions_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.th_id,
+                            element.th_transaction_id,
+                            `<span class="badge rounded-pill text-white ${element.th_status === 'PAID' ? 'bg-success' : element.th_status === 'PARTIALLY' ? 'bg-warning' : 'bg-danger'}">${element.th_status}</span>`,
+                            element.th_process_by,
+                            element.th_process_date,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-th_id="${element.th_id}" data-th_transaction_id="${element.th_transaction_id}" data-th_status="${element.th_status}" data-th_process_by="${element.th_process_by}" data-th_process_date="${element.th_process_date}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_transaction').on('click', function () {
+            $('#addTransactionModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addTransactionModal').modal('hide');
+            var addedTransactionData = {
+                th_transaction_id: $('#add_transaction_id').val(),
+                th_status: $('#add_status').val(),
+                th_process_by: $('#add_process_by').val(),
+                th_process_date: $('#add_process_date').val()
+            };
+
+            console.log('Added Transaction Data:', addedTransactionData);
+
+            $.ajax({
+                url: `/transaction_history/createtransaction_history/`,
+                type: 'POST',
+                data: addedTransactionData,
+                success: function (response) {
+                    console.log('Transaction history data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting transaction history data:', err);
+                }
+            });
+
+            $('#addTransactionModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editTransactionModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedTransactionData = {
+                th_id: $('#edit_id').val(),
+                th_transaction_id: $('#edit_transaction_id').val(),
+                th_status: $('#edit_status').val(),
+                th_process_by: $('#edit_process_by').val(),
+                th_process_date: $('#edit_process_date').val()
+            };
+
+            console.log('Edited Transaction Data:', editedTransactionData);
+
+            $.ajax({
+                url: `/transaction_history/updatetransaction_history/`,
+                type: 'PUT',
+                data: editedTransactionData,
+                success: function (response) {
+                    console.log('Transaction history data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating transaction history data:', err);
+                }
+            });
+
+            $('#editTransactionModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var transactionData = $(this).data();
+            $('#editTransactionModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_id').val(transactionData.th_id);
+                $('#edit_transaction_id').val(transactionData.th_transaction_id);
+                $('#edit_status').val(transactionData.th_status);
+                $('#edit_process_by').val(transactionData.th_process_by);
+                $('#edit_process_date').val(transactionData.th_process_date);
+            });
+        });
+    });
+</script>

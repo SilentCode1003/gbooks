@@ -118,7 +118,7 @@ const Accounting = {
       email: "mc_email",
       phone: "mc_phone",
       mobile: "mc_mobile",
-      address: "address",
+      address: "mc_address",
       tin: "mc_tin",
       status: "mc_status",
     },
@@ -140,7 +140,7 @@ const Accounting = {
     selectOptionsColumn: {
       id: "md_id",
       code: "md_code",
-      department_name: "description",
+      description: "md_description",
       status: "md_status",
     },
   },

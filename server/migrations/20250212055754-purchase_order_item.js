@@ -19,10 +19,18 @@ module.exports = {
       poi_purchase_order_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'purchase_order_header',
+          key: 'poh_id',
+        },
       },
-      po_product_id: {
+      poi_product_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'master_product',
+          key: 'mp_id',
+        },
       },
       poi_product_cost: {
         type: Sequelize.DECIMAL(10,2),
@@ -46,5 +54,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('purchase_order_item');
   }
 };

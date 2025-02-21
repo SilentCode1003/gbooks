@@ -19,6 +19,10 @@ module.exports = {
       pi_product_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'master_product',
+          key: 'mp_id',
+        },
       },
       pi_branch_id: {
         type: Sequelize.INTEGER,
@@ -33,7 +37,7 @@ module.exports = {
         allowNull: false,
       },
       pi_status: {
-        type: Sequelize.ENUM('ACTIVE', 'INACTIVE'),
+        type: Sequelize.ENUM('active', 'inactive'),
         allowNull: false,
       },
     });
@@ -46,5 +50,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('product_inventory');
   }
 };
