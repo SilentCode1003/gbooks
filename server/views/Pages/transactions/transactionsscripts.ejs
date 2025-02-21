@@ -1,0 +1,141 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/transactions/gettransactions",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#transactions_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.t_id,
+                            element.t_bank_account_id,
+                            element.t_reference_id,
+                            element.t_type,
+                            element.t_sub_type,
+                            element.t_description,
+                            element.t_payment_type,
+                            element.t_payment_sub_type,
+                            element.t_amount,
+                            element.t_transaction_date,
+                            element.t_transact_by,
+                            element.t_process_by,
+                            element.t_process_date,
+                            `<span class="badge rounded-pill text-white ${element.t_status === 'paid' ? 'bg-success' : element.t_status === 'partially paid' ? 'bg-warning' : 'bg-danger'}">${element.t_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-t_id="${element.t_id}" data-t_bank_account_id="${element.t_bank_account_id}" data-t_reference_id="${element.t_reference_id}" data-t_type="${element.t_type}" data-t_sub_type="${element.t_sub_type}" data-t_description="${element.t_description}" data-t_payment_type="${element.t_payment_type}" data-t_payment_sub_type="${element.t_payment_sub_type}" data-t_amount="${element.t_amount}" data-t_transaction_date="${element.t_transaction_date}" data-t_transact_by="${element.t_transact_by}" data-t_process_by="${element.t_process_by}" data-t_process_date="${element.t_process_date}" data-t_status="${element.t_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_transaction').on('click', function () {
+            $('#addTransactionModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addTransactionModal').modal('hide');
+            var addedTransactionData = {
+                t_bank_account_id: $('#add_bank_account_id').val(),
+                t_reference_id: $('#add_reference_id').val(),
+                t_type: $('#add_type').val(),
+                t_sub_type: $('#add_sub_type').val(),
+                t_description: $('#add_description').val(),
+                t_payment_type: $('#add_payment_type').val(),
+                t_payment_sub_type: $('#add_payment_sub_type').val(),
+                t_amount: $('#add_amount').val(),
+                t_transaction_date: $('#add_transaction_date').val(),
+                t_transact_by: $('#add_transact_by').val(),
+                t_process_by: $('#add_process_by').val(),
+                t_process_date: $('#add_process_date').val()
+            };
+
+            console.log('Added Transaction Data:', addedTransactionData);
+
+            $.ajax({
+                url: `/transactions/createtransaction/`,
+                type: 'POST',
+                data: addedTransactionData,
+                success: function (response) {
+                    console.log('Transaction data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting transaction data:', err);
+                }
+            });
+
+            $('#addTransactionModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editTransactionModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedTransactionData = {
+                t_id: $('#edit_transaction_id').val(),
+                t_bank_account_id: $('#edit_bank_account_id').val(),
+                t_reference_id: $('#edit_reference_id').val(),
+                t_type: $('#edit_type').val(),
+                t_sub_type: $('#edit_sub_type').val(),
+                t_description: $('#edit_description').val(),
+                t_payment_type: $('#edit_payment_type').val(),
+                t_payment_sub_type: $('#edit_payment_sub_type').val(),
+                t_amount: $('#edit_amount').val(),
+                t_transaction_date: $('#edit_transaction_date').val(),
+                t_transact_by: $('#edit_transact_by').val(),
+                t_process_by: $('#edit_process_by').val(),
+                t_process_date: $('#edit_process_date').val(),
+                t_status: $('#edit_status').val()
+            };
+
+            console.log('Edited Transaction Data:', editedTransactionData);
+
+            $.ajax({
+                url: `/transactions/updatetransaction/`,
+                type: 'PUT',
+                data: editedTransactionData,
+                success: function (response) {
+                    console.log('Transaction data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating transaction data:', err);
+                }
+            });
+
+            $('#editTransactionModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var transactionData = $(this).data();
+            $('#editTransactionModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_transaction_id').val(transactionData.t_id);
+                $('#edit_bank_account_id').val(transactionData.t_bank_account_id);
+                $('#edit_reference_id').val(transactionData.t_reference_id);
+                $('#edit_type').val(transactionData.t_type);
+                $('#edit_sub_type').val(transactionData.t_sub_type);
+                $('#edit_description').val(transactionData.t_description);
+                $('#edit_payment_type').val(transactionData.t_payment_type);
+                $('#edit_payment_sub_type').val(transactionData.t_payment_sub_type);
+                $('#edit_amount').val(transactionData.t_amount);
+                $('#edit_transaction_date').val(transactionData.t_transaction_date);
+                $('#edit_transact_by').val(transactionData.t_transact_by);
+                $('#edit_process_by').val(transactionData.t_process_by);
+                $('#edit_process_date').val(transactionData.t_process_date);
+                $('#edit_status').val(transactionData.t_status);
+            });
+        });
+    });
+</script>

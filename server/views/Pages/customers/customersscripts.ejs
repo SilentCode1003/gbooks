@@ -1,0 +1,123 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/customers/getcustomers",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#customers_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.mc_id,
+                            element.mc_business_name,
+                            element.mc_business_type,
+                            element.mc_customer_name,
+                            element.mc_email,
+                            element.mc_phone,
+                            element.mc_mobile,
+                            element.mc_address,
+                            element.mc_tin,
+                            `<span class="badge rounded-pill text-white ${element.mc_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mc_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mc_id="${element.mc_id}" data-mc_business_name="${element.mc_business_name}" data-mc_business_type="${element.mc_business_type}" data-mc_customer_name="${element.mc_customer_name}" data-mc_email="${element.mc_email}" data-mc_phone="${element.mc_phone}" data-mc_mobile="${element.mc_mobile}" data-mc_address="${element.mc_address}" data-mc_tin="${element.mc_tin}" data-mc_status="${element.mc_status}"><i class=" fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_customer').on('click', function () {
+            $('#addCustomerModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addCustomerModal').modal('hide');
+            var addedCustomerData = {
+                mc_business_name: $('#add_customer_business_name').val(),
+                mc_business_type: $('#add_customer_business_type').val(),
+                mc_customer_name: $('#add_customer_name').val(),
+                mc_email: $('#add_customer_email').val(),
+                mc_phone: $('#add_customer_phone').val(),
+                mc_mobile: $('#add_customer_mobile').val(),
+                mc_address: $('#add_customer_address').val(),
+                mc_tin: $('#add_customer_tin').val()
+            };
+
+            console.log('Added Customer Data:', addedCustomerData);
+
+            $.ajax({
+                url: `/customers/createcustomer/`,
+                type: 'POST',
+                data: addedCustomerData,
+                success: function (response) {
+                    console.log('Customer data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting customer data:', err);
+                }
+            });
+
+            $('#addCustomerModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editCustomerModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedCustomerData = {
+                mc_id: $('#edit_customer_id').val(),
+                mc_business_name: $('#edit_customer_business_name').val(),
+                mc_business_type: $('#edit_customer_business_type').val(),
+                mc_customer_name: $('#edit_customer_name').val(),
+                mc_email: $('#edit_customer_email').val(),
+                mc_phone: $('#edit_customer_phone').val(),
+                mc_mobile: $('#edit_customer_mobile').val(),
+                mc_address: $('#edit_customer_address').val(),
+                mc_tin: $('#edit_customer_tin').val(),
+                mc_status: $('#edit_customer_status').val()
+            };
+
+            console.log('Edited Customer Data:', editedCustomerData);
+
+            $.ajax({
+                url: `/customers/updatecustomer/`,
+                type: 'PUT',
+                data: editedCustomerData,
+                success: function (response) {
+                    console.log('Customer data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating customer data:', err);
+                }
+            });
+
+            $('#editCustomerModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var subjectData = $(this).data();
+            $('#editCustomerModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_customer_id').val(subjectData.mc_id);
+                $('#edit_customer_business_name').val(subjectData.mc_business_name);
+                $('#edit_customer_business_type').val(subjectData.mc_business_type);
+                $('#edit_customer_name').val(subjectData.mc_customer_name);
+                $('#edit_customer_email').val(subjectData.mc_email);
+                $('#edit_customer_phone').val(subjectData.mc_phone);
+                $('#edit_customer_mobile').val(subjectData.mc_mobile);
+                $('#edit_customer_address').val(subjectData.mc_address);
+                $('#edit_customer_tin').val(subjectData.mc_tin);
+                $('#edit_customer_status').val(subjectData.mc_status);
+            });
+        });
+    });
+</script>

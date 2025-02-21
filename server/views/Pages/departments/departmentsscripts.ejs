@@ -1,0 +1,99 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/departments/getdepartments",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#departments_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.md_id,
+                            element.md_code,
+                            element.md_description,
+                            `<span class="badge rounded-pill text-white ${element.md_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.md_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-md_id="${element.md_id}" data-md_code="${element.md_code}" data-md_description="${element.md_description}" data-md_status="${element.md_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_department').on('click', function () {
+            $('#addDepartmentModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addDepartmentModal').modal('hide');
+            var addedDepartmentData = {
+                md_code: $('#add_department_code').val(),
+                md_description: $('#add_department_description').val()
+            };
+
+            console.log('Added Department Data:', addedDepartmentData);
+
+            $.ajax({
+                url: `/departments/createdepartment/`,
+                type: 'POST',
+                data: addedDepartmentData,
+                success: function (response) {
+                    console.log('Department data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting department data:', err);
+                }
+            });
+
+            $('#addDepartmentModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editDepartmentModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedDepartmentData = {
+                md_id: $('#edit_department_id').val(),
+                md_code: $('#edit_department_code').val(),
+                md_description: $('#edit_department_description').val(),
+                md_status: $('#edit_department_status').val()
+            };
+
+            console.log('Edited Department Data:', editedDepartmentData);
+
+            $.ajax({
+                url: `/departments/updatedepartment/`,
+                type: 'PUT',
+                data: editedDepartmentData,
+                success: function (response) {
+                    console.log('Department data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating department data:', err);
+                }
+            });
+
+            $('#editDepartmentModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var departmentData = $(this).data();
+            $('#editDepartmentModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_department_id').val(departmentData.md_id);
+                $('#edit_department_code').val(departmentData.md_code);
+                $('#edit_department_description').val(departmentData.md_description);
+                $('#edit_department_status').val(departmentData.md_status);
+            });
+        });
+    });
+</script>

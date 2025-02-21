@@ -1,0 +1,95 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/debits/getdebits",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#debits_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.md_id,
+                            element.md_type,
+                            `<span class="badge rounded-pill text-white ${element.md_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.md_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success  edit-btn" data-md_id="${element.md_id}" data-md_type="${element.md_type}" data-md_status="${element.md_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_debit').on('click', function () {
+            $('#addDebitModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addDebitModal').modal('hide');
+            var addedDebitData = {
+                md_type: $('#add_debit_type').val()
+            };
+
+            console.log('Added Debit Data:', addedDebitData);
+
+            $.ajax({
+                url: `/debits/createdebit/`,
+                type: 'POST',
+                data: addedDebitData,
+                success: function (response) {
+                    console.log('Debit data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting debit data:', err);
+                }
+            });
+
+            $('#addDebitModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editDebitModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedDebitData = {
+                md_id: $('#edit_debit_id').val(),
+                md_type: $('#edit_debit_type').val(),
+                md_status: $('#edit_debit_status').val()
+            };
+
+            console.log('Edited Debit Data:', editedDebitData);
+
+            $.ajax({
+                url: `/debits/updatedebit/`,
+                type: 'PUT',
+                data: editedDebitData,
+                success: function (response) {
+                    console.log('Debit data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating debit data:', err);
+                }
+            });
+
+            $('#editDebitModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var debitData = $(this).data();
+            $('#editDebitModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_debit_id').val(debitData.md_id);
+                $('#edit_debit_type').val(debitData.md_type);
+                $('#edit_debit_status').val(debitData.md_status);
+            });
+        });
+    });
+</script>

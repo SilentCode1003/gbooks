@@ -1,0 +1,110 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/purchase_order_items/getpurchase_order_items",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#purchase_order_items_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.poi_id,
+                            element.poi_purchase_order_id,
+                            element.poi_product_id,
+                            element.poi_product_cost,
+                            element.poi_quantity,
+                            element.poi_unit,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-poi_id="${element.poi_id}" data-poi_purchase_order_id="${element.poi_purchase_order_id}" data-poi_product_id="${element.poi_product_id}" data-poi_product_cost="${element.poi_product_cost}" data-poi_quantity="${element.poi_quantity}" data-poi_unit="${element.poi_unit}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_purchase_order_item').on('click', function () {
+            $('#addPurchaseOrderItemModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addPurchaseOrderItemModal').modal('hide');
+            var addedItemData = {
+                poi_purchase_order_id: $('#add_purchase_order_id').val(),
+                poi_product_id: $('#add_product_id').val(),
+                poi_product_cost: $('#add_product_cost').val(),
+                poi_quantity: $('#add_quantity').val(),
+                poi_unit: $('#add_unit').val()
+            };
+
+            console.log('Added Item Data:', addedItemData);
+
+            $.ajax({
+                url: `/purchase_order_items/createpurchase_order_item/`,
+                type: 'POST',
+                data: addedItemData,
+                success: function (response) {
+                    console.log('Item data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting item data:', err);
+                }
+            });
+
+            $('#addPurchaseOrderItemModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editPurchaseOrderItemModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedItemData = {
+                poi_id: $('#edit_id').val(),
+                poi_purchase_order_id: $('#edit_purchase_order_id').val(),
+                poi_product_id: $('#edit_product_id').val(),
+                poi_product_cost: $('#edit_product_cost').val(),
+                poi_quantity: $('#edit_quantity').val(),
+                poi_unit: $('#edit_unit').val()
+            };
+
+            console.log('Edited Item Data:', editedItemData);
+
+            $.ajax({
+                url: `/purchase_order_items/updatepurchase_order_item/`,
+                type: 'PUT',
+                data: editedItemData,
+                success: function (response) {
+                    console.log('Item data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating item data:', err);
+                }
+            });
+
+            $('#editPurchaseOrderItemModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var itemData = $(this).data();
+            $('#editPurchaseOrderItemModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_id').val(itemData.poi_id);
+                $('#edit_purchase_order_id').val(itemData.poi_purchase_order_id);
+                $('#edit_product_id').val(itemData.poi_product_id);
+                $('#edit_product_cost').val(itemData.poi_product_cost);
+                $('#edit_quantity').val(itemData.poi_quantity);
+                $('#edit_unit').val(itemData.poi_unit);
+            });
+        });
+    });
+</script>

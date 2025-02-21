@@ -1,0 +1,99 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/payments/getpayments",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#payments_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.mp_id,
+                            element.mp_code,
+                            element.mp_description,
+                            `<span class="badge rounded-pill text-white ${element.mp_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mp_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mp_id="${element.mp_id}" data-mp_code="${element.mp_code}" data-mp_description="${element.mp_description}" data-mp_status="${element.mp_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_payment').on('click', function () {
+            $('#addPaymentModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addPaymentModal').modal('hide');
+            var addedPaymentData = {
+                mp_code: $('#add_payment_code').val(),
+                mp_description: $('#add_payment_description').val()
+            };
+
+            console.log('Added Payment Data:', addedPaymentData);
+
+            $.ajax({
+                url: `/payments/createpayment/`,
+                type: 'POST',
+                data: addedPaymentData,
+                success: function (response) {
+                    console.log('Payment data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting payment data:', err);
+                }
+            });
+
+            $('#addPaymentModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editPaymentModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedPaymentData = {
+                mp_id: $('#edit_payment_id').val(),
+                mp_code: $('#edit_payment_code').val(),
+                mp_description: $('#edit_payment_description').val(),
+                mp_status: $('#edit_payment_status').val()
+            };
+
+            console.log('Edited Payment Data:', editedPaymentData);
+
+            $.ajax({
+                url: `/payments/updatepayment/`,
+                type: 'PUT',
+                data: editedPaymentData,
+                success: function (response) {
+                    console.log('Payment data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating payment data:', err);
+                }
+            });
+
+            $('#editPaymentModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var paymentData = $(this).data();
+            $('#editPaymentModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_payment_id').val(paymentData.mp_id);
+                $('#edit_payment_code').val(paymentData.mp_code);
+                $('#edit_payment_description').val(paymentData.mp_description);
+                $('#edit_payment_status').val(paymentData.mp_status);
+            });
+        });
+    });
+</script>

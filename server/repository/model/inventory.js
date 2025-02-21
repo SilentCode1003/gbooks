@@ -133,7 +133,7 @@ const Inventory ={
             "markup_rate",
             "vat_ex",
             "vat_inc",
-            "status",
+            "date",
         ],
         selectColumns: [
             "ph_id",
@@ -142,7 +142,7 @@ const Inventory ={
             "ph_markup_rate",
             "ph_vat_ex",
             "ph_vat_inc",
-            "ph_status",
+            "ph_date",
         ],
         selectOptionsColumn: {
             id: "ph_id",
@@ -151,7 +151,7 @@ const Inventory ={
             markup_rate: "ph_markup_rate",
             vat_ex: "ph_vat_ex",
             vat_inc: "ph_vat_inc",
-            status: "ph_status",
+            date: "ph_date",
         },
     },
     master_branch: {

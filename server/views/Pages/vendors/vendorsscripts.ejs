@@ -1,0 +1,124 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/vendors/getvendors",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#vendors_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.mv_id,
+                            element.mv_business_name,
+                            element.mv_business_type,
+                            element.mv_contact_person,
+                            element.mv_email,
+                            element.mv_phone,
+                            element.mv_mobile,
+                            element.mv_business_address,
+                            element.mv_tin,
+                            `<span class="badge rounded-pill text-white ${element.mv_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mv_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mv_id="${element.mv_id}" data-mv_business_name="${element.mv_business_name}" data-mv_business_type="${element.mv_business_type}" data-mv_contact_person="${element.mv_contact_person}" data-mv_email="${element.mv_email}" data-mv_phone="${element.mv_phone}" data-mv_mobile="${element.mv_mobile}" data-mv_business_address="${element.mv_business_address}" data-mv_tin="${element.mv_tin}" data-mv_status="${element.mv_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+
+        $('#add_vendor').on('click', function () {
+            $('#addVendorModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addVendorModal').modal('hide');
+            var addedVendorData = {
+            mv_business_name: $('#add_vendor_business_name').val(),
+            mv_business_type: $('#add_vendor_business_type').val(),
+            mv_contact_person: $('#add_vendor_contact_person').val(),
+            mv_email: $('#add_vendor_email').val(),
+            mv_phone: $('#add_vendor_phone').val(),
+            mv_mobile: $('#add_vendor_mobile').val(),
+            mv_business_address: $('#add_vendor_business_address').val(),
+            mv_tin: $('#add_vendor_tin').val()
+            };
+
+            console.log('Added Vendor Data:', addedVendorData);
+
+            $.ajax({
+            url: `/vendors/createvendor/`,
+            type: 'POST',
+            data: addedVendorData,
+            success: function (response) {
+                console.log('Vendor data added successfully:', response);
+                LoadTable();
+            },
+            error: function (err) {
+                console.error('Error inserting vendor data:', err);
+            }
+            });
+
+            $('#addVendorModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editVendorModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedVendorData = {
+                mv_id: $('#edit_vendor_id').val(),
+                mv_business_name: $('#edit_vendor_business_name').val(),
+                mv_business_type: $('#edit_vendor_business_type').val(),
+                mv_contact_person: $('#edit_vendor_contact_person').val(),
+                mv_email: $('#edit_vendor_email').val(),
+                mv_phone: $('#edit_vendor_phone').val(),
+                mv_mobile: $('#edit_vendor_mobile').val(),
+                mv_business_address: $('#edit_vendor_business_address').val(),
+                mv_tin: $('#edit_vendor_tin').val(),
+                mv_status: $('#edit_vendor_status').val()
+            };
+
+            console.log('Edited Vendor Data:', editedVendorData);
+
+            $.ajax({
+                url: `/vendors/updatevendor/`,
+                type: 'PUT',
+                data: editedVendorData,
+                success: function (response) {
+                    console.log('Vendor data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating vendor data:', err);
+                }
+            });
+
+            $('#editVendorModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var subjectData = $(this).data();
+            $('#editVendorModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_vendor_id').val(subjectData.mv_id);
+                $('#edit_vendor_business_name').val(subjectData.mv_business_name);
+                $('#edit_vendor_business_type').val(subjectData.mv_business_type);
+                $('#edit_vendor_contact_person').val(subjectData.mv_contact_person);
+                $('#edit_vendor_email').val(subjectData.mv_email);
+                $('#edit_vendor_phone').val(subjectData.mv_phone);
+                $('#edit_vendor_mobile').val(subjectData.mv_mobile);
+                $('#edit_vendor_business_address').val(subjectData.mv_business_address);
+                $('#edit_vendor_tin').val(subjectData.mv_tin);
+                $('#edit_vendor_status').val(subjectData.mv_status);
+            });
+        });
+    });
+</script>

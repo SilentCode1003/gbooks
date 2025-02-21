@@ -24,7 +24,7 @@ module.exports = {
           key: 'poh_id',
         },
       },
-      po_product_id: {
+      poi_product_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {

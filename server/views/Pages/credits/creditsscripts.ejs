@@ -1,0 +1,95 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/credits/getcredits",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#credits_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.mc_id,
+                            element.mc_type,
+                            `<span class="badge rounded-pill text-white ${element.mc_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mc_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success  edit-btn" data-mc_id="${element.mc_id}" data-mc_type="${element.mc_type}" data-mc_status="${element.mc_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_credit').on('click', function () {
+            $('#addCreditModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addCreditModal').modal('hide');
+            var addedCreditData = {
+                mc_type: $('#add_credit_type').val()
+            };
+
+            console.log('Added Credit Data:', addedCreditData);
+
+            $.ajax({
+                url: `/credits/createcredit/`,
+                type: 'POST',
+                data: addedCreditData,
+                success: function (response) {
+                    console.log('Credit data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting credit data:', err);
+                }
+            });
+
+            $('#addCreditModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editCreditModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedCreditData = {
+                mc_id: $('#edit_credit_id').val(),
+                mc_type: $('#edit_credit_type').val(),
+                mc_status: $('#edit_credit_status').val()
+            };
+
+            console.log('Edited Credit Data:', editedCreditData);
+
+            $.ajax({
+                url: `/credits/updatecredit/`,
+                type: 'PUT',
+                data: editedCreditData,
+                success: function (response) {
+                    console.log('Credit data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating credit data:', err);
+                }
+            });
+
+            $('#editCreditModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var creditData = $(this).data();
+            $('#editCreditModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_credit_id').val(creditData.mc_id);
+                $('#edit_credit_type').val(creditData.mc_type);
+                $('#edit_credit_status').val(creditData.mc_status);
+            });
+        });
+    });
+</script>

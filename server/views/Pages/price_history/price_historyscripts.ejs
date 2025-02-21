@@ -1,0 +1,114 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/price_history/getprice_history",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#price_history_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.ph_id,
+                            element.ph_product_id,
+                            element.ph_cost,
+                            element.ph_markup_rate,
+                            element.ph_vat_ex,
+                            element.ph_vat_inc,
+                            element.ph_date,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-ph_id="${element.ph_id}" data-ph_product_id="${element.ph_product_id}" data-ph_cost="${element.ph_cost}" data-ph_markup_rate="${element.ph_markup_rate}" data-ph_vat_ex="${element.ph_vat_ex}" data-ph_vat_inc="${element.ph_vat_inc}" data-ph_date="${element.ph_date}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_price_history').on('click', function () {
+            $('#addPriceHistoryModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addPriceHistoryModal').modal('hide');
+            var addedPriceHistoryData = {
+                ph_product_id: $('#add_product_id').val(),
+                ph_cost: $('#add_cost').val(),
+                ph_markup_rate: $('#add_markup_rate').val(),
+                ph_vat_ex: $('#add_vat_ex').val(),
+                ph_vat_inc: $('#add_vat_inc').val(),
+                ph_date: $('#add_date').val()
+            };
+
+            console.log('Added Price History Data:', addedPriceHistoryData);
+
+            $.ajax({
+                url: `/price_history/createprice_history/`,
+                type: 'POST',
+                data: addedPriceHistoryData,
+                success: function (response) {
+                    console.log('Price history data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting price history data:', err);
+                }
+            });
+
+            $('#addPriceHistoryModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editPriceHistoryModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedPriceHistoryData = {
+                ph_id: $('#edit_id').val(),
+                ph_product_id: $('#edit_product_id').val(),
+                ph_cost: $('#edit_cost').val(),
+                ph_markup_rate: $('#edit_markup_rate').val(),
+                ph_vat_ex: $('#edit_vat_ex').val(),
+                ph_vat_inc: $('#edit_vat_inc').val(),
+                ph_date: $('#edit_date').val()
+            };
+
+            console.log('Edited Price History Data:', editedPriceHistoryData);
+
+            $.ajax({
+                url: `/price_history/updateprice_history/`,
+                type: 'PUT',
+                data: editedPriceHistoryData,
+                success: function (response) {
+                    console.log('Price history data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating price history data:', err);
+                }
+            });
+
+            $('#editPriceHistoryModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var priceHistoryData = $(this).data();
+            $('#editPriceHistoryModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_id').val(priceHistoryData.ph_id);
+                $('#edit_product_id').val(priceHistoryData.ph_product_id);
+                $('#edit_cost').val(priceHistoryData.ph_cost);
+                $('#edit_markup_rate').val(priceHistoryData.ph_markup_rate);
+                $('#edit_vat_ex').val(priceHistoryData.ph_vat_ex);
+                $('#edit_vat_inc').val(priceHistoryData.ph_vat_inc);
+                $('#edit_date').val(priceHistoryData.ph_date);
+            });
+        });
+    });
+</script>
