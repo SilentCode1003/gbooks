@@ -6,7 +6,7 @@ var logger = require("morgan");
 
 const swaggerDocs = require("./repository/documentation/swagger");
 const swaggerUi = require("swagger-ui-express");
-const cors = require('cors');
+// const cors = require('cors');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -47,7 +47,7 @@ SetMongo(app);
 // view engine setup
 app.set("views", path.join(__dirname, "views/Layouts"));
 app.set("view engine", "ejs");
-app.use(cors());
+// app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(
