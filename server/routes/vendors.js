@@ -155,21 +155,24 @@ router.put("/updatevendor", (req, res) => {
   }
 });
 
-router.get("/activevendors", async (req, res) => {
+router.get("/activevendors", (req, res) => {
   try {
-    let select_sql = SelectWhereStatement(
-      Accounting.master_vendor.tablename,
-      Accounting.master_vendor.selectColumns,
-      [Accounting.master_vendor.selectOptionsColumn.status],
-      [STATUS.ACTIVE]
-    );
+    async function ProcessData() {
+      let select_sql = SelectWhereStatement(
+        Accounting.master_vendor.tablename,
+        Accounting.master_vendor.selectColumns,
+        [Accounting.master_vendor.selectOptionsColumn.status],
+        [STATUS.ACTIVE]
+      );
+  
+      let result = await Select(select_sql);
+  
+      res.status(200).json(JsonResponseData(result));
+    }
 
-    let result = await Select(select_sql);
-
-    res.status(200).json(JsonResponseData(result));
+    ProcessData();
   } catch (error) {
     console.log(error);
-    
     res.status(500).json(JsonResposeError(error));
   }
 });
