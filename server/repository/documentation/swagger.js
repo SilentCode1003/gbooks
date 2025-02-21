@@ -550,7 +550,7 @@ module.exports = swaggerDocs;
 
 /**
  * @swagger
- * /vendors/getactivevendors:
+ * /vendors/activevendors:
  *   get:
  *     summary: Get all active vendors
  *     description: Get all active vendors
