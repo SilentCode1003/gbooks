@@ -547,6 +547,78 @@ module.exports = swaggerDocs;
  *                 type: string
  *                 enum: ['active', 'inactive']
  */
+
+/**
+ * @swagger
+ * /vendors/getactivevendors:
+ *   get:
+ *     summary: Get all active vendors
+ *     description: Get all active vendors
+ *     tags:
+ *       - Vendors
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved active vendors
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/definitions/Vendor'
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Error'
+ * definitions:
+ *   Vendor:
+ *     type: object
+ *     properties:
+ *         mv_id:
+ *           type: integer
+ *           format: int64
+ *         mv_business_name:
+ *           type: varchar(300)
+ *           format: string
+ *         mv_business_type:
+ *           type: varchar(300)
+ *           format: string
+ *         mv_contact_person:
+ *           type: varchar(300)
+ *           format: string
+ *         mv_email:
+ *           type: varchar(300)
+ *           format: string
+ *         mv_phone:
+ *           type: varchar(13)
+ *           format: string
+ *         mv_mobile:
+ *           type: varchar(13)
+ *           format: string
+ *         mv_business_address:
+ *           type: varchar(300)
+ *           format: string
+ *         mv_tin:
+ *           type: varchar(20)
+ *           format: string
+ *         mv_status:
+ *           type: ENUM('active','inactive')
+ *           format: string
+ *   Error:
+ *     type: object
+ *     properties:
+ *       code:
+ *         type: integer
+ *         format: int32
+ *       message:
+ *         type: string
+ *       fields:
+ *         type: string
+ 
+ */
 //#endregion
 
 //#region Customer API Documentation
