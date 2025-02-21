@@ -1,0 +1,159 @@
+<div class="container-fluid overflow-auto">
+    <h1 class="text-center">Sales Order Headers</h1>
+
+    <div class="col-xl-12 col-lg-12">
+        <button class="btn btn-primary" id="add_sales_order_header">ADD Sales Order Header</button>
+        <div class="card shadow mb-4">
+            <div class="card-header bg-dark py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-white">Sales Order Headers Table</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive table-striped">
+                    <table class="table table-striped table-hover table-bordered" id="sales_order_headers_table">
+                        <thead class="" style="background-color: #4e73df;">
+                            <tr class="text-center text-white">
+                                <th scope="col">#</th>
+                                <th scope="col">Sequence</th>
+                                <th scope="col">Customer ID</th>
+                                <th scope="col">Order Date</th>
+                                <th scope="col">Delivery Date</th>
+                                <th scope="col">Total Cost</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD MODAL -->
+    <div class="modal fade" id="addSalesOrderHeaderModal" tabindex="-1" role="dialog" aria-labelledby="addSalesOrderHeaderModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSalesOrderHeaderModalLabel">Add Sales Order Header</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addSalesOrderHeaderForm">
+                        <div class="form-group">
+                            <label for="add_sequence" class="form-label">Sequence</label>
+                            <input type="text" class="form-control" id="add_sequence"
+                                name="add_sequence" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_customer_id" class="form-label">Customer ID</label>
+                            <input type="number" class="form-control" id="add_customer_id"
+                                name="add_customer_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_order_date" class="form-label">Order Date</label>
+                            <input type="text" class="form-control" id="add_order_date"
+                                name="add_order_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_delivery_date" class="form-label">Delivery Date</label>
+                            <input type="text" class="form-control" id="add_delivery_date"
+                                name="add_delivery_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_total_cost" class="form-label">Total Cost</label>
+                            <input type="number" step="0.01" class="form-control" id="add_total_cost"
+                                name="add_total_cost" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="save_add">Add Sales Order Header</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div class="modal fade" id="editSalesOrderHeaderModal" tabindex="-1" role="dialog" aria-labelledby="editSalesOrderHeaderModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSalesOrderHeaderModalLabel">Edit Sales Order Header</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editSalesOrderHeaderForm">
+                        <input type="hidden" id="edit_id" name="edit_id">
+                        <div class="form-group">
+                            <label for="edit_sequence" class="form-label">Sequence</label>
+                            <input type="text" class="form-control" id="edit_sequence"
+                                name="edit_sequence" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_customer_id" class="form-label">Customer ID</label>
+                            <input type="number" class="form-control" id="edit_customer_id"
+                                name="edit_customer_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_order_date" class="form-label">Order Date</label>
+                            <input type="text" class="form-control" id="edit_order_date"
+                                name="edit_order_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_delivery_date" class="form-label">Delivery Date</label>
+                            <input type="text" class="form-control" id="edit_delivery_date"
+                                name="edit_delivery_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_total_cost" class="form-label">Total Cost</label>
+                            <input type="number" step="0.01" class="form-control" id="edit_total_cost"
+                                name="edit_total_cost" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_status" class="form-label">Status</label>
+                            <select class="form-control" id="edit_status" name="edit_status" required>
+                                <option value="" disabled selected>Select Status</option>
+                                <option value="PENDING">Pending</option>
+                                <option value="COMPLETED">Completed</option>
+                                <option value="CANCELLED">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="save_edit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Confirm Edit Modal -->
+    <div class="modal fade" id="confirmEditModal" tabindex="-1" role="dialog" aria-labelledby="confirmEditModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmEditModalLabel">Confirm Edit</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to save the changes?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmEditBtn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

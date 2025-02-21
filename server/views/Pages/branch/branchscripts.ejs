@@ -1,0 +1,120 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/branch/getbranch",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#branch_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.mb_id,
+                            element.mb_code,
+                            element.mb_description,
+                            element.mb_email,
+                            element.mb_phone,
+                            element.mb_mobile,
+                            element.mb_address,
+                            element.mb_manager,
+                            `<span class="badge rounded-pill text-white ${element.mb_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mb_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mb_id="${element.mb_id}" data-mb_code="${element.mb_code}" data-mb_description="${element.mb_description}" data-mb_email="${element.mb_email}" data-mb_phone="${element.mb_phone}" data-mb_mobile="${element.mb_mobile}" data-mb_address="${element.mb_address}" data-mb_manager="${element.mb_manager}" data-mb_status="${element.mb_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_branch').on('click', function () {
+            $('#addBranchModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addBranchModal').modal('hide');
+            var addedBranchData = {
+                mb_code: $('#add_branch_code').val(),
+                mb_description: $('#add_branch_description').val(),
+                mb_email: $('#add_branch_email').val(),
+                mb_phone: $('#add_branch_phone').val(),
+                mb_mobile: $('#add_branch_mobile').val(),
+                mb_address: $('#add_branch_address').val(),
+                mb_manager: $('#add_branch_manager').val(),
+                mb_status: $('#add_branch_status').val()
+            };
+
+            console.log('Added Branch Data:', addedBranchData);
+
+            $.ajax({
+                url: `/branch/createbranch/`,
+                type: 'POST',
+                data: addedBranchData,
+                success: function (response) {
+                    console.log('Branch data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting branch data:', err);
+                }
+            });
+
+            $('#addBranchModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editBranchModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedBranchData = {
+                mb_id: $('#edit_branch_id').val(),
+                mb_code: $('#edit_branch_code').val(),
+                mb_description: $('#edit_branch_description').val(),
+                mb_email: $('#edit_branch_email').val(),
+                mb_phone: $('#edit_branch_phone').val(),
+                mb_mobile: $('#edit_branch_mobile').val(),
+                mb_address: $('#edit_branch_address').val(),
+                mb_manager: $('#edit_branch_manager').val(),
+                mb_status: $('#edit_branch_status').val()
+            };
+
+            console.log('Edited Branch Data:', editedBranchData);
+
+            $.ajax({
+                url: `/branch/updatebranch/`,
+                type: 'PUT',
+                data: editedBranchData,
+                success: function (response) {
+                    console.log('Branch data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating branch data:', err);
+                }
+            });
+
+            $('#editBranchModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var branchData = $(this).data();
+            $('#editBranchModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_branch_id').val(branchData.mb_id);
+                $('#edit_branch_code').val(branchData.mb_code);
+                $('#edit_branch_description').val(branchData.mb_description);
+                $('#edit_branch_email').val(branchData.mb_email);
+                $('#edit_branch_phone').val(branchData.mb_phone);
+                $('#edit_branch_mobile').val(branchData.mb_mobile);
+                $('#edit_branch_address').val(branchData.mb_address);
+                $('#edit_branch_manager').val(branchData.mb_manager);
+                $('#edit_branch_status').val(branchData.mb_status);
+            });
+        });
+    });
+</script>

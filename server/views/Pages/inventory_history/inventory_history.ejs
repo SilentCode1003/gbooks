@@ -1,0 +1,162 @@
+<div class="container-fluid overflow-auto">
+    <h1 class="text-center">Inventory History</h1>
+
+    <div class="col-xl-12 col-lg-12">
+        <button class="btn btn-primary" id="add_inventory_history">ADD Inventory History</button>
+        <div class="card shadow mb-4">
+            <div class="card-header bg-dark py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-white">Inventory History Table</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive table-striped">
+                    <table class="table table-striped table-hover table-bordered" id="inventory_history_table">
+                        <thead class="" style="background-color: #4e73df;">
+                            <tr class="text-center text-white">
+                                <th scope="col">#</th>
+                                <th scope="col">Inventory ID</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Transaction Type</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD MODAL -->
+    <div class="modal fade" id="addInventoryHistoryModal" tabindex="-1" role="dialog" aria-labelledby="addInventoryHistoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addInventoryHistoryModalLabel">Add Inventory History</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addInventoryHistoryForm">
+                        <div class="form-group">
+                            <label for="add_inventory_id" class="form-label">Inventory ID</label>
+                            <input type="text" class="form-control" id="add_inventory_id"
+                                name="add_inventory_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_date" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="add_date"
+                                name="add_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_transaction_type" class="form-label">Transaction Type</label>
+                            <select class="form-control" id="add_transaction_type" name="add_transaction_type" required>
+                                <option value="" disabled selected>Select Transaction Type</option>
+                                <option value="replenish">Replenish</option>
+                                <option value="sold">Sold</option>
+                                <option value="transfer">Transfer</option>
+                                <option value="damage">Damage</option>
+                                <option value="return">Return</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_quantity" class="form-label">Quantity</label>
+                            <input type="text" class="form-control" id="add_quantity"
+                                name="add_quantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_unit" class="form-label">Unit</label>
+                            <input type="text" class="form-control" id="add_unit"
+                                name="add_unit" required>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="save_add">Add Inventory History</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div class="modal fade" id="editInventoryHistoryModal" tabindex="-1" role="dialog" aria-labelledby="editInventoryHistoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editInventoryHistoryModalLabel">Edit Inventory History</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editInventoryHistoryForm">
+                        <input type="hidden" id="edit_inventory_history_id" name="edit_inventory_history_id">
+                        <div class="form-group">
+                            <label for="edit_inventory_id" class="form-label">Inventory ID</label>
+                            <input type="text" class="form-control" id="edit_inventory_id"
+                                name="edit_inventory_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_date" class="form-label">Date</label>
+                            <input type="text" class="form-control" id="edit_date"
+                                name="edit_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_transaction_type" class="form-label">Transaction Type</label>
+                            <select class="form-control" id="edit_transaction_type" name="edit_transaction_type" required>
+                                <option value="" disabled selected>Select Transaction Type</option>
+                                <option value="REPLENISH">Replenish</option>
+                                <option value="SOLD">Sold</option>
+                                <option value="TRANSFER">Transfer</option>
+                                <option value="DAMAGE">Damage</option>
+                                <option value="RETURN">Return</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_quantity" class="form-label">Quantity</label>
+                            <input type="text" class="form-control" id="edit_quantity"
+                                name="edit_quantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_unit" class="form-label">Unit</label>
+                            <input type="text" class="form-control" id="edit_unit"
+                                name="edit_unit" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="save_edit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Confirm Edit Modal -->
+    <div class="modal fade" id="confirmEditModal" tabindex="-1" role="dialog" aria-labelledby="confirmEditModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmEditModalLabel">Confirm Edit</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to save the changes?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmEditBtn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/sales_order_items/getsales_order_items",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#sales_order_items_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.soi_id,
+                            element.soi_sales_order_id,
+                            element.soi_product_id,
+                            element.soi_product_cost,
+                            element.soi_quantity,
+                            element.soi_unit,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-soi_id="${element.soi_id}" data-soi_sales_order_id="${element.soi_sales_order_id}" data-soi_product_id="${element.soi_product_id}" data-soi_product_cost="${element.soi_product_cost}" data-soi_quantity="${element.soi_quantity}" data-soi_unit="${element.soi_unit}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_sales_order_item').on('click', function () {
+            $('#addSalesOrderItemModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addSalesOrderItemModal').modal('hide');
+            var addedItemData = {
+                soi_sales_order_id: $('#add_sales_order_id').val(),
+                soi_product_id: $('#add_product_id').val(),
+                soi_product_cost: $('#add_product_cost').val(),
+                soi_quantity: $('#add_quantity').val(),
+                soi_unit: $('#add_unit').val()
+            };
+
+            console.log('Added Item Data:', addedItemData);
+
+            $.ajax({
+                url: `/sales_order_items/createsales_order_item/`,
+                type: 'POST',
+                data: addedItemData,
+                success: function (response) {
+                    console.log('Item data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting item data:', err);
+                }
+            });
+
+            $('#addSalesOrderItemModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editSalesOrderItemModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedItemData = {
+                soi_id: $('#edit_id').val(),
+                soi_sales_order_id: $('#edit_sales_order_id').val(),
+                soi_product_id: $('#edit_product_id').val(),
+                soi_product_cost: $('#edit_product_cost').val(),
+                soi_quantity: $('#edit_quantity').val(),
+                soi_unit: $('#edit_unit').val()
+            };
+
+            console.log('Edited Item Data:', editedItemData);
+
+            $.ajax({
+                url: `/sales_order_items/updatesales_order_item/`,
+                type: 'PUT',
+                data: editedItemData,
+                success: function (response) {
+                    console.log('Item data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating item data:', err);
+                }
+            });
+
+            $('#editSalesOrderItemModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var itemData = $(this).data();
+            $('#editSalesOrderItemModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_id').val(itemData.soi_id);
+                $('#edit_sales_order_id').val(itemData.soi_sales_order_id);
+                $('#edit_product_id').val(itemData.soi_product_id);
+                $('#edit_product_cost').val(itemData.soi_product_cost);
+                $('#edit_quantity').val(itemData.soi_quantity);
+                $('#edit_unit').val(itemData.soi_unit);
+            });
+        });
+    });
+</script>

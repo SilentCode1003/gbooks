@@ -1,0 +1,110 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/inventory_history/getinventory_history",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#inventory_history_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.ih_id,
+                            element.ih_inventory_id,
+                            element.ih_date,
+                            element.ih_transaction_type,
+                            element.ih_quantity,
+                            element.ih_unit,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-ih_id="${element.ih_id}" data-ih_inventory_id="${element.ih_inventory_id}" data-ih_date="${element.ih_date}" data-ih_transaction_type="${element.ih_transaction_type}" data-ih_quantity="${element.ih_quantity}" data-ih_unit="${element.ih_unit}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_inventory_history').on('click', function () {
+            $('#addInventoryHistoryModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addInventoryHistoryModal').modal('hide');
+            var addedInventoryData = {
+                ih_inventory_id: $('#add_inventory_id').val(),
+                ih_date: $('#add_date').val(),
+                ih_transaction_type: $('#add_transaction_type').val(),
+                ih_quantity: $('#add_quantity').val(),
+                ih_unit: $('#add_unit').val()
+            };
+
+            console.log('Added Inventory History Data:', addedInventoryData);
+
+            $.ajax({
+                url: `/inventory_history/createinventory_history/`,
+                type: 'POST',
+                data: addedInventoryData,
+                success: function (response) {
+                    console.log('Inventory history data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting inventory history data:', err);
+                }
+            });
+
+            $('#addProductModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editInventoryHistoryModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedInventoryData = {
+                ih_id: $('#edit_inventory_id').val(),
+                ih_inventory_id: $('#edit_inventory_id').val(),
+                ih_date: $('#edit_date').val(),
+                ih_transaction_type: $('#edit_transaction_type').val(),
+                ih_quantity: $('#edit_quantity').val(),
+                ih_unit: $('#edit_unit').val()
+            };
+
+            console.log('Edited Inventory History Data:', editedInventoryData);
+
+            $.ajax({
+                url: `/inventory_history/updateinventory_history/`,
+                type: 'PUT',
+                data: editedInventoryData,
+                success: function (response) {
+                    console.log('Inventory history data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating inventory history data:', err);
+                }
+            });
+
+            $('#editInventoryModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var inventoryData = $(this).data();
+            $('#editInventoryHistoryModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_inventory_id').val(inventoryData.ih_id);
+                $('#edit_inventory_id').val(inventoryData.ih_inventory_id);
+                $('#edit_date').val(inventoryData.ih_date);
+                $('#edit_transaction_type').val(inventoryData.ih_transaction_type);
+                $('#edit_quantity').val(inventoryData.ih_quantity);
+                $('#edit_unit').val(inventoryData.ih_unit);
+            });
+        });
+    });
+</script>

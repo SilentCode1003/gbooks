@@ -546,16 +546,16 @@ exports.InsertStatementTransCommit = (tablename, prefix, columns) => {
   return statement;
 };
 
-exports.UpdateStatement = (tablename, prefix, columns, arguments) => {
+exports.UpdateStatement = (tablename, columns, arguments) => {
   let cols = "";
   let agrs = "";
 
   columns.forEach((col) => {
-    cols += `${prefix}_${col} = ?,`;
+    cols += `${col} = ?,`;
   });
 
   arguments.forEach((arg) => {
-    agrs += `${prefix}_${arg} = ? AND `;
+    agrs += `${arg} = ? AND `;
   });
 
   cols = cols.slice(0, -1);

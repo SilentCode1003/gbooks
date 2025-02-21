@@ -41,7 +41,7 @@ module.exports = {
         allowNull: false,
       },
       poh_status: {
-        type: Sequelize.ENUM(''),
+        type: Sequelize.ENUM('PENDING', 'COMPLETED', 'CANCELLED'),
         allowNull: false,
       },
     });

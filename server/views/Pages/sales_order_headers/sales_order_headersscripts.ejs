@@ -1,0 +1,114 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/sales_order_headers/getsales_order_headers",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#sales_order_headers_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.soh_id,
+                            element.soh_sequence,
+                            element.soh_customer_id,
+                            element.soh_order_date,
+                            element.soh_delivery_date,
+                            element.soh_total_cost,
+                            `<span class="badge rounded-pill text-white ${element.soh_status === 'PENDING' ? 'bg-warning' : element.soh_status === 'COMPLETED' ? 'bg-success' : 'bg-danger'}">${element.soh_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-soh_id="${element.soh_id}" data-soh_sequence="${element.soh_sequence}" data-soh_customer_id="${element.soh_customer_id}" data-soh_order_date="${element.soh_order_date}" data-soh_delivery_date="${element.soh_delivery_date}" data-soh_total_cost="${element.soh_total_cost}" data-soh_status="${element.soh_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_sales_order_header').on('click', function () {
+            $('#addSalesOrderHeaderModal').modal('show');
+        });
+
+        $(document).on('click', '#save_add', function () {
+            $('#addSalesOrderHeaderModal').modal('hide');
+            var addedHeaderData = {
+                soh_sequence: $('#add_sequence').val(),
+                soh_customer_id: $('#add_customer_id').val(),
+                soh_order_date: $('#add_order_date').val(),
+                soh_delivery_date: $('#add_delivery_date').val(),
+                soh_total_cost: $('#add_total_cost').val(),
+                soh_status: 'pending' // Default status
+            };
+
+            console.log('Added Header Data:', addedHeaderData);
+
+            $.ajax({
+                url: `/sales_order_headers/createsales_order_header/`,
+                type: 'POST',
+                data: addedHeaderData,
+                success: function (response) {
+                    console.log('Header data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting header data:', err);
+                }
+            });
+
+            $('#addSalesOrderHeaderModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editSalesOrderHeaderModal').modal('hide');
+        });
+
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedHeaderData = {
+                soh_id: $('#edit_id').val(),
+                soh_sequence: $('#edit_sequence').val(),
+                soh_customer_id: $('#edit_customer_id').val(),
+                soh_order_date: $('#edit_order_date').val(),
+                soh_delivery_date: $('#edit_delivery_date').val(),
+                soh_total_cost: $('#edit_total_cost').val(),
+                soh_status: $('#edit_status').val()
+            };
+
+            console.log('Edited Header Data:', editedHeaderData);
+
+            $.ajax({
+                url: `/sales_order_headers/updatesales_order_header/`,
+                type: 'PUT',
+                data: editedHeaderData,
+                success: function (response) {
+                    console.log('Header data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating header data:', err);
+                }
+            });
+
+            $('#editSalesOrderHeaderModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var headerData = $(this).data();
+            $('#editSalesOrderHeaderModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_id').val(headerData.soh_id);
+                $('#edit_sequence').val(headerData.soh_sequence);
+                $('#edit_customer_id').val(headerData.soh_customer_id);
+                $('#edit_order_date').val(headerData.soh_order_date);
+                $('#edit_delivery_date').val(headerData.soh_delivery_date);
+                $('#edit_total_cost').val(headerData.soh_total_cost);
+                $('#edit_status').val(headerData.soh_status);
+            });
+        });
+    });
+</script>
