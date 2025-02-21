@@ -35,7 +35,7 @@ const Transaction ={
         "t_transact_by",
         "t_process_by",
         "t_process_date",
-        "t_mp_status",
+        "t_status",
       ],
       selectOptionsColumn: {
         id: "t_id",

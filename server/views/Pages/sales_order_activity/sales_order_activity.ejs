@@ -1,0 +1,154 @@
+<div class="container-fluid overflow-auto">
+    <h1 class="text-center">Sales Order Activity</h1>
+
+    <div class="col-xl-12 col-lg-12">
+        <button class="btn btn-primary" id="add_sales_order_activity">ADD Sales Order Activity</button>
+        <div class="card shadow mb-4">
+            <div class="card-header bg-dark py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-white">Sales Order Activity Table</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover table-bordered" id="sales_order_activity_table">
+                        <thead class="" style="background-color: #4e73df;">
+                            <tr class="text-center text-white">
+                                <th scope="col">#</th>
+                                <th scope="col">Sales Order ID</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Remarks</th>
+                                <th scope="col">User</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD MODAL -->
+    <div class="modal fade" id="addSalesOrderActivityModal" tabindex="-1" role="dialog" aria-labelledby="addSalesOrderActivityModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSalesOrderActivityModalLabel">Add Sales Order Activity</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addSalesOrderActivityForm">
+                        <div class="form-group">
+                            <label for="add_sales_order_id" class="form-label">Sales Order ID</label>
+                            <input type="number" class="form-control" id="add_sales_order_id"
+                                name="add_sales_order_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_type" class="form-label">Type</label>
+                            <select class="form-control" id="add_type" name="add_type" required>
+                                <option value="APPROVED">Approved</option>
+                                <option value="REQUEST">Request</option>
+                                <option value="REJECT">Reject</option>
+                                <option value="CANCEL">Cancel</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_remarks" class="form-label">Remarks</label>
+                            <textarea class="form-control" id="add_remarks" name="add_remarks" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_user" class="form-label">User</label>
+                            <input type="number" class="form-control" id="add_user" name="add_user" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_date" class="form-label">Date</label>
+                            <input type="text" class="form-control" id="add_date" name="add_date" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="save_add">Add Sales Order Activity</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT MODAL -->
+    <div class="modal fade" id="editSalesOrderActivityModal" tabindex="-1" role="dialog" aria-labelledby="editSalesOrderActivityModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSalesOrderActivityModalLabel">Edit Sales Order Activity</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editSalesOrderActivityForm">
+                        <input type="hidden" id="edit_id" name="edit_id">
+                        <div class="form-group">
+                            <label for="edit_sales_order_id" class="form-label">Sales Order ID</label>
+                            <input type="number" class="form-control" id="edit_sales_order_id"
+                                name="edit_sales_order_id" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_type" class="form-label">Type</label>
+                            <select class="form-control" id="edit_type" name="edit_type" required>
+                                <option value="APPROVED">Approved</option>
+                                <option value="REQUEST">Request</option>
+                                <option value="REJECT">Reject</option>
+                                <option value="CANCEL">Cancel</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_remarks" class="form-label">Remarks</label>
+                            <textarea class="form-control" id="edit_remarks" name="edit_remarks" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_user" class="form-label">User</label>
+                            <input type="number" class="form-control" id="edit_user" name="edit_user" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_date" class="form-label">Date</label>
+                            <input type="text" class="form-control" id="edit_date" name="edit_date" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="save_edit">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Confirm Edit Modal -->
+    <div class="modal fade" id="confirmEditModal" tabindex="-1" role="dialog" aria-labelledby="confirmEditModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmEditModalLabel">Confirm Edit</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to save the changes?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmEditBtn">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

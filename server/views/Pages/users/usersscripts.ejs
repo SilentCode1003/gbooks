@@ -1,0 +1,115 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/users/getusers",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#users_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.mu_id,
+                            element.mu_employee_id,
+                            element.mu_fullname,
+                            element.mu_position,
+                            element.mu_username,
+                            element.mu_access,
+                            `<span class="badge rounded-pill text-white ${element.mu_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mu_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mu_id="${element.mu_id}" data-mu_employee_id="${element.mu_employee_id}" data-mu_fullname="${element.mu_fullname}" data-mu_position="${element.mu_position}" data-mu_username="${element.mu_username}" data-mu_access="${element.mu_access}" data-mu_status="${element.mu_status}"><i class=" fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_user').on('click', function () {
+            $('#addUserModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addUserModal').modal('hide');
+            var addedUserData = {
+            mu_employee_id: $('#add_user_employee_id').val(),
+            mu_fullname: $('#add_user_full_name').val(),
+            mu_position: $('#add_user_position').val(),
+            mu_username: $('#add_user_username').val(),
+            mu_password: $('#add_password').val(),
+            mu_access: $('#add_user_access').val(),
+            mu_status: $('#add_user_status').val()
+            };
+
+            console.log('added User Data:', addedUserData);
+
+            $.ajax({
+            url: `/users/createuser/`,
+            type: 'POST',
+            data: addedUserData,
+            success: function (response) {
+                console.log('User data added successfully:', response);
+                LoadTable();
+            },
+            error: function (err) {
+                console.error('Error inserting user data:', err);
+            }
+            });
+
+            $('#addUserModal').modal('hide');
+        });
+
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editUserModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedUserData = {
+            mu_id: $('#edit_user_id').val(),
+            mu_employee_id: $('#edit_user_employee_id').val(),
+            mu_fullname: $('#edit_user_full_name').val(),
+            mu_position: $('#edit_user_position').val(),
+            mu_username: $('#edit_user_username').val(),
+            mu_access: $('#edit_user_access').val(),
+            mu_status: $('#edit_user_status').val()
+            };
+
+            console.log('Edited User Data:', editedUserData);
+
+            $.ajax({
+            url: `/users/updateuser/`,
+            type: 'PUT',
+            data: editedUserData,
+            success: function (response) {
+                console.log('User data updated successfully:', response);
+                LoadTable();
+            },
+            error: function (err) {
+                console.error('Error updating user data:', err);
+            }
+            });
+
+            $('#editUserModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var subjectData = $(this).data();
+            $('#editUserModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_user_id').val(subjectData.mu_id);
+                $('#edit_user_employee_id').val(subjectData.mu_employee_id);
+                $('#edit_user_full_name').val(subjectData.mu_fullname);
+                $('#edit_user_position').val(subjectData.mu_position);
+                $('#edit_user_username').val(subjectData.mu_username);
+                $('#edit_user_access').val(subjectData.mu_access);
+                $('#edit_user_status').val(subjectData.mu_status);
+            });
+            });
+        });
+
+</script>

@@ -1,0 +1,107 @@
+<script>
+    $(document).ready(function () {
+
+        LoadTable();
+
+        function LoadTable() {
+            console.log("LoadTable");
+
+            $.ajax({
+                url: "/bank_accounts/getbank_accounts",
+                type: "GET",
+                success: function (data) {
+                    console.log(data.data);
+                    var table = $('#bank_accounts_table').DataTable();
+                    table.clear();
+                    data.data.forEach(element => {
+                        table.row.add([
+                            element.mba_id,
+                            element.mba_code,
+                            element.mba_account_name,
+                            element.mba_account_number,
+                            element.mba_bank_type,
+                            `<span class="badge rounded-pill text-white ${element.mba_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mba_status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mba_id="${element.mba_id}" data-mba_code="${element.mba_code}" data-mba_account_name="${element.mba_account_name}" data-mba_account_number="${element.mba_account_number}" data-mba_bank_type="${element.mba_bank_type}" data-mba_status="${element.mba_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                        ]);
+                    });
+                    table.draw();
+                }
+            });
+        }
+
+        $('#add_bank_account').on('click', function () {
+            $('#addBankAccountModal').modal('show');
+        });
+        $(document).on('click', '#save_add', function () {
+            $('#addBankAccountModal').modal('hide');
+            var addedBankAccountData = {
+                mba_code: $('#add_bank_account_code').val(),
+                mba_account_name: $('#add_bank_account_name').val(),
+                mba_account_number: $('#add_bank_account_number').val(),
+                mba_bank_type: $('#add_bank_account_type').val()
+            };
+
+            console.log('Added Bank Account Data:', addedBankAccountData);
+
+            $.ajax({
+                url: `/bank_accounts/createbank_account/`,
+                type: 'POST',
+                data: addedBankAccountData,
+                success: function (response) {
+                    console.log('Bank account data added successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error inserting bank account data:', err);
+                }
+            });
+
+            $('#addBankAccountModal').modal('hide');
+        });
+
+        $('#save_edit').on('click', function () {
+            $('#confirmEditModal').modal('show');
+            $('#editBankAccountModal').modal('hide');
+        });
+        $(document).on('click', '#confirmEditBtn', function () {
+            $('#confirmEditModal').modal('hide');
+            var editedBankAccountData = {
+                mba_id: $('#edit_bank_account_id').val(),
+                mba_code: $('#edit_bank_account_code').val(),
+                mba_account_name: $('#edit_bank_account_name').val(),
+                mba_account_number: $('#edit_bank_account_number').val(),
+                mba_bank_type: $('#edit_bank_account_type').val(),
+                mba_status: $('#edit_bank_account_status').val()
+            };
+
+            console.log('Edited Bank Account Data:', editedBankAccountData);
+
+            $.ajax({
+                url: `/bank_accounts/updatebank_account/`,
+                type: 'PUT',
+                data: editedBankAccountData,
+                success: function (response) {
+                    console.log('Bank account data updated successfully:', response);
+                    LoadTable();
+                },
+                error: function (err) {
+                    console.error('Error updating bank account data:', err);
+                }
+            });
+
+            $('#editBankAccountModal').modal('hide');
+        });
+
+        $(document).on('click', '.edit-btn', function () {
+            var bankAccountData = $(this).data();
+            $('#editBankAccountModal').modal('show').on('shown.bs.modal', function () {
+                $('#edit_bank_account_id').val(bankAccountData.mba_id);
+                $('#edit_bank_account_code').val(bankAccountData.mba_code);
+                $('#edit_bank_account_name').val(bankAccountData.mba_account_name);
+                $('#edit_bank_account_number').val(bankAccountData.mba_account_number);
+                $('#edit_bank_account_type').val(bankAccountData.mba_bank_type);
+                $('#edit_bank_account_status').val(bankAccountData.mba_status);
+            });
+        });
+    });
+</script>
