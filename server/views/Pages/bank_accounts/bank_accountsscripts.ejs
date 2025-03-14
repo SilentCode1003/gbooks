@@ -15,13 +15,13 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.mba_id,
-                            element.mba_code,
-                            element.mba_account_name,
-                            element.mba_account_number,
-                            element.mba_bank_type,
-                            `<span class="badge rounded-pill text-white ${element.mba_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mba_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mba_id="${element.mba_id}" data-mba_code="${element.mba_code}" data-mba_account_name="${element.mba_account_name}" data-mba_account_number="${element.mba_account_number}" data-mba_bank_type="${element.mba_bank_type}" data-mba_status="${element.mba_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.code,
+                            element.account_name,
+                            element.account_number,
+                            element.bank_type,
+                            `<span class="badge rounded-pill text-white ${element.status === 'active' ? 'bg-success' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mba_id="${element.id}" data-mba_code="${element.code}" data-mba_account_name="${element.account_name}" data-mba_account_number="${element.account_number}" data-mba_bank_type="${element.bank_type}" data-mba_status="${element.status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

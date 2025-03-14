@@ -13,6 +13,7 @@ const { Accounting } = require("../repository/model/accoutningsystem");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET users listing. */
@@ -33,7 +34,7 @@ router.get("/getbank_balances", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Accounting.bank_balance.prefix)));
     }
 
     ProcessData();
@@ -44,7 +45,7 @@ router.get("/getbank_balances", (req, res) => {
 
 router.post("/createbank_balance", (req, res) => {
   try {
-    const { bb_bank_account_id, bb_transaction_date, bb_update_date, bb_previous_amount, bb_current_amount } =
+    const { bank_account_id, transaction_date, update_date, previous_amount, current_amount } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +53,7 @@ router.post("/createbank_balance", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [bb_bank_account_id, bb_transaction_date, bb_update_date, bb_previous_amount, bb_current_amount],
+        [bank_account_id, transaction_date, update_date, previous_amount, current_amount],
       ];
 
       console.log(data);
@@ -78,18 +79,18 @@ router.post("/createbank_balance", (req, res) => {
 
 router.put("/updatebank_balance", (req, res) => {
   try {
-    const { bb_id, bb_bank_account_id, bb_transaction_date, bb_update_date, bb_previous_amount, bb_current_amount } = req.body;
+    const { id, bank_account_id, transaction_date, update_date, previous_amount, current_amount } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        bb_bank_account_id,
-        bb_transaction_date,
-        bb_update_date,
-        bb_previous_amount,
-        bb_current_amount,
-        bb_id];
+        bank_account_id,
+        transaction_date,
+        update_date,
+        previous_amount,
+        current_amount,
+        id];
 
       console.log(data);
 

@@ -15,13 +15,13 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.ih_id,
-                            element.ih_inventory_id,
-                            element.ih_date,
-                            element.ih_transaction_type,
-                            element.ih_quantity,
-                            element.ih_unit,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-ih_id="${element.ih_id}" data-ih_inventory_id="${element.ih_inventory_id}" data-ih_date="${element.ih_date}" data-ih_transaction_type="${element.ih_transaction_type}" data-ih_quantity="${element.ih_quantity}" data-ih_unit="${element.ih_unit}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.inventory_id,
+                            element.date,
+                            element.transaction_type,
+                            element.quantity,
+                            element.unit,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-ih_id="${element.id}" data-ih_inventory_id="${element.inventory_id}" data-ih_date="${element.date}" data-ih_transaction_type="${element.transaction_type}" data-ih_quantity="${element.quantity}" data-ih_unit="${element.unit}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

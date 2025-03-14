@@ -13,6 +13,7 @@ const { AccountsReceivable } = require("../repository/model/accounts_receivable"
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET sales_order_items listing. */
@@ -33,7 +34,7 @@ router.get("/getsales_order_items", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,AccountsReceivable.sales_order_item.prefix)));
     }
 
     ProcessData();
@@ -44,7 +45,7 @@ router.get("/getsales_order_items", (req, res) => {
 
 router.post("/createsales_order_item", (req, res) => {
   try {
-    const { soi_sales_order_id, soi_product_id, soi_product_cost, soi_quantity, soi_unit } =
+    const { sales_order_id, product_id, product_cost, quantity, unit } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +53,7 @@ router.post("/createsales_order_item", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [soi_sales_order_id, soi_product_id, soi_product_cost, soi_quantity, soi_unit],
+        [sales_order_id, product_id, product_cost, quantity, unit],
       ];
 
       console.log(data);
@@ -78,18 +79,18 @@ router.post("/createsales_order_item", (req, res) => {
 
 router.put("/updatesales_order_item", (req, res) => {
   try {
-    const { soi_id, soi_sales_order_id, soi_product_id, soi_product_cost, soi_quantity, soi_unit } = req.body;
+    const { id, sales_order_id, product_id, product_cost, quantity, unit } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        soi_sales_order_id,
-        soi_product_id,
-        soi_product_cost,
-        soi_quantity,
-        soi_unit,
-        soi_id];
+        sales_order_id,
+        product_id,
+        product_cost,
+        quantity,
+        unit,
+        id];
 
       console.log(data);
 

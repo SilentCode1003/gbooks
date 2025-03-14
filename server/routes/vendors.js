@@ -14,6 +14,7 @@ const { Accounting } = require("../repository/model/accoutningsystem");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET users listing. */
@@ -34,7 +35,7 @@ router.get("/getvendors", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Accounting.master_vendor.prefix)));
     }
 
     ProcessData();
@@ -46,31 +47,31 @@ router.get("/getvendors", (req, res) => {
 router.post("/createvendor", (req, res) => {
   try {
     const {
-      mv_business_name,
-      mv_business_type,
-      mv_contact_person,
-      mv_email,
-      mv_phone,
-      mv_mobile,
-      mv_business_address,
-      mv_tin,
+      business_name,
+      business_type,
+      contact_person,
+      email,
+      phone,
+      mobile,
+      business_address,
+      tin,
     } = req.body;
-    let mv_status = STATUS.ACTIVE;
+    let status = STATUS.ACTIVE;
 
     console.log(req.body);
 
     async function ProcessData() {
       let data = [
         [
-          mv_business_name,
-          mv_business_type,
-          mv_contact_person,
-          mv_email,
-          mv_phone,
-          mv_mobile,
-          mv_business_address,
-          mv_tin,
-          mv_status,
+          business_name,
+          business_type,
+          contact_person,
+          email,
+          phone,
+          mobile,
+          business_address,
+          tin,
+          status,
         ],
       ];
 
@@ -97,32 +98,32 @@ router.post("/createvendor", (req, res) => {
 router.put("/updatevendor", (req, res) => {
   try {
     const {
-      mv_id,
-      mv_business_name,
-      mv_business_type,
-      mv_contact_person,
-      mv_email,
-      mv_phone,
-      mv_mobile,
-      mv_business_address,
-      mv_tin,
-      mv_status,
+      id,
+      business_name,
+      business_type,
+      contact_person,
+      email,
+      phone,
+      mobile,
+      business_address,
+      tin,
+      status,
     } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        mv_business_name,
-        mv_business_type,
-        mv_contact_person,
-        mv_email,
-        mv_phone,
-        mv_mobile,
-        mv_business_address,
-        mv_tin,
-        mv_status,
-        mv_id,
+        business_name,
+        business_type,
+        contact_person,
+        email,
+        phone,
+        mobile,
+        business_address,
+        tin,
+        status,
+        id,
       ];
 
       console.log(data);

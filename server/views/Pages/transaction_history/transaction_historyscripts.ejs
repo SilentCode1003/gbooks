@@ -15,12 +15,12 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.th_id,
-                            element.th_transaction_id,
-                            `<span class="badge rounded-pill text-white ${element.th_status === 'PAID' ? 'bg-success' : element.th_status === 'PARTIALLY' ? 'bg-warning' : 'bg-danger'}">${element.th_status}</span>`,
-                            element.th_process_by,
-                            element.th_process_date,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-th_id="${element.th_id}" data-th_transaction_id="${element.th_transaction_id}" data-th_status="${element.th_status}" data-th_process_by="${element.th_process_by}" data-th_process_date="${element.th_process_date}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.transaction_id,
+                            `<span class="badge rounded-pill text-white ${element.status === 'PAID' ? 'bg-success' : element.status === 'PARTIALLY' ? 'bg-warning' : 'bg-danger'}">${element.status}</span>`,
+                            element.process_by,
+                            element.process_date,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-th_id="${element.id}" data-th_transaction_id="${element.transaction_id}" data-th_status="${element.status}" data-th_process_by="${element.process_by}" data-th_process_date="${element.process_date}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

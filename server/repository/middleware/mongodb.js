@@ -21,6 +21,7 @@ exports.SetMongo = (app) => {
       resave: false,
       saveUninitialized: false,
       store: store,
+      cookie: { secure: false } 
     })
   );
   app.use((req, res, next) => {

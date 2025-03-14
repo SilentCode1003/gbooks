@@ -53,7 +53,7 @@ module.exports = {
         allowNull: false,
       },
       t_transaction_date: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(120),
         allowNull: false,
       },
       t_transact_by: {
@@ -62,11 +62,11 @@ module.exports = {
       },
       t_process_by: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       t_process_date: {
-        type: Sequelize.STRING(20),
-        allowNull: false,
+        type: Sequelize.STRING(120),
+        allowNull: true,
       },
       t_status: {
         type: Sequelize.ENUM('NOT PAID','PARTIALLY PAID','PAID'),

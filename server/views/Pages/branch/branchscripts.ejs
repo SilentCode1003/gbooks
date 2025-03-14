@@ -15,16 +15,16 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.mb_id,
-                            element.mb_code,
-                            element.mb_description,
-                            element.mb_email,
-                            element.mb_phone,
-                            element.mb_mobile,
-                            element.mb_address,
-                            element.mb_manager,
-                            `<span class="badge rounded-pill text-white ${element.mb_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mb_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mb_id="${element.mb_id}" data-mb_code="${element.mb_code}" data-mb_description="${element.mb_description}" data-mb_email="${element.mb_email}" data-mb_phone="${element.mb_phone}" data-mb_mobile="${element.mb_mobile}" data-mb_address="${element.mb_address}" data-mb_manager="${element.mb_manager}" data-mb_status="${element.mb_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.code,
+                            element.description,
+                            element.email,
+                            element.phone,
+                            element.mobile,
+                            element.address,
+                            element.manager,
+                            `<span class="badge rounded-pill text-white ${element.status === 'active' ? 'bg-success' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mb_id="${element.id}" data-mb_code="${element.code}" data-mb_description="${element.description}" data-mb_email="${element.email}" data-mb_phone="${element.phone}" data-mb_mobile="${element.mobile}" data-mb_address="${element.address}" data-mb_manager="${element.manager}" data-mb_status="${element.status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

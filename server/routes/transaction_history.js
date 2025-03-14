@@ -13,6 +13,7 @@ const { Transaction } = require("../repository/model/transactions");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET users listing. */
@@ -33,7 +34,7 @@ router.get("/gettransaction_history", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Transaction.transaction_history.prefix)));
     }
 
     ProcessData();
@@ -44,15 +45,17 @@ router.get("/gettransaction_history", (req, res) => {
 
 router.post("/createtransaction_history", (req, res) => {
   try {
-    const { th_transaction_id, th_status, th_process_by, th_process_date } =
+    const { transaction_id, status } =
       req.body;
+    const process_by = req.session.user.mu_id;
+    const process_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [th_transaction_id, th_status, th_process_by, th_process_date  ],
+        [transaction_id, status, process_by, process_date  ],
       ];
 
       console.log(data);
@@ -78,18 +81,18 @@ router.post("/createtransaction_history", (req, res) => {
 
 router.put("/updatetransaction_history", (req, res) => {
   try {
-    const { th_id, th_transaction_id, th_status, th_process_by, th_process_date  } = req.body;
+    const { id, transaction_id, status, process_by, process_date  } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
     
-        th_transaction_id,
-        th_status,
-        th_process_by,
-        th_process_date,
-        th_id];
+        transaction_id,
+        status,
+        process_by,
+        process_date,
+        id];
 
       console.log(data);
 

@@ -15,11 +15,11 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.md_id,
-                            element.md_code,
-                            element.md_description,
-                            `<span class="badge rounded-pill text-white ${element.md_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.md_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-md_id="${element.md_id}" data-md_code="${element.md_code}" data-md_description="${element.md_description}" data-md_status="${element.md_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.code,
+                            element.description,
+                            `<span class="badge rounded-pill text-white ${element.status === 'active' ? 'bg-success' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-md_id="${element.id}" data-md_code="${element.code}" data-md_description="${element.description}" data-md_status="${element.status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

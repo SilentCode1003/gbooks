@@ -33,7 +33,7 @@ module.exports = {
         allowNull: false,
       },
       th_process_date: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(120),
         allowNull: false,
       },
     });

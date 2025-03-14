@@ -8,11 +8,13 @@ const {
   SelectAllStatement,
   InsertStatement,
   UpdateStatement,
+  SelectWhereStatement,
 } = require("../repository/helper/customhelper");
 const { Accounting } = require("../repository/model/accoutningsystem");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET users listing. */
@@ -33,7 +35,7 @@ router.get("/getdebits", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Accounting.master_debit.prefix)));
     }
 
     ProcessData();
@@ -44,16 +46,16 @@ router.get("/getdebits", (req, res) => {
 
 router.post("/createdebit", (req, res) => {
   try {
-    const { md_type } =
+    const { type } =
       req.body;
-    let md_status = STATUS.ACTIVE;
+    let status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [md_type, md_status ],
+        [type, status ],
       ];
 
       console.log(data);
@@ -79,16 +81,16 @@ router.post("/createdebit", (req, res) => {
 
 router.put("/updatedebit", (req, res) => {
   try {
-    const { md_id, md_type, md_status, } = req.body;
+    const { id, type, status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
     
-        md_type,
-        md_status,
-        md_id];
+        type,
+        status,
+        id];
 
       console.log(data);
 
@@ -106,6 +108,28 @@ router.put("/updatedebit", (req, res) => {
     }
 
     UpdateData();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(JsonResposeError(error));
+  }
+});
+
+router.get("/activedebits", (req, res) => {
+  try {
+    async function ProcessData() {
+      let select_sql = SelectWhereStatement(
+        Accounting.master_debit.tablename,
+        Accounting.master_debit.selectColumns,
+        [Accounting.master_debit.selectOptionsColumn.status],
+        [STATUS.ACTIVE]
+      );
+  
+      let result = await Select(select_sql);
+  
+      res.status(200).json(JsonResponseData(result));
+    }
+
+    ProcessData();
   } catch (error) {
     console.log(error);
     res.status(500).json(JsonResposeError(error));

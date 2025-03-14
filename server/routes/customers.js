@@ -8,11 +8,13 @@ const {
   SelectAllStatement,
   InsertStatement,
   UpdateStatement,
+  SelectWhereStatement,
 } = require("../repository/helper/customhelper");
 const { Accounting } = require("../repository/model/accoutningsystem");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET users listing. */
@@ -33,7 +35,7 @@ router.get("/getcustomers", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Accounting.master_customer.prefix)));
     }
 
     ProcessData();
@@ -44,16 +46,16 @@ router.get("/getcustomers", (req, res) => {
 
 router.post("/createcustomer", (req, res) => {
   try {
-    const { mc_business_name, mc_business_type, mc_customer_name, mc_email, mc_phone, mc_mobile, mc_address, mc_tin } =
+    const { business_name, business_type, customer_name, email, phone, mobile, address, tin } =
       req.body;
-    let mc_status = STATUS.ACTIVE;
+    let status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [mc_business_name, mc_business_type, mc_customer_name, mc_email, mc_phone, mc_mobile, mc_address, mc_tin, mc_status ],
+        [business_name, business_type, customer_name, email, phone, mobile, address, tin, status ],
       ];
 
       console.log(data);
@@ -79,22 +81,22 @@ router.post("/createcustomer", (req, res) => {
 
 router.put("/updatecustomer", (req, res) => {
   try {
-    const { mc_id, mc_business_name, mc_business_type, mc_customer_name, mc_email, mc_phone, mc_mobile, mc_address, mc_tin, mc_status, } = req.body;
+    const { id, business_name, business_type, customer_name, email, phone, mobile, address, tin, status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        mc_business_name,
-        mc_business_type,
-        mc_customer_name,
-        mc_email,
-        mc_phone,
-        mc_mobile,
-        mc_address,
-        mc_tin,
-        mc_status,
-        mc_id];
+        business_name,
+        business_type,
+        customer_name,
+        email,
+        phone,
+        mobile,
+        address,
+        tin,
+        status,
+        id];
 
       console.log(data);
 
@@ -119,6 +121,28 @@ router.put("/updatecustomer", (req, res) => {
     }
 
     UpdateData();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(JsonResposeError(error));
+  }
+});
+
+router.get("/activecustomers", (req, res) => {
+  try {
+    async function ProcessData() {
+      let select_sql = SelectWhereStatement(
+        Accounting.master_customer.tablename,
+        Accounting.master_customer.selectColumns,
+        [Accounting.master_customer.selectOptionsColumn.status],
+        [STATUS.ACTIVE]
+      );
+  
+      let result = await Select(select_sql);
+  
+      res.status(200).json(JsonResponseData(result));
+    }
+
+    ProcessData();
   } catch (error) {
     console.log(error);
     res.status(500).json(JsonResposeError(error));

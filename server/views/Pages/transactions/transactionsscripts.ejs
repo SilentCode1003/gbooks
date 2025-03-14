@@ -15,21 +15,21 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.t_id,
-                            element.t_bank_account_id,
-                            element.t_reference_id,
-                            element.t_type,
-                            element.t_sub_type,
-                            element.t_description,
-                            element.t_payment_type,
-                            element.t_payment_sub_type,
-                            element.t_amount,
-                            element.t_transaction_date,
-                            element.t_transact_by,
-                            element.t_process_by,
-                            element.t_process_date,
-                            `<span class="badge rounded-pill text-white ${element.t_status === 'paid' ? 'bg-success' : element.t_status === 'partially paid' ? 'bg-warning' : 'bg-danger'}">${element.t_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-t_id="${element.t_id}" data-t_bank_account_id="${element.t_bank_account_id}" data-t_reference_id="${element.t_reference_id}" data-t_type="${element.t_type}" data-t_sub_type="${element.t_sub_type}" data-t_description="${element.t_description}" data-t_payment_type="${element.t_payment_type}" data-t_payment_sub_type="${element.t_payment_sub_type}" data-t_amount="${element.t_amount}" data-t_transaction_date="${element.t_transaction_date}" data-t_transact_by="${element.t_transact_by}" data-t_process_by="${element.t_process_by}" data-t_process_date="${element.t_process_date}" data-t_status="${element.t_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.bank_account_id,
+                            element.reference_id,
+                            element.type,
+                            element.sub_type,
+                            element.description,
+                            element.payment_type,
+                            element.payment_sub_type,
+                            element.amount,
+                            element.transaction_date,
+                            element.transact_by,
+                            element.process_by,
+                            element.process_date,
+                            `<span class="badge rounded-pill text-white ${element.status === 'paid' ? 'bg-success' : element.status === 'partially paid' ? 'bg-warning' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-t_id="${element.id}" data-t_bank_account_id="${element.bank_account_id}" data-t_reference_id="${element.reference_id}" data-t_type="${element.type}" data-t_sub_type="${element.sub_type}" data-t_description="${element.description}" data-t_payment_type="${element.payment_type}" data-t_payment_sub_type="${element.payment_sub_type}" data-t_amount="${element.amount}" data-t_transaction_date="${element.transaction_date}" data-t_transact_by="${element.transact_by}" data-t_process_by="${element.process_by}" data-t_process_date="${element.process_date}" data-t_status="${element.status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

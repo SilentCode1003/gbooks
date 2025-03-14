@@ -3,10 +3,10 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var cors = require("cors");
 
 const swaggerDocs = require("./repository/documentation/swagger");
 const swaggerUi = require("swagger-ui-express");
-// const cors = require('cors');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -47,7 +47,7 @@ SetMongo(app);
 // view engine setup
 app.set("views", path.join(__dirname, "views/Layouts"));
 app.set("view engine", "ejs");
-// app.use(cors());
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(
@@ -58,9 +58,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-
 app.use("/login", loginRouter);
-//app.use(verifyjwt);
+app.use(verifyjwt);
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/vendors", vendorsRouter);
