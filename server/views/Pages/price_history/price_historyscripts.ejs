@@ -15,14 +15,14 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.ph_id,
-                            element.ph_product_id,
-                            element.ph_cost,
-                            element.ph_markup_rate,
-                            element.ph_vat_ex,
-                            element.ph_vat_inc,
-                            element.ph_date,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-ph_id="${element.ph_id}" data-ph_product_id="${element.ph_product_id}" data-ph_cost="${element.ph_cost}" data-ph_markup_rate="${element.ph_markup_rate}" data-ph_vat_ex="${element.ph_vat_ex}" data-ph_vat_inc="${element.ph_vat_inc}" data-ph_date="${element.ph_date}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.product_id,
+                            element.cost,
+                            element.markup_rate,
+                            element.vat_ex,
+                            element.vat_inc,
+                            element.date,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-ph_id="${element.id}" data-ph_product_id="${element.product_id}" data-ph_cost="${element.cost}" data-ph_markup_rate="${element.markup_rate}" data-ph_vat_ex="${element.vat_ex}" data-ph_vat_inc="${element.vat_inc}" data-ph_date="${element.date}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

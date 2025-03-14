@@ -15,13 +15,13 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.poi_id,
-                            element.poi_purchase_order_id,
-                            element.poi_product_id,
-                            element.poi_product_cost,
-                            element.poi_quantity,
-                            element.poi_unit,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-poi_id="${element.poi_id}" data-poi_purchase_order_id="${element.poi_purchase_order_id}" data-poi_product_id="${element.poi_product_id}" data-poi_product_cost="${element.poi_product_cost}" data-poi_quantity="${element.poi_quantity}" data-poi_unit="${element.poi_unit}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.purchase_order_id,
+                            element.product_id,
+                            element.product_cost,
+                            element.quantity,
+                            element.unit,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-poi_id="${element.id}" data-poi_purchase_order_id="${element.purchase_order_id}" data-poi_product_id="${element.product_id}" data-poi_product_cost="${element.poi_product_cost}" data-poi_quantity="${element.poi_quantity}" data-poi_unit="${element.poi_unit}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

@@ -8,11 +8,13 @@ const {
   SelectAllStatement,
   InsertStatement,
   UpdateStatement,
+  SelectWhereStatement,
 } = require("../repository/helper/customhelper");
 const { Accounting } = require("../repository/model/accoutningsystem");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET users listing. */
@@ -33,7 +35,7 @@ router.get("/getpayments", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Accounting.master_payment.prefix)));
     }
 
     ProcessData();
@@ -44,16 +46,16 @@ router.get("/getpayments", (req, res) => {
 
 router.post("/createpayment", (req, res) => {
   try {
-    const { mp_code, mp_description } =
+    const { code, description } =
       req.body;
-    let mp_status = STATUS.ACTIVE;
+    let status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [mp_code, mp_description, mp_status ],
+        [code, description, status ],
       ];
 
       console.log(data);
@@ -79,17 +81,17 @@ router.post("/createpayment", (req, res) => {
 
 router.put("/updatepayment", (req, res) => {
   try {
-    const { mp_id, mp_code, mp_description, mp_status } = req.body;
+    const { id, code, description, status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
     
-        mp_code,
-        mp_description,
-        mp_status,
-        mp_id];
+        code,
+        description,
+        status,
+        id];
 
       console.log(data);
 
@@ -108,6 +110,28 @@ router.put("/updatepayment", (req, res) => {
     }
 
     UpdateData();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(JsonResposeError(error));
+  }
+});
+
+router.get("/activepayments", (req, res) => {
+  try {
+    async function ProcessData() {
+      let select_sql = SelectWhereStatement(
+        Accounting.master_payment.tablename,
+        Accounting.master_payment.selectColumns,
+        [Accounting.master_payment.selectOptionsColumn.status],
+        [STATUS.ACTIVE]
+      );
+  
+      let result = await Select(select_sql);
+  
+      res.status(200).json(JsonResponseData(result));
+    }
+
+    ProcessData();
   } catch (error) {
     console.log(error);
     res.status(500).json(JsonResposeError(error));

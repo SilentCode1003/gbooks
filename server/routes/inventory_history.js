@@ -13,6 +13,7 @@ const { Inventory } = require("../repository/model/inventory");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET inventory listing. */
@@ -33,7 +34,7 @@ router.get("/getinventory_history", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Inventory.inventory_history.prefix)));
     }
 
     ProcessData();
@@ -44,7 +45,7 @@ router.get("/getinventory_history", (req, res) => {
 
 router.post("/createinventory_history", (req, res) => {
   try {
-    const { ih_inventory_id, ih_date, ih_transaction_type, ih_quantity, ih_unit  } =
+    const { inventory_id, date, transaction_type, quantity, unit  } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +53,7 @@ router.post("/createinventory_history", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [ih_inventory_id, ih_date, ih_transaction_type, ih_quantity, ih_unit],
+        [inventory_id, date, transaction_type, quantity, unit],
       ];
 
       console.log(data);
@@ -78,18 +79,18 @@ router.post("/createinventory_history", (req, res) => {
 
 router.put("/updateinventory_history", (req, res) => {
   try {
-    const { ih_id, ih_inventory_id, ih_date, ih_transaction_type, ih_quantity, ih_unit } = req.body;
+    const { id, inventory_id, date, transaction_type, quantity, unit } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        ih_inventory_id,
-        ih_date,
-        ih_transaction_type,
-        ih_quantity,
-        ih_unit,
-        ih_id];
+        inventory_id,
+        date,
+        transaction_type,
+        quantity,
+        unit,
+        id];
 
       console.log(data);
 

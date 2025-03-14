@@ -8,11 +8,13 @@ const {
   SelectAllStatement,
   InsertStatement,
   UpdateStatement,
+  SelectWhereStatement,
 } = require("../repository/helper/customhelper");
 const { Accounting } = require("../repository/model/accoutningsystem");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET users listing. */
@@ -33,7 +35,7 @@ router.get("/getbank_accounts", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Accounting.master_bank_account.prefix)));
     }
 
     ProcessData();
@@ -44,16 +46,16 @@ router.get("/getbank_accounts", (req, res) => {
 
 router.post("/createbank_account", (req, res) => {
   try {
-    const { mba_code, mba_account_name, mba_account_number, mba_bank_type } =
+    const { code, account_name, account_number, bank_type } =
       req.body;
-    let mba_status = STATUS.ACTIVE;
+    let status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [mba_code, mba_account_name, mba_account_number, mba_bank_type, mba_status ],
+        [code, account_name, account_number, bank_type, status ],
       ];
 
       console.log(data);
@@ -79,18 +81,18 @@ router.post("/createbank_account", (req, res) => {
 
 router.put("/updatebank_account", (req, res) => {
   try {
-    const { mba_id, mba_code, mba_account_name, mba_account_number, mba_bank_type, mba_status, } = req.body;
+    const { id, code, account_name, account_number, bank_type, status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        mba_code,
-        mba_account_name,
-        mba_account_number,
-        mba_bank_type,
-        mba_status,
-        mba_id];
+        code,
+        account_name,
+        account_number,
+        bank_type,
+        status,
+        id];
 
       console.log(data);
 
@@ -111,6 +113,28 @@ router.put("/updatebank_account", (req, res) => {
     }
 
     UpdateData();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(JsonResposeError(error));
+  }
+});
+
+router.get("/activebank_accounts", (req, res) => {
+  try {
+    async function ProcessData() {
+      let select_sql = SelectWhereStatement(
+        Accounting.master_bank_account.tablename,
+        Accounting.master_bank_account.selectColumns,
+        [Accounting.master_bank_account.selectOptionsColumn.status],
+        [STATUS.ACTIVE]
+      );
+  
+      let result = await Select(select_sql);
+  
+      res.status(200).json(JsonResponseData(result));
+    }
+
+    ProcessData();
   } catch (error) {
     console.log(error);
     res.status(500).json(JsonResposeError(error));

@@ -13,6 +13,7 @@ const { Inventory } = require("../repository/model/inventory");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET branch listing. */
@@ -33,7 +34,7 @@ router.get("/getbranch", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Inventory.master_branch.prefix)));
     }
 
     ProcessData();
@@ -44,16 +45,16 @@ router.get("/getbranch", (req, res) => {
 
 router.post("/createbranch", (req, res) => {
   try {
-    const { mb_code, mb_description, mb_email, mb_phone, mb_mobile, mb_address, mb_manager } =
+    const { code, description, email, phone, mobile, address, manager } =
       req.body;
-    let mb_status = STATUS.ACTIVE;
+    let status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [mb_code, mb_description, mb_email, mb_phone,mb_mobile, mb_address, mb_manager, mb_status],
+        [code, description, email, phone,mobile, address, manager, status],
       ];
 
       console.log(data);
@@ -79,21 +80,21 @@ router.post("/createbranch", (req, res) => {
 
 router.put("/updatebranch", (req, res) => {
   try {
-    const { mb_id, mb_code, mb_description, mb_email, mb_phone, mb_mobile, mb_address, mb_manager, mb_status } = req.body;
+    const { id, code, description, email, phone, mobile, address, manager, status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        mb_code,
-        mb_description,
-        mb_email,
-        mb_phone,
-        mb_mobile,
-        mb_address,
-        mb_manager,
-        mb_status,
-        mb_id];
+        code,
+        description,
+        email,
+        phone,
+        mobile,
+        address,
+        manager,
+        status,
+        id];
 
       console.log(data);
 

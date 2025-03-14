@@ -15,17 +15,17 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.mv_id,
-                            element.mv_business_name,
-                            element.mv_business_type,
-                            element.mv_contact_person,
-                            element.mv_email,
-                            element.mv_phone,
-                            element.mv_mobile,
-                            element.mv_business_address,
-                            element.mv_tin,
-                            `<span class="badge rounded-pill text-white ${element.mv_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mv_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mv_id="${element.mv_id}" data-mv_business_name="${element.mv_business_name}" data-mv_business_type="${element.mv_business_type}" data-mv_contact_person="${element.mv_contact_person}" data-mv_email="${element.mv_email}" data-mv_phone="${element.mv_phone}" data-mv_mobile="${element.mv_mobile}" data-mv_business_address="${element.mv_business_address}" data-mv_tin="${element.mv_tin}" data-mv_status="${element.mv_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.business_name,
+                            element.business_type,
+                            element.contact_person,
+                            element.email,
+                            element.phone,
+                            element.mobile,
+                            element.business_address,
+                            element.tin,
+                            `<span class="badge rounded-pill text-white ${element.status === 'active' ? 'bg-success' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mv_id="${element.id}" data-mv_business_name="${element.business_name}" data-mv_business_type="${element.business_type}" data-mv_contact_person="${element.contact_person}" data-mv_email="${element.email}" data-mv_phone="${element.phone}" data-mv_mobile="${element.mobile}" data-mv_business_address="${element.business_address}" data-mv_tin="${element.tin}" data-mv_status="${element.status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

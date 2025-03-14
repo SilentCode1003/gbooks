@@ -13,6 +13,7 @@ const { AccountsReceivable } = require("../repository/model/accounts_receivable"
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET sales_order_activity listing. */
@@ -33,7 +34,7 @@ router.get("/getsales_order_activity", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,AccountsReceivable.sales_order_activity.prefix)));
     }
 
     ProcessData();
@@ -44,7 +45,7 @@ router.get("/getsales_order_activity", (req, res) => {
 
 router.post("/createsales_order_activity", (req, res) => {
   try {
-    const { soa_sales_order_id, soa_type, soa_remarks, soa_user, soa_date } =
+    const { sales_order_id, type, remarks, user, date } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +53,7 @@ router.post("/createsales_order_activity", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [soa_sales_order_id, soa_type, soa_remarks, soa_user, soa_date],
+        [sales_order_id, type, remarks, user, date],
       ];
 
       console.log(data);
@@ -78,18 +79,18 @@ router.post("/createsales_order_activity", (req, res) => {
 
 router.put("/updatesales_order_activity", (req, res) => {
   try {
-    const { soa_id, soa_sales_order_id, soa_type, soa_remarks, soa_user, soa_date } = req.body;
+    const { id, sales_order_id, type, remarks, user, date } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        soa_sales_order_id,
-        soa_type,
-        soa_remarks,
-        soa_user,
-        soa_date,
-        soa_id];
+        sales_order_id,
+        type,
+        remarks,
+        user,
+        date,
+        id];
 
       console.log(data);
 

@@ -15,13 +15,13 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.bb_id,
-                            element.bb_bank_account_id,
-                            element.bb_transaction_date,
-                            element.bb_update_date,
-                            element.bb_previous_amount,
-                            element.bb_current_amount,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-bb_id="${element.bb_id}" data-bb_bank_account_id="${element.bb_bank_account_id}" data-bb_transaction_date="${element.bb_transaction_date}" data-bb_update_date="${element.bb_update_date}" data-bb_previous_amount="${element.bb_previous_amount}" data-bb_current_amount="${element.bb_current_amount}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.bank_account_id,
+                            element.transaction_date,
+                            element.update_date,
+                            element.previous_amount,
+                            element.current_amount,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-bb_id="${element.id}" data-bb_bank_account_id="${element.bank_account_id}" data-bb_transaction_date="${element.transaction_date}" data-bb_update_date="${element.update_date}" data-bb_previous_amount="${element.previous_amount}" data-bb_current_amount="${element.current_amount}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

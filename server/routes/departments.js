@@ -8,11 +8,13 @@ const {
   SelectAllStatement,
   InsertStatement,
   UpdateStatement,
+  SelectWhereStatement,
 } = require("../repository/helper/customhelper");
 const { Accounting } = require("../repository/model/accoutningsystem");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET users listing. */
@@ -33,7 +35,7 @@ router.get("/getdepartments", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Accounting.master_department.prefix)));
     }
 
     ProcessData();
@@ -44,16 +46,16 @@ router.get("/getdepartments", (req, res) => {
 
 router.post("/createdepartment", (req, res) => {
   try {
-    const { md_code, md_description } =
+    const { code, description } =
       req.body;
-    let md_status = STATUS.ACTIVE;
+    let status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [md_code, md_description, md_status ],
+        [code, description, status ],
       ];
 
       console.log(data);
@@ -79,16 +81,16 @@ router.post("/createdepartment", (req, res) => {
 
 router.put("/updatedepartment", (req, res) => {
   try {
-    const { md_id, md_code, md_description, md_status, } = req.body;
+    const { id, code, description, status, } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        md_code,
-        md_description,
-        md_status,
-        md_id];
+        code,
+        description,
+        status,
+        id];
 
       console.log(data);
 
@@ -107,6 +109,28 @@ router.put("/updatedepartment", (req, res) => {
     }
 
     UpdateData();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(JsonResposeError(error));
+  }
+});
+
+router.get("/activedepartments", (req, res) => {
+  try {
+    async function ProcessData() {
+      let select_sql = SelectWhereStatement(
+        Accounting.master_department.tablename,
+        Accounting.master_department.selectColumns,
+        [Accounting.master_department.selectOptionsColumn.status],
+        [STATUS.ACTIVE]
+      );
+  
+      let result = await Select(select_sql);
+  
+      res.status(200).json(JsonResponseData(result));
+    }
+
+    ProcessData();
   } catch (error) {
     console.log(error);
     res.status(500).json(JsonResposeError(error));

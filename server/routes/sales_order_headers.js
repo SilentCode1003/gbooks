@@ -13,6 +13,7 @@ const { AccountsReceivable } = require("../repository/model/accounts_receivable"
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET sales_order_headers listing. */
@@ -33,7 +34,7 @@ router.get("/getsales_order_headers", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,AccountsReceivable.sales_order_header.prefix)));
     }
 
     ProcessData();
@@ -44,7 +45,7 @@ router.get("/getsales_order_headers", (req, res) => {
 
 router.post("/createsales_order_header", (req, res) => {
   try {
-    const { soh_sequence, soh_customer_id, soh_order_date, soh_delivery_date, soh_total_cost, soh_status } =
+    const { sequence, customer_id, order_date, delivery_date, total_cost, status } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +53,7 @@ router.post("/createsales_order_header", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [soh_sequence, soh_customer_id, soh_order_date, soh_delivery_date, soh_total_cost, soh_status],
+        [sequence, customer_id, order_date, delivery_date, total_cost, status],
       ];
 
       console.log(data);
@@ -78,19 +79,19 @@ router.post("/createsales_order_header", (req, res) => {
 
 router.put("/updatesales_order_header", (req, res) => {
   try {
-    const { soh_id, soh_sequence, soh_customer_id, soh_order_date, soh_delivery_date, soh_total_cost, soh_status } = req.body;
+    const { id, sequence, customer_id, order_date, delivery_date, total_cost, status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        soh_sequence,
-        soh_customer_id,
-        soh_order_date,
-        soh_delivery_date,
-        soh_total_cost,
-        soh_status,
-        soh_id];
+        sequence,
+        customer_id,
+        order_date,
+        delivery_date,
+        total_cost,
+        status,
+        id];
 
       console.log(data);
 

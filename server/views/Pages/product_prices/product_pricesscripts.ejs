@@ -15,14 +15,14 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.pp_id,
-                            element.pp_product_id,
-                            element.pp_cost,
-                            element.pp_markup_rate,
-                            element.pp_vat_ex,
-                            element.pp_vat_inc,
-                            `<span class="badge rounded-pill text-white ${element.pp_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.pp_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-pp_id="${element.pp_id}" data-pp_product_id="${element.pp_product_id}" data-pp_cost="${element.pp_cost}" data-pp_markup_rate="${element.pp_markup_rate}" data-pp_vat_ex="${element.pp_vat_ex}" data-pp_vat_inc="${element.pp_vat_inc}" data-pp_status="${element.pp_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.product_id,
+                            element.cost,
+                            element.markup_rate,
+                            element.vat_ex,
+                            element.vat_inc,
+                            `<span class="badge rounded-pill text-white ${element.status === 'active' ? 'bg-success' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-pp_id="${element.id}" data-pp_product_id="${element.product_id}" data-pp_cost="${element.cost}" data-pp_markup_rate="${element.markup_rate}" data-pp_vat_ex="${element.vat_ex}" data-pp_vat_inc="${element.vat_inc}" data-pp_status="${element.status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

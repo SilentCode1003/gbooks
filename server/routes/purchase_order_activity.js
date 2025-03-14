@@ -13,6 +13,7 @@ const { AccountsPayable } = require("../repository/model/accounts_payable");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET purchase_order_activity listing. */
@@ -33,7 +34,7 @@ router.get("/getpurchase_order_activity", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,AccountsPayable.purchase_order_activity.prefix)));
     }
 
     ProcessData();
@@ -44,7 +45,7 @@ router.get("/getpurchase_order_activity", (req, res) => {
 
 router.post("/createpurchase_order_activity", (req, res) => {
   try {
-    const { poa_purchase_order_id, poa_type, poa_remarks, poa_user, poa_date } =
+    const { purchase_order_id, type, remarks, user, date } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +53,7 @@ router.post("/createpurchase_order_activity", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [poa_purchase_order_id, poa_type, poa_remarks, poa_user, poa_date],
+        [purchase_order_id, type, remarks, user, date],
       ];
 
       console.log(data);
@@ -78,18 +79,18 @@ router.post("/createpurchase_order_activity", (req, res) => {
 
 router.put("/updatepurchase_order_activity", (req, res) => {
   try {
-    const { poa_id, poa_purchase_order_id, poa_type, poa_remarks, poa_user, poa_date } = req.body;
+    const { id, purchase_order_id, type, remarks, user, date } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        poa_purchase_order_id,
-        poa_type,
-        poa_remarks,
-        poa_user,
-        poa_date,
-        poa_id];
+        purchase_order_id,
+        type,
+        remarks,
+        user,
+        date,
+        id];
 
       console.log(data);
 

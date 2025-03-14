@@ -15,14 +15,14 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.mu_id,
-                            element.mu_employee_id,
-                            element.mu_fullname,
-                            element.mu_position,
-                            element.mu_username,
-                            element.mu_access,
-                            `<span class="badge rounded-pill text-white ${element.mu_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mu_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mu_id="${element.mu_id}" data-mu_employee_id="${element.mu_employee_id}" data-mu_fullname="${element.mu_fullname}" data-mu_position="${element.mu_position}" data-mu_username="${element.mu_username}" data-mu_access="${element.mu_access}" data-mu_status="${element.mu_status}"><i class=" fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.employee_id,
+                            element.fullname,
+                            element.position,
+                            element.username,
+                            element.access,
+                            `<span class="badge rounded-pill text-white ${element.status === 'active' ? 'bg-success' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mu_id="${element.id}" data-mu_employee_id="${element.employee_id}" data-mu_fullname="${element.fullname}" data-mu_position="${element.position}" data-mu_username="${element.username}" data-mu_access="${element.access}" data-mu_status="${element.status}"><i class=" fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();
