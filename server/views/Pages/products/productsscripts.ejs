@@ -15,15 +15,15 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.mp_id,
-                            element.mp_vendor_id,
-                            element.mp_upc,
-                            element.mp_code,
-                            element.mp_description,
-                            element.mp_category,
-                            element.mp_subcategory,
-                            `<span class="badge rounded-pill text-white ${element.mp_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.mp_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mp_id="${element.mp_id}" data-mp_vendor_id="${element.mp_vendor_id}" data-mp_upc="${element.mp_upc}" data-mp_code="${element.mp_code}" data-mp_description="${element.mp_description}" data-mp_category="${element.mp_category}" data-mp_subcategory="${element.mp_subcategory}" data-mp_status="${element.mp_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.vendor_id,
+                            element.upc,
+                            element.code,
+                            element.description,
+                            element.category,
+                            element.subcategory,
+                            `<span class="badge rounded-pill text-white ${element.status === 'active' ? 'bg-success' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-mp_id="${element.id}" data-mp_vendor_id="${element.vendor_id}" data-mp_upc="${element.upc}" data-mp_code="${element.code}" data-mp_description="${element.description}" data-mp_category="${element.category}" data-mp_subcategory="${element.subcategory}" data-mp_status="${element.status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

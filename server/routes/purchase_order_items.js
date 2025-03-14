@@ -13,6 +13,7 @@ const { AccountsPayable } = require("../repository/model/accounts_payable");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET purchase_order_items listing. */
@@ -33,7 +34,7 @@ router.get("/getpurchase_order_items", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,AccountsPayable.purchase_order_item.prefix)));
     }
 
     ProcessData();
@@ -44,7 +45,7 @@ router.get("/getpurchase_order_items", (req, res) => {
 
 router.post("/createpurchase_order_item", (req, res) => {
   try {
-    const { poi_purchase_order_id, poi_product_id, poi_product_cost, poi_quantity, poi_unit } =
+    const { purchase_order_id, product_id, product_cost, quantity, unit } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +53,7 @@ router.post("/createpurchase_order_item", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [poi_purchase_order_id, poi_product_id, poi_product_cost, poi_quantity, poi_unit],
+        [purchase_order_id, product_id, product_cost, quantity, unit],
       ];
 
       console.log(data);
@@ -78,18 +79,18 @@ router.post("/createpurchase_order_item", (req, res) => {
 
 router.put("/updatepurchase_order_item", (req, res) => {
   try {
-    const { poi_id, poi_purchase_order_id, poi_product_id, poi_product_cost, poi_quantity, poi_unit } = req.body;
+    const { id, purchase_order_id, product_id, product_cost, quantity, unit } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        poi_purchase_order_id,
-        poi_product_id,
-        poi_product_cost,
-        poi_quantity,
-        poi_unit,
-        poi_id];
+        purchase_order_id,
+        product_id,
+        product_cost,
+        quantity,
+        unit,
+        id];
 
       console.log(data);
 

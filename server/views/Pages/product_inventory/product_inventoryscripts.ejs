@@ -15,13 +15,13 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.pi_id,
-                            element.pi_product_id,
-                            element.pi_branch_id,
-                            element.pi_quantity,
-                            element.pi_unit,
-                            `<span class="badge rounded-pill text-white ${element.pi_status === 'active' ? 'bg-success' : 'bg-danger'}">${element.pi_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-pi_id="${element.pi_id}" data-pi_product_id="${element.pi_product_id}" data-pi_branch_id="${element.pi_branch_id}" data-pi_quantity="${element.pi_quantity}" data-pi_unit="${element.pi_unit}" data-pi_status="${element.pi_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.product_id,
+                            element.branch_id,
+                            element.quantity,
+                            element.unit,
+                            `<span class="badge rounded-pill text-white ${element.status === 'active' ? 'bg-success' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-pi_id="${element.id}" data-pi_product_id="${element.product_id}" data-pi_branch_id="${element.branch_id}" data-pi_quantity="${element.quantity}" data-pi_unit="${element.unit}" data-pi_status="${element.status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

@@ -13,6 +13,7 @@ const { Inventory } = require("../repository/model/inventory");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET products listing. */
@@ -33,7 +34,7 @@ router.get("/getproducts", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Inventory.master_product.prefix)));
     }
 
     ProcessData();
@@ -44,16 +45,16 @@ router.get("/getproducts", (req, res) => {
 
 router.post("/createproduct", (req, res) => {
   try {
-    const { mp_vendor_id, mp_upc, mp_code, mp_description, mp_category, mp_subcategory } =
+    const { vendor_id, upc, code, description, category, subcategory } =
       req.body;
-    let mp_status = STATUS.ACTIVE;
+    let status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [mp_vendor_id, mp_upc, mp_code, mp_description,mp_category, mp_subcategory, mp_status],
+        [vendor_id, upc, code, description,category, subcategory, status],
       ];
 
       console.log(data);
@@ -79,20 +80,20 @@ router.post("/createproduct", (req, res) => {
 
 router.put("/updateproduct", (req, res) => {
   try {
-    const { mp_id, mp_vendor_id, mp_upc, mp_code, mp_description, mp_category, mp_subcategory, mp_status } = req.body;
+    const { id, vendor_id, upc, code, description, category, subcategory, status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        mp_vendor_id,
-        mp_upc,
-        mp_code,
-        mp_description,
-        mp_category,
-        mp_subcategory,
-        mp_status,
-        mp_id];
+        vendor_id,
+        upc,
+        code,
+        description,
+        category,
+        subcategory,
+        status,
+        id];
 
       console.log(data);
 

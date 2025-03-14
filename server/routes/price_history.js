@@ -13,6 +13,7 @@ const { Inventory } = require("../repository/model/inventory");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET price_history listing. */
@@ -33,7 +34,7 @@ router.get("/getprice_history", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Inventory.price_history.prefix)));
     }
 
     ProcessData();
@@ -44,7 +45,7 @@ router.get("/getprice_history", (req, res) => {
 
 router.post("/createprice_history", (req, res) => {
   try {
-    const { ph_product_id, ph_cost, ph_markup_rate, ph_vat_ex, ph_vat_inc, ph_date  } =
+    const { product_id, cost, markup_rate, vat_ex, vat_inc, date  } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +53,7 @@ router.post("/createprice_history", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [ph_product_id, ph_cost, ph_markup_rate, ph_vat_ex,ph_vat_inc, ph_date],
+        [product_id, cost, markup_rate, vat_ex,vat_inc, date],
       ];
 
       console.log(data);
@@ -78,19 +79,19 @@ router.post("/createprice_history", (req, res) => {
 
 router.put("/updateprice_history", (req, res) => {
   try {
-    const { ph_id, ph_product_id, ph_cost, ph_markup_rate, ph_vat_ex, ph_vat_inc, ph_date } = req.body;
+    const { id, product_id, cost, markup_rate, vat_ex, vat_inc, date } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        ph_product_id,
-        ph_cost,
-        ph_markup_rate,
-        ph_vat_ex,
-        ph_vat_inc,
-        ph_date,
-        ph_id];
+        product_id,
+        cost,
+        markup_rate,
+        vat_ex,
+        vat_inc,
+        date,
+        id];
 
       console.log(data);
 

@@ -1,11 +1,13 @@
 const jwt = require('jsonwebtoken');
 
 const verifyjwt = (req, res, next) => {
+    
     if (!req.session || !req.session.jwt) {
         return res.redirect('/unauthorized');
         
     }
     try {
+        console.log('sessions666:', req.session.user.mu_username) 
         const token = req.session.jwt;
         const decoded = jwt.verify(token, "5L Secret Key");
         req.user = {
@@ -17,7 +19,7 @@ const verifyjwt = (req, res, next) => {
         };
         next();
     } catch (error) {
-        return res.redirect('/login');;
+        return res.redirect('/users');
     }
 };
 

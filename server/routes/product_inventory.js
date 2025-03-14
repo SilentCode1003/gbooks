@@ -13,6 +13,7 @@ const { Inventory } = require("../repository/model/inventory");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET inventory listing. */
@@ -33,7 +34,7 @@ router.get("/getproduct_inventory", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,Inventory.product_inventory.prefix)));
     }
 
     ProcessData();
@@ -44,16 +45,16 @@ router.get("/getproduct_inventory", (req, res) => {
 
 router.post("/createproduct_inventory", (req, res) => {
   try {
-    const { pi_product_id, pi_branch_id, pi_quantity, pi_unit  } =
+    const { product_id, branch_id, quantity, unit  } =
       req.body;
-    let pi_status = STATUS.ACTIVE;
+    let status = STATUS.ACTIVE;
 
     console.log(req.body);
 
 
     async function ProcessData() {
       let data = [
-        [pi_product_id, pi_branch_id, pi_quantity, pi_unit, pi_status],
+        [product_id, branch_id, quantity, unit, status],
       ];
 
       console.log(data);
@@ -79,18 +80,18 @@ router.post("/createproduct_inventory", (req, res) => {
 
 router.put("/updateproduct_inventory", (req, res) => {
   try {
-    const { pi_id, pi_product_id, pi_branch_id, pi_quantity, pi_unit, pi_status } = req.body;
+    const { id, product_id, branch_id, quantity, unit, status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        pi_product_id,
-        pi_branch_id,
-        pi_quantity,
-        pi_unit,
-        pi_status,
-        pi_id];
+        product_id,
+        branch_id,
+        quantity,
+        unit,
+        status,
+        id];
 
       console.log(data);
 

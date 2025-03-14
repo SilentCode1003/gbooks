@@ -13,6 +13,7 @@ const { AccountsPayable } = require("../repository/model/accounts_payable");
 const { Select, Insert, Update } = require("../repository/helper/dbconnect");
 const { STATUS } = require("../repository/helper/dictionary");
 const { EncrypterString } = require("../repository/helper/crytography");
+const { DataModeling } = require("../repository/model/datamodeling");
 var router = express.Router();
 
 /* GET purchase_order_headers listing. */
@@ -33,7 +34,7 @@ router.get("/getpurchase_order_headers", (req, res) => {
       let result = await Select(select_sql);
 
       console.log(result);
-      res.status(200).json(JsonResponseData(result));
+      res.status(200).json(JsonResponseData(DataModeling(result,AccountsPayable.purchase_order_header.prefix)));
     }
 
     ProcessData();
@@ -44,7 +45,7 @@ router.get("/getpurchase_order_headers", (req, res) => {
 
 router.post("/createpurchase_order_header", (req, res) => {
   try {
-    const { poh_sequence, poh_vendor_id, poh_order_date, poh_delivery_date, poh_total_cost, poh_status } =
+    const { sequence, vendor_id, order_date, delivery_date, total_cost, status } =
       req.body;
 
     console.log(req.body);
@@ -52,7 +53,7 @@ router.post("/createpurchase_order_header", (req, res) => {
 
     async function ProcessData() {
       let data = [
-        [poh_sequence, poh_vendor_id, poh_order_date, poh_delivery_date, poh_total_cost, poh_status],
+        [sequence, vendor_id, order_date, delivery_date, total_cost, status],
       ];
 
       console.log(data);
@@ -78,19 +79,19 @@ router.post("/createpurchase_order_header", (req, res) => {
 
 router.put("/updatepurchase_order_header", (req, res) => {
   try {
-    const { poh_id, poh_sequence, poh_vendor_id, poh_order_date, poh_delivery_date, poh_total_cost, poh_status } = req.body;
+    const { id, sequence, vendor_id, order_date, delivery_date, total_cost, status } = req.body;
 
     console.log(req.body);
 
     async function UpdateData() {
       let data = [
-        poh_sequence,
-        poh_vendor_id,
-        poh_order_date,
-        poh_delivery_date,
-        poh_total_cost,
-        poh_status,
-        poh_id];
+        sequence,
+        vendor_id,
+        order_date,
+        delivery_date,
+        total_cost,
+        status,
+        id];
 
       console.log(data);
 

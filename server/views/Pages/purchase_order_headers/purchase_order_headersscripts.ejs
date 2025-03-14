@@ -15,14 +15,14 @@
                     table.clear();
                     data.data.forEach(element => {
                         table.row.add([
-                            element.poh_id,
-                            element.poh_sequence,
-                            element.poh_vendor_id,
-                            element.poh_order_date,
-                            element.poh_delivery_date,
-                            element.poh_total_cost,
-                            `<span class="badge rounded-pill text-white ${element.poh_status === 'PENDING' ? 'bg-warning' : element.poh_status === 'COMPLETED' ? 'bg-success' : 'bg-danger'}">${element.poh_status}</span>`,
-                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-poh_id="${element.poh_id}" data-poh_sequence="${element.poh_sequence}" data-poh_vendor_id="${element.poh_vendor_id}" data-poh_order_date="${element.poh_order_date}" data-poh_delivery_date="${element.poh_delivery_date}" data-poh_total_cost="${element.poh_total_cost}" data-poh_status="${element.poh_status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
+                            element.id,
+                            element.sequence,
+                            element.vendor_id,
+                            element.order_date,
+                            element.delivery_date,
+                            element.total_cost,
+                            `<span class="badge rounded-pill text-white ${element.status === 'PENDING' ? 'bg-warning' : element.status === 'COMPLETED' ? 'bg-success' : 'bg-danger'}">${element.status}</span>`,
+                            `<div class="d-flex justify-content-center align-items-center"><button type="button" class="mx-3 btn btn-success edit-btn" data-poh_id="${element.id}" data-poh_sequence="${element.sequence}" data-poh_vendor_id="${element.vendor_id}" data-poh_order_date="${element.order_date}" data-poh_delivery_date="${element.delivery_date}" data-poh_total_cost="${element.total_cost}" data-poh_status="${element.status}"><i class="fas fa-fw fa-edit"></i></button></div>`,
                         ]);
                     });
                     table.draw();

@@ -605,6 +605,15 @@ exports.SelectAllStatement = (tablename, columns) => {
   return statement;
 };
 
+
+exports.SelectAllStatementDesc = (tablename, columns, column_name, limit, offset) => {
+  let statement = `SELECT ${columns} FROM ${tablename} ORDER BY ${column_name} DESC LIMIT ${limit} OFFSET ${offset}`;
+
+return statement;
+};
+
+
+
 exports.SelectWhereStatement = (tablename, columns, condition = [], values = []) => {
   let cols = "";
 

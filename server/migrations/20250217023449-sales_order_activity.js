@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: 'sales_order_header',
-          key: 'poh_id',
+          key: 'soh_id',
         },
       },
       soa_type: {
